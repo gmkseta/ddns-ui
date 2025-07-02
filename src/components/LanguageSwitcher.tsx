@@ -54,12 +54,27 @@ export default function LanguageSwitcher() {
 
   const switchLanguage = (newLocale: string) => {
     try {
-      router.push(pathname, { locale: newLocale });
+      // 현재 경로에서 로케일을 제외한 경로 추출
+      const currentPath = window.location.pathname;
+      const segments = currentPath.split('/').filter(Boolean);
+      
+      // 첫 번째 세그먼트가 언어 코드인지 확인
+      const isFirstSegmentLocale = languages.some(lang => lang.code === segments[0]);
+      const pathWithoutLocale = isFirstSegmentLocale ? segments.slice(1).join('/') : segments.join('/');
+      
+      // next-intl router를 사용해서 언어 전환
+      const targetPath = pathWithoutLocale ? `/${pathWithoutLocale}` : '/';
+      router.push(targetPath, { locale: newLocale });
       setIsOpen(false);
     } catch (error) {
       console.error('Language switch error:', error);
       // 폴백: 직접 페이지 이동
-      window.location.href = `/${newLocale}${pathname}`;
+      const currentPath = window.location.pathname;
+      const segments = currentPath.split('/').filter(Boolean);
+      const isFirstSegmentLocale = languages.some(lang => lang.code === segments[0]);
+      const pathWithoutLocale = isFirstSegmentLocale ? segments.slice(1).join('/') : segments.join('/');
+      const targetPath = pathWithoutLocale ? `/${newLocale}/${pathWithoutLocale}` : `/${newLocale}`;
+      window.location.href = targetPath;
     }
   };
 

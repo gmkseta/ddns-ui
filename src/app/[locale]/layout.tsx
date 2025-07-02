@@ -62,7 +62,7 @@ export default async function RootLayout({
                 }}
                 toastOptions={{
                   duration: 4000,
-                  className: '',
+                  className: 'dark:!bg-gray-800 dark:!text-gray-100 dark:!border-gray-600',
                   style: {
                     background: 'rgba(255, 255, 255, 0.95)',
                     color: '#1f2937',

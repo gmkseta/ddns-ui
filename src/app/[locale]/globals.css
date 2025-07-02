@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
+/* TailwindCSS v4 다크모드 variant 설정 */
+@variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+/* 다크모드: .dark 클래스 기반 */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -12,8 +21,9 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* 시스템 설정 기반 다크모드 (폴백) */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
