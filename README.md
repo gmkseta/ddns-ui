@@ -6,7 +6,7 @@ Cloudflare DNS API를 활용한 **DDNS 관리 웹 UI**입니다.
 ![Node.js](https://img.shields.io/badge/node.js-18+-green.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)
 ![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
-![Docker Hub](https://img.shields.io/docker/v/frodokerr/ddns-ui?label=docker%20hub)
+![Docker Hub](https://img.shields.io/docker/v/gmkseta/ddns-ui?label=docker%20hub)
 
 ## ✨ 주요 기능
 
@@ -33,7 +33,7 @@ Cloudflare DNS API를 활용한 **DDNS 관리 웹 UI**입니다.
      -e ADMIN_PASSWORD=your-secure-password \
      -e JWT_SECRET=your-random-jwt-secret-key \
      --restart unless-stopped \
-     frodokerr/ddns-ui:latest
+     gmkseta/ddns-ui:latest
    ```
 
 2. **Docker Compose로 실행**
@@ -41,7 +41,7 @@ Cloudflare DNS API를 활용한 **DDNS 관리 웹 UI**입니다.
    version: '3.8'
    services:
      ddns-ui:
-       image: frodokerr/ddns-ui:latest
+       image: gmkseta/ddns-ui:latest
        container_name: ddns-ui
        ports:
          - "3000:3000"
@@ -187,7 +187,7 @@ ddns-ui/
 
 ```bash
 # 최신 이미지 가져오기
-docker pull frodokerr/ddns-ui:latest
+docker pull gmkseta/ddns-ui:latest
 
 # 컨테이너 실행
 docker run -d \
@@ -198,7 +198,7 @@ docker run -d \
   -e ADMIN_PASSWORD=your-password \
   -e JWT_SECRET=your-secret \
   --restart unless-stopped \
-  frodokerr/ddns-ui:latest
+  gmkseta/ddns-ui:latest
 ```
 
 ### 소스에서 직접 빌드
