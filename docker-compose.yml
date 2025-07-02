@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  ddns-ui:
+    build: .
+    container_name: cloudflare-ddns-ui
+    ports:
+      - "3000:3000"
+    environment:
+      # 관리자 계정 설정
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-changeme}
+      
+      # JWT 시크릿 키
+      - JWT_SECRET=${JWT_SECRET:-your-random-jwt-secret-key-change-this-in-production}
+      
+      # 데이터베이스 경로
+      - DATABASE_PATH=/app/data/db.sqlite3
+      
+      # DDNS 업데이트 주기 (분 단위)
+      - UPDATE_INTERVAL=${UPDATE_INTERVAL:-5}
+      
+      # 환경 설정
+      - NODE_ENV=production
+      
+    volumes:
+      # 데이터베이스 영구 저장
+      - ddns-data:/app/data
+      
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/ip"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  ddns-data:
+    driver: local 
