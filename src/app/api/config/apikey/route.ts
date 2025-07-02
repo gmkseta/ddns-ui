@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     const cloudflareAPI = new CloudflareAPI(token);
     try {
       await cloudflareAPI.getZones();
-    } catch (error) {
+    } catch {
       return NextResponse.json(
         { error: '유효하지 않은 API 토큰입니다.' },
         { status: 400 }

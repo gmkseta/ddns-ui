@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import LoginForm from '@/components/LoginForm';
 import Header from '@/components/Header';
@@ -8,7 +8,6 @@ import StatusCards from '@/components/StatusCards';
 import ExportImportModal from '@/components/ExportImportModal';
 import AddRecordModal from '@/components/AddRecordModal';
 import EditRecordModal from '@/components/EditRecordModal';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 // 유틸 함수들 import
 import { 
@@ -40,7 +39,6 @@ import {
 } from '@/utils/sort';
 import { 
   showSuccessToast, 
-  showErrorToast, 
   handleApiError 
 } from '@/utils/toast';
 import { formatErrorMessage } from '@/utils/format';
@@ -49,11 +47,7 @@ import { formatErrorMessage } from '@/utils/format';
 const DEFAULT_SORT: SortField = 'synced';
 const DEFAULT_DIRECTION: SortDirection = 'desc';
 
-// 로컬 스토리지 키들
-const STORAGE_KEYS = {
-  selectedApiKey: 'ddns-ui-selected-api-key',
-  selectedZone: 'ddns-ui-selected-zone',
-};
+// 로컬 스토리지 키들은 storage utils에서 관리됨
 
 export default function Home() {
   const t = useTranslations();
@@ -100,105 +94,34 @@ export default function Home() {
   const [zonesLoading, setZonesLoading] = useState(false);
   const [recordsLoading, setRecordsLoading] = useState(false);
 
-  // 현재 사용자 정보 확인
-  useEffect(() => {
-    checkAuthAndSetUser();
-  }, []);
-
-  // 로그인 후 API 키 로드 및 IP 조회
-  useEffect(() => {
-    if (user) {
-      loadApiKeys();
-      fetchCurrentIP(); // 자동으로 IP 조회
-    }
-  }, [user]);
-
-  // 인증 확인 함수
-  const checkAuthAndSetUser = async () => {
-    try {
-      const userData = await checkAuth();
-      setUser(userData);
-    } catch (error) {
-      console.error('Auth check failed:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 로그인 처리 함수
-  const handleLogin = async (username: string, password: string) => {
-    setLoginLoading(true);
-    setLoginError('');
-
-    try {
-      const userData = await login(username, password);
-      setUser(userData);
-    } catch (error) {
-      const errorMessage = formatErrorMessage(error);
-      setLoginError(errorMessage === t('auth.loginError') ? errorMessage : t('auth.loginErrorGeneric'));
-    } finally {
-      setLoginLoading(false);
-    }
-  };
-
-  // 로그아웃 처리 함수
-  const handleLogout = async () => {
-    try {
-      await logout();
-      setUser(null);
-      // 상태 초기화
-      setApiKeys([]);
-      setSelectedApiKeyState('');
-      setZones([]);
+  // Zone 선택과 레코드 로드를 함께 처리하는 함수
+  const selectZoneAndLoadRecords = useCallback(async (zoneId: string, apiKeyId?: string) => {
+    setSelectedZoneState(zoneId);
+    setRecords([]);
+    
+    // 로컬 스토리지에 저장
+    if (zoneId) {
+      setSelectedZone(zoneId);
+    } else {
       setSelectedZoneState('');
-      setRecords([]);
-      setCurrentIP(null);
-      setIpError('');
-    } catch (error) {
-      handleApiError(error, 'Logout error');
     }
-  };
+    
+    const keyToUse = apiKeyId || selectedApiKey;
+    if (!zoneId || !keyToUse) return;
 
-  // IP 확인 함수
-  const fetchCurrentIP = async () => {
-    setIpLoading(true);
-    setIpError('');
+    setRecordsLoading(true);
     try {
-      const ip = await getCurrentIP();
-      setCurrentIP(ip);
+      const recordList = await getRecords(zoneId, keyToUse);
+      setRecords(recordList);
     } catch (error) {
-      const errorMessage = formatErrorMessage(error);
-      setIpError(errorMessage);
+      handleApiError(error, '레코드 로드 오류');
     } finally {
-      setIpLoading(false);
+      setRecordsLoading(false);
     }
-  };
-
-  // API 키 목록 로드
-  const loadApiKeys = async () => {
-    try {
-      const apiKeyList = await getApiKeys();
-      setApiKeys(apiKeyList);
-      
-      // 자동 선택 로직
-      if (apiKeyList.length > 0) {
-        // 이전에 선택한 API 키가 있는지 확인
-        const savedApiKey = getSelectedApiKey();
-        const validSavedKey = savedApiKey && apiKeyList.find((key: APIKey) => key.id === savedApiKey);
-        
-        // 이전 선택이 유효하면 그것을 사용, 아니면 첫 번째 키 사용
-        const keyToSelect = validSavedKey ? savedApiKey : apiKeyList[0].id;
-        
-        // API 키 선택과 Zone 로드를 순차적으로 실행
-        await selectApiKeyAndLoadZones(keyToSelect);
-      }
-    } catch (error) {
-      handleApiError(error, 'API 키 로드 오류');
-    }
-  };
+  }, [selectedApiKey]);
 
   // API 키 선택과 Zone 로드를 함께 처리하는 함수
-  const selectApiKeyAndLoadZones = async (apiKeyId: string) => {
+  const selectApiKeyAndLoadZones = useCallback(async (apiKeyId: string) => {
     setSelectedApiKeyState(apiKeyId);
     setSelectedZoneState('');
     setRecords([]);
@@ -234,31 +157,102 @@ export default function Home() {
     } finally {
       setZonesLoading(false);
     }
+  }, [selectZoneAndLoadRecords]);
+
+  // API 키 목록 로드
+  const loadApiKeys = useCallback(async () => {
+    try {
+      const apiKeyList = await getApiKeys();
+      setApiKeys(apiKeyList);
+      
+      // 자동 선택 로직
+      if (apiKeyList.length > 0) {
+        // 이전에 선택한 API 키가 있는지 확인
+        const savedApiKey = getSelectedApiKey();
+        const validSavedKey = savedApiKey && apiKeyList.find((key: APIKey) => key.id === savedApiKey);
+        
+        // 이전 선택이 유효하면 그것을 사용, 아니면 첫 번째 키 사용
+        const keyToSelect = validSavedKey ? savedApiKey : apiKeyList[0].id;
+        
+        // API 키 선택과 Zone 로드를 순차적으로 실행
+        await selectApiKeyAndLoadZones(keyToSelect);
+      }
+    } catch (error) {
+      handleApiError(error, 'API 키 로드 오류');
+    }
+  }, [selectApiKeyAndLoadZones]);
+
+  // 인증 확인 함수
+  const checkAuthAndSetUser = async () => {
+    try {
+      const userData = await checkAuth();
+      setUser(userData);
+    } catch (error) {
+      console.error('Auth check failed:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Zone 선택과 레코드 로드를 함께 처리하는 함수
-  const selectZoneAndLoadRecords = async (zoneId: string, apiKeyId?: string) => {
-    setSelectedZoneState(zoneId);
-    setRecords([]);
-    
-    // 로컬 스토리지에 저장
-    if (zoneId) {
-      setSelectedZone(zoneId);
-    } else {
-      setSelectedZoneState('');
-    }
-    
-    const keyToUse = apiKeyId || selectedApiKey;
-    if (!zoneId || !keyToUse) return;
-
-    setRecordsLoading(true);
+  // IP 확인 함수
+  const fetchCurrentIP = useCallback(async () => {
+    setIpLoading(true);
+    setIpError('');
     try {
-      const recordList = await getRecords(zoneId, keyToUse);
-      setRecords(recordList);
+      const ip = await getCurrentIP();
+      setCurrentIP(ip);
     } catch (error) {
-      handleApiError(error, '레코드 로드 오류');
+      const errorMessage = formatErrorMessage(error);
+      setIpError(errorMessage);
     } finally {
-      setRecordsLoading(false);
+      setIpLoading(false);
+    }
+  }, []);
+
+  // 현재 사용자 정보 확인
+  useEffect(() => {
+    checkAuthAndSetUser();
+  }, []);
+
+  // 로그인 후 API 키 로드 및 IP 조회
+  useEffect(() => {
+    if (user) {
+      loadApiKeys();
+      fetchCurrentIP(); // 자동으로 IP 조회
+    }
+  }, [user, loadApiKeys, fetchCurrentIP]);
+
+  // 로그인 처리 함수
+  const handleLogin = async (username: string, password: string) => {
+    setLoginLoading(true);
+    setLoginError('');
+
+    try {
+      const userData = await login(username, password);
+      setUser(userData);
+    } catch (error) {
+      const errorMessage = formatErrorMessage(error);
+      setLoginError(errorMessage === t('auth.loginError') ? errorMessage : t('auth.loginErrorGeneric'));
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
+  // 로그아웃 처리 함수
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setUser(null);
+      // 상태 초기화
+      setApiKeys([]);
+      setSelectedApiKeyState('');
+      setZones([]);
+      setSelectedZoneState('');
+      setRecords([]);
+      setCurrentIP(null);
+      setIpError('');
+    } catch (error) {
+      handleApiError(error, 'Logout error');
     }
   };
 
@@ -325,7 +319,7 @@ export default function Home() {
       // API 응답 구조에 맞게 수정
       const updated = result.updated || [];
       const errors = result.errors || [];
-      const skipped = result.results?.filter((r: any) => r.status === 'skipped') || [];
+      const skipped = result.results?.filter((r) => r.status === 'skipped') || [];
       
       // 결과 상세 정보 생성
       let message = `DDNS 갱신 완료!\n\n`;
@@ -342,7 +336,7 @@ export default function Home() {
       // 성공한 업데이트 상세 정보
       if (updated.length > 0) {
         message += `\n업데이트된 레코드:\n`;
-        updated.forEach((record: any) => {
+        updated.forEach((record: { name: string; zoneName?: string; content: string; message?: string }) => {
           const zoneInfo = record.zoneName ? ` (${record.zoneName})` : '';
           message += `• ${record.name}${zoneInfo}: ${record.content}\n`;
           if (record.message && record.message.includes('변환')) {
@@ -354,7 +348,7 @@ export default function Home() {
       // 에러 상세 정보
       if (errors.length > 0) {
         message += `\n에러 발생 레코드:\n`;
-        errors.forEach((error: any) => {
+        errors.forEach((error: { name: string; zoneName?: string; message?: string; error?: string }) => {
           const zoneInfo = error.zoneName ? ` (${error.zoneName})` : '';
           message += `• ${error.name}${zoneInfo}: ${error.message || error.error}\n`;
         });

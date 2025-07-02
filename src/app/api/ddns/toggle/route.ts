@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth';
-import { dbRun, dbGet, dbAll } from '@/lib/database';
+import { dbRun, dbGet } from '@/lib/database';
 
 // DDNS 자동 업데이트 토글
 export async function PUT(request: NextRequest) {

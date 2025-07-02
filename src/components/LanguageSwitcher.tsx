@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
-import { useRouter, usePathname } from '@/i18n/routing';
+import { useRouter } from '@/i18n/routing';
 
 interface Language {
   code: string;
@@ -22,7 +22,7 @@ export default function LanguageSwitcher() {
   const [currentLocale, setCurrentLocale] = useState('ko');
   const locale = useLocale();
   const router = useRouter();
-  const pathname = usePathname();
+  // const pathname = usePathname(); // 사용되지 않으므로 주석처리
 
   useEffect(() => {
     setMounted(true);

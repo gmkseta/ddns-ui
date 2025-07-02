@@ -39,7 +39,7 @@ export async function verifyToken(token: string): Promise<AuthUser | null> {
       return { username: payload.username };
     }
     return null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

@@ -26,7 +26,7 @@ export async function GET() {
       version: '1.0',
       exportDate: new Date().toISOString(),
       data: {
-        apiKeys: apiKeys.map((key: any) => ({
+        apiKeys: apiKeys.map((key: { token: string; [key: string]: unknown }) => ({
           ...key,
           // 보안을 위해 토큰 마스킹
           token: key.token.slice(0, 8) + '*'.repeat(24) + key.token.slice(-8)

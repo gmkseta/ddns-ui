@@ -37,7 +37,7 @@ export default async function RootLayout({
   const { locale } = await params;
   
   // 지원하지 않는 로케일 체크
-  if (!locales.includes(locale as any)) {
+  if (!locales.includes(locale as 'ko' | 'en' | 'ja')) {
     notFound();
   }
 

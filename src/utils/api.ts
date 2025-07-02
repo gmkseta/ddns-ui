@@ -26,19 +26,9 @@ export interface DNSRecord {
 }
 
 /**
- * API 응답의 기본 타입
- */
-interface ApiResponse<T = any> {
-  success?: boolean;
-  error?: string;
-  data?: T;
-  [key: string]: any;
-}
-
-/**
  * 기본 fetch 래퍼 함수
  */
-export const apiRequest = async <T = any>(
+export const apiRequest = async <T = unknown>(
   url: string,
   options: RequestInit = {}
 ): Promise<T> => {
@@ -66,7 +56,7 @@ export const checkAuth = async (): Promise<User | null> => {
   try {
     const data = await apiRequest<{ user: User }>(API_ENDPOINTS.auth.me);
     return data.user;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
@@ -132,8 +122,8 @@ export const getRecords = async (zoneId: string, apiKeyId: string): Promise<DNSR
  */
 export const updateDDNS = async (apiKeyId: string): Promise<{
   updated: DNSRecord[];
-  errors: any[];
-  results?: any[];
+  errors: { name: string; message?: string; error?: string }[];
+  results?: { status: string; name: string; [key: string]: unknown }[];
   currentIP?: string;
   totalRecords?: number;
   totalUpdated?: number;
@@ -142,8 +132,8 @@ export const updateDDNS = async (apiKeyId: string): Promise<{
 }> => {
   const data = await apiRequest<{
     updated: DNSRecord[];
-    errors: any[];
-    results?: any[];
+    errors: { name: string; message?: string; error?: string }[];
+    results?: { status: string; name: string; [key: string]: unknown }[];
     currentIP?: string;
     totalRecords?: number;
     totalUpdated?: number;

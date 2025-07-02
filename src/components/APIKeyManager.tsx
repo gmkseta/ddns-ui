@@ -261,9 +261,9 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
                 </div>
               </div>
               <ol className="text-sm text-blue-800 space-y-2 list-decimal list-inside leading-relaxed">
-                <li>Cloudflare 대시보드에서 "My Profile" → "API Tokens" 이동</li>
-                <li>"Create Token" 클릭</li>
-                <li>"Custom token" 선택</li>
+                <li>Cloudflare 대시보드에서 &quot;My Profile&quot; → &quot;API Tokens&quot; 이동</li>
+                <li>&quot;Create Token&quot; 클릭</li>
+                <li>&quot;Custom token&quot; 선택</li>
                 <li>Zone:Read, DNS:Edit 권한 부여</li>
                 <li>생성된 Token을 위 입력란에 복사하여 입력</li>
               </ol>

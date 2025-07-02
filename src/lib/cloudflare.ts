@@ -43,7 +43,7 @@ export class CloudflareAPI {
       });
 
       if (!response.data.success) {
-        throw new Error(`Cloudflare API Error: ${response.data.errors.map((e: any) => e.message).join(', ')}`);
+        throw new Error(`Cloudflare API Error: ${response.data.errors.map((e: { message: string }) => e.message).join(', ')}`);
       }
 
       return response.data.result;
@@ -63,7 +63,7 @@ export class CloudflareAPI {
       });
 
       if (!response.data.success) {
-        throw new Error(`Cloudflare API Error: ${response.data.errors.map((e: any) => e.message).join(', ')}`);
+        throw new Error(`Cloudflare API Error: ${response.data.errors.map((e: { message: string }) => e.message).join(', ')}`);
       }
 
       return response.data.result;
@@ -97,7 +97,7 @@ export class CloudflareAPI {
       );
 
       if (!response.data.success) {
-        throw new Error(`Cloudflare API Error: ${response.data.errors.map((e: any) => e.message).join(', ')}`);
+        throw new Error(`Cloudflare API Error: ${response.data.errors.map((e: { message: string }) => e.message).join(', ')}`);
       }
 
       return response.data.result;
@@ -131,7 +131,7 @@ export class CloudflareAPI {
       );
 
       if (!response.data.success) {
-        throw new Error(`Cloudflare API Error: ${response.data.errors.map((e: any) => e.message).join(', ')}`);
+        throw new Error(`Cloudflare API Error: ${response.data.errors.map((e: { message: string }) => e.message).join(', ')}`);
       }
 
       return response.data.result;
@@ -154,7 +154,7 @@ export class CloudflareAPI {
       );
 
       if (!response.data.success) {
-        throw new Error(`Cloudflare API Error: ${response.data.errors.map((e: any) => e.message).join(', ')}`);
+        throw new Error(`Cloudflare API Error: ${response.data.errors.map((e: { message: string }) => e.message).join(', ')}`);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -172,7 +172,7 @@ export async function getCurrentIP(): Promise<string> {
       timeout: 5000,
     });
     return response.data.trim();
-  } catch (error) {
+  } catch {
     // 백업 서비스들
     const backupServices = [
       'https://api.ipify.org',
@@ -184,7 +184,7 @@ export async function getCurrentIP(): Promise<string> {
       try {
         const response = await axios.get(service, { timeout: 5000 });
         return response.data.trim();
-      } catch (err) {
+      } catch {
         continue;
       }
     }

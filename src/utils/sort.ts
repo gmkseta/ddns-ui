@@ -13,8 +13,8 @@ export const sortRecords = (
   currentIP?: string | null
 ): DNSRecord[] => {
   return [...records].sort((a, b) => {
-    let aValue: any;
-    let bValue: any;
+    let aValue: string | number;
+    let bValue: string | number;
 
     switch (sortBy) {
       case 'name':

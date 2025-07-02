@@ -43,7 +43,6 @@ class DDNSScheduler {
     console.log('Starting DDNS update check...');
 
     try {
-      const results = [];
       let totalUpdated = 0;
       let totalErrors = 0;
 

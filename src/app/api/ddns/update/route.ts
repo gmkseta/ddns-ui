@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth';
 import { CloudflareAPI, getCurrentIP } from '@/lib/cloudflare';
-import { dbRun, dbGet, dbAll } from '@/lib/database';
+import { dbRun, dbAll } from '@/lib/database';
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       JOIN api_keys ak ON z.api_key_id = ak.id
       WHERE dr.auto_update = 1 AND dr.type IN ('A', 'CNAME')
     `;
-    let params = [];
+    const params = [];
 
     if (apiKeyId) {
       query += ` AND ak.id = ?`;
