@@ -5,6 +5,8 @@ Cloudflare DNS API를 활용한 **DDNS 관리 웹 UI**입니다.
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node.js](https://img.shields.io/badge/node.js-18+-green.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)
+![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
+![Docker Hub](https://img.shields.io/docker/v/frodokerr/ddns-ui?label=docker%20hub)
 
 ## ✨ 주요 기능
 
@@ -19,7 +21,48 @@ Cloudflare DNS API를 활용한 **DDNS 관리 웹 UI**입니다.
 
 ## 🚀 빠른 시작
 
-### Docker Compose 사용 (권장)
+### 🐳 Docker Hub 이미지 사용 (가장 간편)
+
+1. **Docker 컨테이너 바로 실행**
+   ```bash
+   docker run -d \
+     --name ddns-ui \
+     -p 3000:3000 \
+     -v ddns-data:/app/data \
+     -e ADMIN_USERNAME=admin \
+     -e ADMIN_PASSWORD=your-secure-password \
+     -e JWT_SECRET=your-random-jwt-secret-key \
+     --restart unless-stopped \
+     frodokerr/ddns-ui:latest
+   ```
+
+2. **Docker Compose로 실행**
+   ```yaml
+   version: '3.8'
+   services:
+     ddns-ui:
+       image: frodokerr/ddns-ui:latest
+       container_name: ddns-ui
+       ports:
+         - "3000:3000"
+       environment:
+         - ADMIN_USERNAME=admin
+         - ADMIN_PASSWORD=your-secure-password
+         - JWT_SECRET=your-random-jwt-secret-key
+         - UPDATE_INTERVAL=5
+       volumes:
+         - ddns-data:/app/data
+       restart: unless-stopped
+
+   volumes:
+     ddns-data:
+   ```
+
+3. **웹 UI 접속**
+   - http://localhost:3000 접속
+   - 설정한 관리자 계정으로 로그인
+
+### Docker Compose 사용 (소스 빌드)
 
 1. **환경변수 설정**
    ```bash
@@ -140,21 +183,52 @@ ddns-ui/
 
 ## 🐳 Docker 배포
 
-### 직접 빌드
+### Docker Hub에서 사용
 
 ```bash
-# 이미지 빌드
-docker build -t cloudflare-ddns-ui .
+# 최신 이미지 가져오기
+docker pull frodokerr/ddns-ui:latest
 
 # 컨테이너 실행
 docker run -d \
-  --name cloudflare-ddns-ui \
+  --name ddns-ui \
   -p 3000:3000 \
   -v ddns-data:/app/data \
   -e ADMIN_USERNAME=admin \
   -e ADMIN_PASSWORD=your-password \
   -e JWT_SECRET=your-secret \
-  cloudflare-ddns-ui
+  --restart unless-stopped \
+  frodokerr/ddns-ui:latest
+```
+
+### 소스에서 직접 빌드
+
+```bash
+# 이미지 빌드
+docker build -t ddns-ui .
+
+# 컨테이너 실행
+docker run -d \
+  --name ddns-ui \
+  -p 3000:3000 \
+  -v ddns-data:/app/data \
+  -e ADMIN_USERNAME=admin \
+  -e ADMIN_PASSWORD=your-password \
+  -e JWT_SECRET=your-secret \
+  --restart unless-stopped \
+  ddns-ui
+```
+
+### 개발자용: Docker Hub에 푸시
+
+```bash
+# 이미지 빌드 및 태그
+docker build -t ddns-ui .
+docker tag ddns-ui yourusername/ddns-ui:latest
+
+# Docker Hub 로그인 및 푸시
+docker login
+docker push yourusername/ddns-ui:latest
 ```
 
 ## 📝 API 문서

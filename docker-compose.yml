@@ -24,8 +24,10 @@ services:
       - NODE_ENV=production
       
     volumes:
-      # 데이터베이스 영구 저장
+      # SQLite 데이터베이스 영구 저장
       - ddns-data:/app/data
+      # 또는 로컬 디렉토리 마운트 (선택사항)
+      # - ./data:/app/data
       
     restart: unless-stopped
     

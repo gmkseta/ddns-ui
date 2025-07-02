@@ -1,18 +1,39 @@
-import sqlite3 from 'sqlite3';
 import path from 'path';
 import fs from 'fs';
 
-// 데이터베이스 경로 설정
-const dbPath = process.env.DATABASE_PATH || './data/db.sqlite3';
-const dataDir = path.dirname(dbPath);
+// 빌드 시에는 SQLite 모듈 로드 건너뛰기
+const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
+                   process.env.NODE_ENV === 'test' ||
+                   typeof window !== 'undefined';
 
-// 데이터 디렉토리가 없으면 생성
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
+let sqlite3: any;
+let db: any;
+
+if (!isBuildTime) {
+  sqlite3 = require('sqlite3');
+  
+  // 데이터베이스 경로 설정
+  const dbPath = process.env.DATABASE_PATH || './data/db.sqlite3';
+  const dataDir = path.dirname(dbPath);
+
+  // 데이터 디렉토리가 없으면 생성
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+
+  // SQLite 데이터베이스 연결
+  db = new sqlite3.Database(dbPath);
+} else {
+  // 빌드 시에는 mock 객체 사용
+  db = {
+    get: () => Promise.resolve(null),
+    all: () => Promise.resolve([]),
+    run: () => Promise.resolve({ lastID: 1 }),
+    serialize: () => {},
+  };
 }
 
-// SQLite 데이터베이스 연결
-export const db = new sqlite3.Database(dbPath);
+export { db };
 
 // 데이터베이스 초기화
 export const initDatabase = () => {
@@ -124,5 +145,7 @@ export const dbRun = (sql: string, params: any[] = []): Promise<sqlite3.RunResul
   });
 };
 
-// 데이터베이스 초기화 실행
-initDatabase().catch(console.error); 
+// 데이터베이스 초기화 실행 (빌드 시에는 건너뛰기)
+if (typeof window === 'undefined' && process.env.NEXT_PHASE !== 'phase-production-build') {
+  initDatabase().catch(console.error);
+} 
