@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 interface LoginFormProps {
@@ -10,6 +11,7 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
+  const t = useTranslations();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -30,10 +32,10 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
             <span className="text-white font-bold text-2xl">D</span>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            DDNS Manager
+            {t('navbar.title')}
           </h1>
           <p className="text-gray-600">
-            관리자 계정으로 로그인하세요
+            {t('auth.welcome')}
           </p>
         </div>
 
@@ -49,7 +51,7 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
             {/* 사용자명 입력 */}
             <div>
               <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-3">
-                사용자명
+                {t('auth.username')}
               </label>
               <input
                 id="username"
@@ -61,14 +63,14 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={loading}
                 className="w-full px-4 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 disabled:opacity-50 transition-all text-base"
-                placeholder="사용자명을 입력하세요"
+                placeholder={t('auth.username')}
               />
             </div>
 
             {/* 비밀번호 입력 */}
             <div>
               <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-3">
-                비밀번호
+                {t('auth.password')}
               </label>
               <div className="relative">
                 <input
@@ -81,7 +83,7 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
                   className="w-full px-4 py-4 pr-12 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 disabled:opacity-50 transition-all text-base"
-                  placeholder="비밀번호를 입력하세요"
+                  placeholder={t('auth.password')}
                 />
                 <button
                   type="button"
@@ -106,10 +108,10 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
               {loading ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
-                  로그인 중...
+                  {t('common.loading')}
                 </div>
               ) : (
-                '로그인'
+                t('auth.login')
               )}
             </button>
           </form>

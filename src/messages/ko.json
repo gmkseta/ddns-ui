@@ -1,0 +1,163 @@
+{
+  "common": {
+    "loading": "로딩중...",
+    "error": "오류",
+    "success": "성공",
+    "cancel": "취소",
+    "save": "저장",
+    "delete": "삭제",
+    "edit": "편집",
+    "add": "추가",
+    "close": "닫기",
+    "confirm": "확인",
+    "retry": "다시 시도",
+    "refresh": "새로고침",
+    "search": "검색",
+    "filter": "필터",
+    "sort": "정렬",
+    "export": "내보내기",
+    "import": "가져오기",
+    "copy": "복사",
+    "copied": "복사됨"
+  },
+  "auth": {
+    "login": "로그인",
+    "logout": "로그아웃",
+    "username": "사용자명",
+    "password": "비밀번호",
+    "loginError": "로그인에 실패했습니다.",
+    "loginErrorGeneric": "로그인 중 오류가 발생했습니다.",
+    "showPassword": "비밀번호 보기",
+    "hidePassword": "비밀번호 숨기기",
+    "welcome": "환영합니다!"
+  },
+  "dashboard": {
+    "title": "Cloudflare DDNS 관리",
+    "subtitle": "동적 DNS를 쉽게 관리하세요",
+    "currentIP": "현재 공인 IP",
+    "checkIP": "IP 조회",
+    "apiKeyStatus": "API 키 상태",
+    "autoUpdateStatus": "자동 갱신 상태",
+    "dnsRecordsManagement": "DNS 레코드 관리",
+    "manageRecords": "레코드 관리",
+    "realtimeUpdates": "실시간 갱신 설정",
+    "backupRestore": "백업 및 복원",
+    "exportImport": "내보내기/가져오기",
+    "secureBackup": "안전한 백업 관리",
+    "ddnsInstantUpdate": "DDNS 즉시 갱신",
+    "updateNow": "지금 갱신",
+    "manualUpdate": "수동 갱신 실행"
+  },
+  "apiKey": {
+    "title": "API 키 관리",
+    "add": "API 키 추가",
+    "token": "토큰",
+    "name": "이름",
+    "createdAt": "생성일",
+    "actions": "작업",
+    "noKeys": "등록된 API 키가 없습니다.",
+    "addFirst": "첫 번째 API 키를 추가해보세요.",
+    "tokenPlaceholder": "Cloudflare API 토큰을 입력하세요",
+    "namePlaceholder": "API 키 이름 (선택사항)",
+    "addSuccess": "API 키가 성공적으로 추가되었습니다.",
+    "deleteSuccess": "API 키가 삭제되었습니다.",
+    "deleteConfirm": "이 API 키를 삭제하시겠습니까?",
+    "validationError": "API 키 토큰이 필요합니다.",
+    "status": {
+      "connected": "연결됨",
+      "notConfigured": "미설정",
+      "error": "오류"
+    }
+  },
+  "zone": {
+    "title": "Zone 관리",
+    "select": "Zone 선택",
+    "noZones": "사용 가능한 Zone이 없습니다.",
+    "selectApiFirst": "먼저 API 키를 선택하세요.",
+    "loadError": "Zone 목록을 불러오는데 실패했습니다."
+  },
+  "dns": {
+    "title": "DNS 레코드",
+    "addRecord": "레코드 추가",
+    "name": "이름",
+    "type": "타입",
+    "content": "내용",
+    "ttl": "TTL",
+    "status": "상태",
+    "actions": "작업",
+    "autoUpdate": "자동 갱신",
+    "active": "활성",
+    "inactive": "비활성",
+    "ddnsActive": "DDNS 활성",
+    "ddnsInactive": "DDNS 비활성",
+    "proxied": "프록시됨",
+    "notProxied": "프록시 안됨",
+    "noRecords": "DNS 레코드가 없습니다.",
+    "selectZoneFirst": "먼저 Zone을 선택하세요.",
+    "sortBy": "정렬 기준",
+    "ascending": "오름차순",
+    "descending": "내림차순",
+    "addSuccess": "DNS 레코드가 추가되었습니다.",
+    "updateSuccess": "DNS 레코드가 업데이트되었습니다.", 
+    "deleteSuccess": "DNS 레코드가 삭제되었습니다.",
+    "deleteConfirm": "이 DNS 레코드를 삭제하시겠습니까?",
+    "autoUpdateEnabled": "자동 갱신이 활성화되었습니다.",
+    "autoUpdateDisabled": "자동 갱신이 비활성화되었습니다."
+  },
+  "modal": {
+    "addRecord": {
+      "title": "DNS 레코드 추가",
+      "namePlaceholder": "레코드 이름을 입력하세요",
+      "contentPlaceholder": "레코드 내용을 입력하세요",
+      "nameRequired": "이름이 필요합니다.",
+      "contentRequired": "내용이 필요합니다.",
+      "ttlRequired": "TTL이 필요합니다."
+    },
+    "exportImport": {
+      "title": "데이터 내보내기/가져오기",
+      "export": "내보내기",
+      "import": "가져오기",
+      "exportDescription": "현재 설정을 JSON 파일로 내보냅니다.",
+      "importDescription": "JSON 파일에서 설정을 가져옵니다.",
+      "exportButton": "설정 내보내기",
+      "importButton": "설정 가져오기",
+      "importSuccess": "설정을 성공적으로 가져왔습니다.",
+      "importError": "설정 가져오기에 실패했습니다.",
+      "invalidFile": "올바르지 않은 파일 형식입니다."
+    }
+  },
+  "ip": {
+    "current": "현재 IP",
+    "checking": "IP 확인 중...",
+    "checkError": "IP 조회에 실패했습니다.",
+    "retryCheck": "다시 조회"
+  },
+  "ddns": {
+    "status": "DDNS 상태",
+    "lastUpdate": "마지막 갱신",
+    "nextUpdate": "다음 갱신",
+    "autoUpdateRecords": "자동 갱신 레코드",
+    "manualUpdate": "수동 갱신",
+    "updating": "갱신 중...",
+    "updateSuccess": "DDNS 갱신이 완료되었습니다.",
+    "updateError": "DDNS 갱신에 실패했습니다.",
+    "noAutoUpdateRecords": "자동 갱신이 활성화된 레코드가 없습니다.",
+    "updateSummary": "갱신 완료: {updated}개, 오류: {errors}개, 현재 IP: {currentIP}",
+    "conversionNote": "DDNS 갱신 시 CNAME 레코드는 A 레코드로 자동 변환됩니다.",
+    "enableAutoUpdate": "DDNS 자동 갱신을 활성화하세요"
+  },
+  "toast": {
+    "copySuccess": "클립보드에 복사되었습니다.",
+    "copyError": "복사에 실패했습니다."
+  },
+  "validation": {
+    "required": "필수 입력 항목입니다.",
+    "invalidFormat": "올바르지 않은 형식입니다.",
+    "tooShort": "너무 짧습니다.",
+    "tooLong": "너무 깁니다."
+  },
+  "navbar": {
+    "title": "DDNS UI",
+    "subtitle": "Dynamic DNS Management"
+  }
+} 

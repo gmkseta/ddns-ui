@@ -1,0 +1,163 @@
+{
+  "common": {
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "add": "追加",
+    "close": "閉じる",
+    "confirm": "確認",
+    "retry": "再試行",
+    "refresh": "更新",
+    "search": "検索",
+    "filter": "フィルター",
+    "sort": "並び替え",
+    "export": "エクスポート",
+    "import": "インポート",
+    "copy": "コピー",
+    "copied": "コピーしました"
+  },
+  "auth": {
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "loginError": "ログインに失敗しました。",
+    "loginErrorGeneric": "ログイン中にエラーが発生しました。",
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを非表示",
+    "welcome": "ようこそ！"
+  },
+  "dashboard": {
+    "title": "Cloudflare DDNS管理",
+    "subtitle": "動的DNSを簡単に管理",
+    "currentIP": "現在のパブリックIP",
+    "checkIP": "IP確認",
+    "apiKeyStatus": "APIキーの状態",
+    "autoUpdateStatus": "自動更新の状態",
+    "dnsRecordsManagement": "DNSレコード管理",
+    "manageRecords": "レコード管理",
+    "realtimeUpdates": "リアルタイム更新設定",
+    "backupRestore": "バックアップと復元",
+    "exportImport": "エクスポート/インポート",
+    "secureBackup": "安全なバックアップ管理",
+    "ddnsInstantUpdate": "DDNS即座更新",
+    "updateNow": "今すぐ更新",
+    "manualUpdate": "手動更新の実行"
+  },
+  "apiKey": {
+    "title": "APIキー管理",
+    "add": "APIキー追加",
+    "token": "トークン",
+    "name": "名前",
+    "createdAt": "作成日",
+    "actions": "操作",
+    "noKeys": "登録されたAPIキーがありません。",
+    "addFirst": "最初のAPIキーを追加してください。",
+    "tokenPlaceholder": "Cloudflare APIトークンを入力してください",
+    "namePlaceholder": "APIキー名（オプション）",
+    "addSuccess": "APIキーが正常に追加されました。",
+    "deleteSuccess": "APIキーが削除されました。",
+    "deleteConfirm": "このAPIキーを削除しますか？",
+    "validationError": "APIキートークンが必要です。",
+    "status": {
+      "connected": "接続済み",
+      "notConfigured": "未設定",
+      "error": "エラー"
+    }
+  },
+  "zone": {
+    "title": "ゾーン管理",
+    "select": "ゾーン選択",
+    "noZones": "利用可能なゾーンがありません。",
+    "selectApiFirst": "最初にAPIキーを選択してください。",
+    "loadError": "ゾーンリストの読み込みに失敗しました。"
+  },
+  "dns": {
+    "title": "DNSレコード",
+    "addRecord": "レコード追加",
+    "name": "名前",
+    "type": "タイプ",
+    "content": "内容",
+    "ttl": "TTL",
+    "status": "状態",
+    "actions": "操作",
+    "autoUpdate": "自動更新",
+    "active": "アクティブ",
+    "inactive": "非アクティブ",
+    "ddnsActive": "DDNS有効",
+    "ddnsInactive": "DDNS無効",
+    "proxied": "プロキシ有効",
+    "notProxied": "プロキシ無効",
+    "noRecords": "DNSレコードが見つかりません。",
+    "selectZoneFirst": "最初にゾーンを選択してください。",
+    "sortBy": "並び替え基準",
+    "ascending": "昇順",
+    "descending": "降順",
+    "addSuccess": "DNSレコードが追加されました。",
+    "updateSuccess": "DNSレコードが更新されました。",
+    "deleteSuccess": "DNSレコードが削除されました。",
+    "deleteConfirm": "このDNSレコードを削除しますか？",
+    "autoUpdateEnabled": "自動更新が有効になりました。",
+    "autoUpdateDisabled": "自動更新が無効になりました。"
+  },
+  "modal": {
+    "addRecord": {
+      "title": "DNSレコード追加",
+      "namePlaceholder": "レコード名を入力してください",
+      "contentPlaceholder": "レコード内容を入力してください",
+      "nameRequired": "名前は必須です。",
+      "contentRequired": "内容は必須です。",
+      "ttlRequired": "TTLは必須です。"
+    },
+    "exportImport": {
+      "title": "データエクスポート/インポート",
+      "export": "エクスポート",
+      "import": "インポート",
+      "exportDescription": "現在の設定をJSONファイルにエクスポートします。",
+      "importDescription": "JSONファイルから設定をインポートします。",
+      "exportButton": "設定をエクスポート",
+      "importButton": "設定をインポート",
+      "importSuccess": "設定を正常にインポートしました。",
+      "importError": "設定のインポートに失敗しました。",
+      "invalidFile": "無効なファイル形式です。"
+    }
+  },
+  "ip": {
+    "current": "現在のIP",
+    "checking": "IP確認中...",
+    "checkError": "IP確認に失敗しました。",
+    "retryCheck": "再確認"
+  },
+  "ddns": {
+    "status": "DDNS状態",
+    "lastUpdate": "最終更新",
+    "nextUpdate": "次回更新",
+    "autoUpdateRecords": "自動更新レコード",
+    "manualUpdate": "手動更新",
+    "updating": "更新中...",
+    "updateSuccess": "DDNS更新が完了しました。",
+    "updateError": "DDNS更新に失敗しました。",
+    "noAutoUpdateRecords": "自動更新が有効なレコードがありません。",
+    "updateSummary": "更新完了: {updated}件更新、{errors}件エラー、現在のIP: {currentIP}",
+    "conversionNote": "DDNS更新時、CNAMEレコードは自動的にAレコードに変換されます。",
+    "enableAutoUpdate": "DDNS自動更新を有効にしてください"
+  },
+  "toast": {
+    "copySuccess": "クリップボードにコピーしました。",
+    "copyError": "コピーに失敗しました。"
+  },
+  "validation": {
+    "required": "この項目は必須です。",
+    "invalidFormat": "無効な形式です。",
+    "tooShort": "短すぎます。",
+    "tooLong": "長すぎます。"
+  },
+  "navbar": {
+    "title": "DDNS UI",
+    "subtitle": "Dynamic DNS Management"
+  }
+} 

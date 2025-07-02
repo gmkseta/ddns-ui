@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import LoginForm from '@/components/LoginForm';
 import ExportImportModal from '@/components/ExportImportModal';
 import AddRecordModal from '@/components/AddRecordModal';
@@ -38,6 +39,7 @@ const STORAGE_KEYS = {
 };
 
 export default function Home() {
+  const t = useTranslations();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [loginLoading, setLoginLoading] = useState(false);
@@ -120,11 +122,11 @@ export default function Home() {
       if (response.ok) {
         setUser(data.user);
       } else {
-        setLoginError(data.error || '로그인에 실패했습니다.');
+        setLoginError(data.error || t('auth.loginError'));
       }
     } catch (error) {
       console.error('Login error:', error);
-      setLoginError('로그인 중 오류가 발생했습니다.');
+      setLoginError(t('auth.loginErrorGeneric'));
     } finally {
       setLoginLoading(false);
     }

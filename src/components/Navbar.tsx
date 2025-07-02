@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import IPChecker from './IPChecker';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface NavbarProps {
   user?: {
@@ -11,6 +13,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ user, onLogout }: NavbarProps) {
+  const t = useTranslations();
   const [showIPChecker, setShowIPChecker] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
 
@@ -61,11 +64,11 @@ export default function Navbar({ user, onLogout }: NavbarProps) {
           window.location.reload();
         } else {
           const data = await response.json();
-          alert(`설정 가져오기에 실패했습니다: ${data.error}`);
+          alert(`${t('modal.exportImport.importError')}: ${data.error}`);
         }
       } catch (error) {
         console.error('Import error:', error);
-        alert('설정 파일을 읽는데 실패했습니다.');
+        alert(t('modal.exportImport.invalidFile'));
       }
     };
     input.click();
@@ -83,23 +86,27 @@ export default function Navbar({ user, onLogout }: NavbarProps) {
                   <span className="text-white font-bold text-sm">D</span>
                 </div>
                 <h1 className="text-xl font-bold text-gray-900">
-                  DDNS Manager
+                  {t('navbar.title')}
                 </h1>
               </div>
             </div>
 
-            {user && (
-              <div className="flex items-center space-x-4">
-                {/* IP 확인 버튼 */}
-                <button
-                  onClick={() => setShowIPChecker(true)}
-                  className="flex items-center space-x-2 px-4 py-2 bg-orange-50 text-orange-600 rounded-xl hover:bg-orange-100 transition-colors font-medium"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
-                  </svg>
-                  <span>IP 확인</span>
-                </button>
+            <div className="flex items-center space-x-4">
+              {/* 언어 선택기 */}
+              <LanguageSwitcher />
+
+              {user && (
+                <>
+                  {/* IP 확인 버튼 */}
+                  <button
+                    onClick={() => setShowIPChecker(true)}
+                    className="flex items-center space-x-2 px-4 py-2 bg-orange-50 text-orange-600 rounded-xl hover:bg-orange-100 transition-colors font-medium"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
+                    </svg>
+                    <span>{t('dashboard.checkIP')}</span>
+                  </button>
 
                 {/* Export/Import 드롭다운 */}
                 <div className="relative">
@@ -110,7 +117,7 @@ export default function Navbar({ user, onLogout }: NavbarProps) {
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    <span>백업</span>
+                    <span>{t('dashboard.backupRestore')}</span>
                     <svg className={`w-4 h-4 transition-transform ${showExportMenu ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
@@ -125,7 +132,7 @@ export default function Navbar({ user, onLogout }: NavbarProps) {
                         <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        <span className="text-gray-700 font-medium">설정 내보내기</span>
+                        <span className="text-gray-700 font-medium">{t('modal.exportImport.exportButton')}</span>
                       </button>
                       <button
                         onClick={handleImport}
@@ -134,24 +141,25 @@ export default function Navbar({ user, onLogout }: NavbarProps) {
                         <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
                         </svg>
-                        <span className="text-gray-700 font-medium">설정 가져오기</span>
+                        <span className="text-gray-700 font-medium">{t('modal.exportImport.importButton')}</span>
                       </button>
                     </div>
                   )}
                 </div>
 
-                {/* 사용자 정보 및 로그아웃 */}
-                <div className="flex items-center space-x-3">
-                  <span className="text-gray-600 font-medium">{user.username}</span>
-                  <button
-                    onClick={onLogout}
-                    className="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors font-medium"
-                  >
-                    로그아웃
-                  </button>
-                </div>
-              </div>
-            )}
+                  {/* 사용자 정보 및 로그아웃 */}
+                  <div className="flex items-center space-x-3">
+                    <span className="text-gray-600 font-medium">{user.username}</span>
+                    <button
+                      onClick={onLogout}
+                      className="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors font-medium"
+                    >
+                      {t('auth.logout')}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </header>

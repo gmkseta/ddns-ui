@@ -1,0 +1,163 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "close": "Close",
+    "confirm": "Confirm",
+    "retry": "Retry",
+    "refresh": "Refresh",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "export": "Export",
+    "import": "Import",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "loginError": "Login failed.",
+    "loginErrorGeneric": "An error occurred during login.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "welcome": "Welcome!"
+  },
+  "dashboard": {
+    "title": "Cloudflare DDNS Management",
+    "subtitle": "Manage your dynamic DNS easily",
+    "currentIP": "Current Public IP",
+    "checkIP": "Check IP",
+    "apiKeyStatus": "API Key Status",
+    "autoUpdateStatus": "Auto Update Status",
+    "dnsRecordsManagement": "DNS Records Management",
+    "manageRecords": "Manage Records",
+    "realtimeUpdates": "Real-time Update Settings",
+    "backupRestore": "Backup & Restore",
+    "exportImport": "Export/Import",
+    "secureBackup": "Secure Backup Management",
+    "ddnsInstantUpdate": "DDNS Instant Update",
+    "updateNow": "Update Now",
+    "manualUpdate": "Execute Manual Update"
+  },
+  "apiKey": {
+    "title": "API Key Management",
+    "add": "Add API Key",
+    "token": "Token",
+    "name": "Name",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "noKeys": "No API keys registered.",
+    "addFirst": "Add your first API key.",
+    "tokenPlaceholder": "Enter your Cloudflare API token",
+    "namePlaceholder": "API key name (optional)",
+    "addSuccess": "API key has been successfully added.",
+    "deleteSuccess": "API key has been deleted.",
+    "deleteConfirm": "Are you sure you want to delete this API key?",
+    "validationError": "API key token is required.",
+    "status": {
+      "connected": "Connected",
+      "notConfigured": "Not Configured",
+      "error": "Error"
+    }
+  },
+  "zone": {
+    "title": "Zone Management",
+    "select": "Select Zone",
+    "noZones": "No zones available.",
+    "selectApiFirst": "Please select an API key first.",
+    "loadError": "Failed to load zone list."
+  },
+  "dns": {
+    "title": "DNS Records",
+    "addRecord": "Add Record",
+    "name": "Name",
+    "type": "Type",
+    "content": "Content",
+    "ttl": "TTL",
+    "status": "Status",
+    "actions": "Actions",
+    "autoUpdate": "Auto Update",
+    "active": "Active",
+    "inactive": "Inactive",
+    "ddnsActive": "DDNS Active",
+    "ddnsInactive": "DDNS Inactive",
+    "proxied": "Proxied",
+    "notProxied": "Not Proxied",
+    "noRecords": "No DNS records found.",
+    "selectZoneFirst": "Please select a zone first.",
+    "sortBy": "Sort by",
+    "ascending": "Ascending",
+    "descending": "Descending",
+    "addSuccess": "DNS record has been added.",
+    "updateSuccess": "DNS record has been updated.",
+    "deleteSuccess": "DNS record has been deleted.",
+    "deleteConfirm": "Are you sure you want to delete this DNS record?",
+    "autoUpdateEnabled": "Auto update has been enabled.",
+    "autoUpdateDisabled": "Auto update has been disabled."
+  },
+  "modal": {
+    "addRecord": {
+      "title": "Add DNS Record",
+      "namePlaceholder": "Enter record name",
+      "contentPlaceholder": "Enter record content",
+      "nameRequired": "Name is required.",
+      "contentRequired": "Content is required.",
+      "ttlRequired": "TTL is required."
+    },
+    "exportImport": {
+      "title": "Export/Import Data",
+      "export": "Export",
+      "import": "Import",
+      "exportDescription": "Export current settings to a JSON file.",
+      "importDescription": "Import settings from a JSON file.",
+      "exportButton": "Export Settings",
+      "importButton": "Import Settings",
+      "importSuccess": "Settings imported successfully.",
+      "importError": "Failed to import settings.",
+      "invalidFile": "Invalid file format."
+    }
+  },
+  "ip": {
+    "current": "Current IP",
+    "checking": "Checking IP...",
+    "checkError": "Failed to check IP.",
+    "retryCheck": "Check Again"
+  },
+  "ddns": {
+    "status": "DDNS Status",
+    "lastUpdate": "Last Update",
+    "nextUpdate": "Next Update",
+    "autoUpdateRecords": "Auto Update Records",
+    "manualUpdate": "Manual Update",
+    "updating": "Updating...",
+    "updateSuccess": "DDNS update completed.",
+    "updateError": "DDNS update failed.",
+    "noAutoUpdateRecords": "No records with auto update enabled.",
+    "updateSummary": "Update completed: {updated} updated, {errors} errors, Current IP: {currentIP}",
+    "conversionNote": "CNAME records will be automatically converted to A records during DDNS updates.",
+    "enableAutoUpdate": "Enable DDNS auto update"
+  },
+  "toast": {
+    "copySuccess": "Copied to clipboard.",
+    "copyError": "Failed to copy."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "invalidFormat": "Invalid format.",
+    "tooShort": "Too short.",
+    "tooLong": "Too long."
+  },
+  "navbar": {
+    "title": "DDNS UI",
+    "subtitle": "Dynamic DNS Management"
+  }
+} 
