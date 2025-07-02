@@ -1,0 +1,207 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  release:
+    types: [ published ]
+
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: gmkseta/ddns-ui
+
+jobs:
+  build-and-push:
+    name: 🚀 Build & Push to Docker Hub
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: write
+      
+    steps:
+    - name: ⬇️ Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🔍 Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=raw,value=latest,enable={{is_default_branch}}
+        flavor: |
+          latest=auto
+          
+    - name: 🐳 Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: 🔑 Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        
+    - name: 🏗️ Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        
+    - name: 📝 Generate release notes
+      if: github.event_name == 'release'
+      id: release_notes
+      run: |
+        echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
+        echo "## 🚀 새 버전 릴리스: ${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "### 📦 Docker 이미지" >> $GITHUB_OUTPUT
+        echo '```bash' >> $GITHUB_OUTPUT
+        echo "docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+        echo '```' >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "### 🔗 빠른 실행" >> $GITHUB_OUTPUT
+        echo '```bash' >> $GITHUB_OUTPUT
+        echo "docker run -d \\" >> $GITHUB_OUTPUT
+        echo "  --name ddns-ui \\" >> $GITHUB_OUTPUT
+        echo "  -p 3000:3000 \\" >> $GITHUB_OUTPUT
+        echo "  -v ddns-data:/app/data \\" >> $GITHUB_OUTPUT
+        echo "  -e ADMIN_USERNAME=admin \\" >> $GITHUB_OUTPUT
+        echo "  -e ADMIN_PASSWORD=your-password \\" >> $GITHUB_OUTPUT
+        echo "  -e JWT_SECRET=your-jwt-secret \\" >> $GITHUB_OUTPUT
+        echo "  --restart unless-stopped \\" >> $GITHUB_OUTPUT
+        echo "  ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+        echo '```' >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "### 📋 주요 변경사항" >> $GITHUB_OUTPUT
+        echo "${{ github.event.release.body }}" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+  security-scan:
+    name: 🔒 Security Scan Docker Image
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 🔍 Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        
+    - name: 📤 Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  notify-success:
+    name: 📢 Notify Success
+    runs-on: ubuntu-latest
+    needs: [build-and-push, security-scan]
+    if: success()
+    
+    steps:
+    - name: 🎉 Create success issue comment
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const sha = context.sha.substring(0, 7);
+          const imageTag = context.ref === 'refs/heads/main' ? 'latest' : context.ref.replace('refs/tags/', '');
+          
+          // Create a new issue for deployment notification
+          const { data: issue } = await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `🚀 배포 완료: ${imageTag} (${sha})`,
+            body: `## 🎉 Docker Hub 배포가 성공적으로 완료되었습니다!
+            
+            ### 📦 배포 정보
+            - **이미지**: \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${imageTag}\`
+            - **커밋**: \`${sha}\`
+            - **브랜치**: \`${context.ref.replace('refs/heads/', '')}\`
+            - **배포 시간**: \`${new Date().toISOString()}\`
+            
+            ### 🐳 사용 방법
+            \`\`\`bash
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${imageTag}
+            \`\`\`
+            
+            ### 🌍 다국어 지원
+            - 🇰🇷 한국어 (기본): \`http://localhost:3000/ko\`
+            - 🇺🇸 영어: \`http://localhost:3000/en\`
+            - 🇯🇵 일본어: \`http://localhost:3000/ja\`
+            
+            ### 🔗 링크
+            - [Docker Hub](https://hub.docker.com/r/${{ env.IMAGE_NAME }})
+            - [커밋 상세](https://github.com/${{ github.repository }}/commit/${context.sha})
+            
+            ---
+            🤖 *자동 배포 시스템에 의해 생성됨*`,
+            labels: ['deployment', 'docker', 'success']
+          });
+          
+          // Auto-close the issue after 1 day (for cleanup)
+          setTimeout(async () => {
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              state: 'closed'
+            });
+          }, 24 * 60 * 60 * 1000);
+
+  notify-failure:
+    name: 📢 Notify Failure
+    runs-on: ubuntu-latest
+    needs: [build-and-push]
+    if: failure()
+    
+    steps:
+    - name: ❌ Create failure issue
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const sha = context.sha.substring(0, 7);
+          
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `❌ 배포 실패: ${context.ref.replace('refs/heads/', '')} (${sha})`,
+            body: `## ❌ Docker Hub 배포가 실패했습니다!
+            
+            ### 🔍 실패 정보
+            - **커밋**: \`${sha}\`
+            - **브랜치**: \`${context.ref.replace('refs/heads/', '')}\`
+            - **실패 시간**: \`${new Date().toISOString()}\`
+            - **워크플로우**: [확인하기](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            ### 🛠️ 해결 방법
+            1. [GitHub Actions 로그](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) 확인
+            2. Docker Hub 자격 증명 확인
+            3. 빌드 에러 수정 후 다시 푸시
+            
+            ### 🔧 디버깅 팁
+            - ESLint 오류: \`yarn lint --fix\`
+            - 타입 에러: \`yarn type-check\`
+            - 빌드 에러: \`yarn build\`
+            - Docker 빌드: \`docker build -t test .\`
+            
+            ---
+            🤖 *자동 배포 시스템에 의해 생성됨*`,
+            labels: ['deployment', 'docker', 'failure', 'bug']
+          }); 

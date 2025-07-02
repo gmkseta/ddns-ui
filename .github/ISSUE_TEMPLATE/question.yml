@@ -1,0 +1,147 @@
+name: ❓ Question/Support
+description: 질문이나 도움이 필요하세요?
+title: "❓ [Question]: "
+labels: ["❓ question", "📖 support"]
+assignees:
+  - gmkseta
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # ❓ 질문/지움 요청
+        
+        질문해주셔서 감사합니다! 최대한 빠르고 정확하게 도움을 드리겠습니다.
+        
+        💡 **팁**: [문서](https://github.com/gmkseta/ddns-ui/blob/main/README.md)와 [가이드](https://github.com/gmkseta/ddns-ui/blob/main/GUIDE.md)를 먼저 확인해보세요!
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: 📋 질문 유형
+      description: 어떤 종류의 질문인가요?
+      options:
+        - 🚀 설치/배포 문제
+        - 🔧 설정/구성 문제  
+        - 🌐 DNS 설정 관련
+        - 🔑 API 키/인증 문제
+        - 🌍 다국어 관련
+        - 🐳 Docker 사용 문제
+        - 💡 사용법 문의
+        - 🔒 보안 관련
+        - 🤔 기타 질문
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: ❓ 질문 내용
+      description: 무엇이 궁금하신가요?
+      placeholder: |
+        궁금한 점을 자세히 설명해주세요.
+        예: "Docker에서 실행했는데 웹 페이지가 열리지 않습니다."
+        "Cloudflare API 키를 등록했는데 Zone을 불러올 수 없습니다."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 🎯 상황 설명
+      description: 현재 어떤 상황인지 설명해주세요.
+      placeholder: |
+        예: "처음 설치하려고 하는데..."
+        "지금까지 정상적으로 사용했는데 갑자기..."
+        "새로운 기능을 시도해보려고 하는데..."
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: 🌍 환경
+      description: 어떤 환경에서 사용하고 계신가요?
+      options:
+        - Docker (권장)
+        - Local Development
+        - Production Build
+        - 기타
+
+  - type: input
+    id: version
+    attributes:
+      label: 📦 버전
+      description: 사용 중인 버전을 알려주세요
+      placeholder: "예: latest, v1.0.0, main 브랜치 등"
+
+  - type: textarea
+    id: attempted
+    attributes:
+      label: 🔍 시도해본 것들
+      description: 이미 시도해본 해결방법이 있나요?
+      placeholder: |
+        예: "README 문서를 읽어봤습니다"
+        "Docker 컨테이너를 재시작해봤습니다"
+        "다른 포트로 시도해봤습니다"
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📋 로그/오류 메시지
+      description: 관련 로그나 오류 메시지가 있다면 첨부해주세요.
+      placeholder: |
+        Docker 로그: docker logs ddns-ui
+        브라우저 콘솔: F12 → Console 탭  
+        서버 로그: yarn dev 실행 시 터미널 출력
+      render: shell
+
+  - type: textarea
+    id: config
+    attributes:
+      label: ⚙️ 설정 정보
+      description: 관련 설정 내용을 공유해주세요 (민감한 정보는 제외)
+      placeholder: |
+        docker-compose.yml 내용 (비밀번호/키 제외)
+        환경변수 설정 (값은 *** 처리)
+        브라우저 설정 등
+      render: yaml
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 스크린샷
+      description: 화면 스크린샷이 있으면 도움이 됩니다.
+      placeholder: 이미지를 드래그 앤 드롭하거나 붙여넣기 해주세요.
+
+  - type: checkboxes
+    id: urgency
+    attributes:
+      label: ⏰ 긴급도
+      description: 얼마나 급한 문제인가요?
+      options:
+        - label: 🔥 긴급 (서비스 중단)
+        - label: 📈 빠른 답변 필요
+        - label: 📊 보통 (편할 때 답변)
+        - label: 💭 단순 궁금증
+
+  - type: checkboxes
+    id: docs
+    attributes:
+      label: ✅ 확인사항  
+      description: 다음 사항들을 확인해주세요.
+      options:
+        - label: README 문서를 읽어봤습니다
+          required: true
+        - label: 유사한 질문이 이미 있는지 확인했습니다
+          required: true
+        - label: 문제를 재현할 수 있는 상황입니다
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 추가 정보
+      description: 기타 도움이 될 만한 정보가 있나요?
+      placeholder: |
+        - 특이한 네트워크 환경
+        - 회사/학교 방화벽
+        - 프록시 서버 사용
+        - 기타 특수한 상황 

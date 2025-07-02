@@ -13,6 +13,7 @@
 - 🔄 **스마트 DDNS**: CNAME → A 레코드 자동 변환 지원
 - 💾 **브라우저 기록**: 이전 선택사항 자동 복원
 - ⚡️ **실시간 UI**: 즉시 갱신, 실시간 상태 표시
+- 🌍 **다국어 지원**: 한국어, 영어, 일본어 UI (자동 감지 + 수동 선택)
 
 ## 🚀 주요 기능
 
@@ -44,12 +45,21 @@
 - **레코드 추가**: A, AAAA, CNAME, MX, TXT, SRV 레코드 지원
 - **JSON Import/Export**: 설정 백업 및 복원
 
+### 6. 다국어 지원 시스템
+- **3개 언어**: 한국어(기본), 영어, 일본어
+- **자동 감지**: 브라우저 언어 설정 기반 자동 선택
+- **URL 라우팅**: `/ko`, `/en`, `/ja` 경로로 언어별 접근
+- **실시간 전환**: 언어 선택기로 즉시 전환 (새로고침 없음)
+- **상태 유지**: 선택한 언어를 브라우저에 기억
+- **완전 번역**: 모든 UI 텍스트, 에러 메시지, 플레이스홀더
+
 ## 🛠 기술 스택
 
-- **Frontend**: Next.js 14 (App Router), TailwindCSS, TypeScript
+- **Frontend**: Next.js 15 (App Router), TailwindCSS, TypeScript
 - **Backend**: Next.js API Routes, SQLite
 - **State Management**: TanStack Query
 - **Authentication**: JWT (jose)
+- **Internationalization**: Next-intl (ko/en/ja)
 - **API**: Cloudflare DNS API v4
 - **Deployment**: Docker + Docker Compose
 
@@ -180,9 +190,11 @@ CREATE TABLE update_logs (
 
 ### 1. 초기 설정
 1. Docker 컨테이너 실행
-2. 웹 UI 접속 후 로그인
-3. Cloudflare API 키 등록
-4. Zone 자동 선택 (또는 수동 선택)
+2. 웹 UI 접속 (`http://localhost:3000`)
+3. **언어 선택**: 상단 네비게이션에서 🇰🇷/🇺🇸/🇯🇵 클릭 (또는 브라우저 자동 감지)
+4. 관리자 계정으로 로그인
+5. Cloudflare API 키 등록
+6. Zone 자동 선택 (또는 수동 선택)
 
 ### 2. DDNS 레코드 설정
 1. 기존 CNAME 레코드의 DDNS 토글 활성화

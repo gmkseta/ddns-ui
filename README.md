@@ -83,6 +83,7 @@ A self-hosted **Dynamic DNS management web interface** built with Cloudflare DNS
 - 🔄 **Smart Auto-Updates**: Automatic IP change detection and updates
 - 📊 **Monitoring**: Update logs and real-time status
 - 📤 **Backup/Restore**: JSON export/import for configurations
+- 🌍 **Multilingual Support**: Korean, English, Japanese interface
 - 🐳 **Docker Ready**: One-click deployment with Docker
 
 ## 🚀 Quick Start
@@ -155,11 +156,21 @@ yarn dev
 ### 2. Configure the Application
 
 1. Access the web interface at `http://localhost:3000`
-2. Login with your admin credentials
-3. Go to "API Key Settings" → Add your Cloudflare token
-4. Select your domain zone
-5. Add/manage DNS records
-6. Enable "Auto Update" for DDNS functionality
+2. **Choose your language**: Click the language selector (🇰🇷/🇺🇸/🇯🇵) in the top navigation
+3. Login with your admin credentials
+4. Go to "API Key Settings" → Add your Cloudflare token
+5. Select your domain zone
+6. Add/manage DNS records
+7. Enable "Auto Update" for DDNS functionality
+
+### 🌍 Language Support
+
+The interface supports three languages with automatic browser detection:
+- **Korean (한국어)**: Default language - `http://localhost:3000/ko`
+- **English**: International users - `http://localhost:3000/en`  
+- **Japanese (日本語)**: Japanese market - `http://localhost:3000/ja`
+
+The system automatically redirects to your preferred language based on browser settings, or you can manually select using the language switcher in the navigation bar.
 
 ### 3. Enjoy Automatic DDNS
 
@@ -205,8 +216,10 @@ This project was developed using **AI-assisted programming** with **Cursor AI** 
 - **Authentication**: JWT (jose)
 - **HTTP Client**: Axios
 - **State Management**: TanStack Query
+- **Internationalization**: Next-intl (Korean, English, Japanese)
 - **Icons**: Heroicons
 - **Deployment**: Docker, Docker Compose
+- **CI/CD**: GitHub Actions (automated testing & deployment)
 
 ## 📚 API Documentation
 
@@ -235,6 +248,74 @@ This project was developed using **AI-assisted programming** with **Cursor AI** 
 - HTTPS recommended for production
 - Regular password rotation advised
 - Network isolation for self-hosted deployments
+
+## 🚀 Development & Contributing
+
+### 🛠️ Local Development
+
+```bash
+# Clone repository
+git clone https://github.com/gmkseta/ddns-ui
+cd ddns-ui
+
+# Install dependencies
+yarn install
+
+# Set up environment
+cp .env.example .env.local
+# Edit .env.local with your settings
+
+# Start development server
+yarn dev
+```
+
+### 🤝 Contributing
+
+We welcome contributions! Here's how our automated workflow works:
+
+#### 📋 Pull Request Process
+1. **Fork & Branch**: Create a feature branch from `main`
+2. **Code**: Implement your changes following our style guide
+3. **Commit**: Use conventional commit messages (feat:, fix:, docs:, etc.)
+4. **Push**: Push your branch and create a Pull Request
+
+#### 🤖 Automated Checks
+Every PR automatically runs:
+- 🔍 **ESLint**: Code style and quality checks
+- 🏷️ **TypeScript**: Type safety validation  
+- 🏗️ **Build Test**: Ensure production builds work
+- 🐳 **Docker Build**: Container image validation
+- 🔒 **Security Scan**: Dependency vulnerability checks
+- 📋 **Dependency Review**: License and security analysis
+
+#### 🚀 Automated Deployment
+When merged to `main`:
+- 🐳 **Docker Hub**: Automatic multi-arch image build (AMD64/ARM64)
+- 📦 **Versioning**: Semantic version tagging  
+- 🔒 **Security**: Container vulnerability scanning
+- 📢 **Notifications**: Deployment status updates
+
+#### 🏷️ Auto-Labeling
+PRs are automatically labeled based on changed files:
+- 🌍 **i18n**: Translation/localization changes
+- 🎨 **frontend**: UI/component changes  
+- ⚡ **backend**: API/server changes
+- 🐳 **docker**: Container/deployment changes
+- 📚 **documentation**: README/docs updates
+
+### 💡 Development Tips
+
+```bash
+# Code quality checks
+yarn lint          # Run ESLint
+yarn lint --fix    # Auto-fix issues
+yarn type-check    # TypeScript validation
+yarn build         # Production build test
+
+# Docker development
+docker build -t ddns-ui-dev .
+docker run -p 3000:3000 ddns-ui-dev
+```
 
 ## 🌟 Why Self-Host Your DDNS?
 

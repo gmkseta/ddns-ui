@@ -1,0 +1,141 @@
+name: 🐛 Bug Report
+description: 버그나 문제를 신고해주세요
+title: "🐛 [Bug]: "
+labels: ["🐛 bugfix", "needs-triage"]
+assignees:
+  - gmkseta
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 🐛 버그 리포트
+        
+        버그를 신고해주셔서 감사합니다! 문제를 빠르게 해결할 수 있도록 상세한 정보를 제공해주세요.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 🔍 문제 설명
+      description: 어떤 문제가 발생했나요?
+      placeholder: 문제에 대한 명확하고 간결한 설명을 작성해주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 📝 재현 단계
+      description: 문제를 재현하는 방법을 단계별로 설명해주세요.
+      placeholder: |
+        1. '...' 페이지로 이동
+        2. '...' 버튼 클릭
+        3. '...' 입력
+        4. 오류 발생
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: ✅ 예상된 동작
+      description: 어떤 동작을 예상했나요?
+      placeholder: 예상했던 정상적인 동작을 설명해주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: ❌ 실제 동작
+      description: 실제로 어떤 일이 발생했나요?
+      placeholder: 실제로 발생한 동작을 설명해주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 스크린샷/비디오
+      description: 문제를 보여주는 스크린샷이나 비디오가 있다면 첨부해주세요.
+      placeholder: 이미지를 드래그 앤 드롭하거나 붙여넣기 해주세요.
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: 🌍 환경
+      description: 어떤 환경에서 문제가 발생했나요?
+      options:
+        - Docker (권장)
+        - Local Development
+        - Production Build
+        - 기타
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 📦 버전
+      description: 사용 중인 버전을 알려주세요
+      placeholder: "예: latest, v1.0.0, main 브랜치 등"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: 🌐 브라우저
+      description: 어떤 브라우저에서 문제가 발생했나요?
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - 기타
+    validations:
+      required: true
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: 🌍 언어
+      description: 어떤 언어에서 문제가 발생했나요?
+      options:
+        - 한국어 (ko)
+        - English (en)
+        - 日本語 (ja)
+        - 모든 언어
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📋 로그
+      description: 관련 로그나 오류 메시지가 있다면 첨부해주세요.
+      placeholder: |
+        Docker 로그: docker logs ddns-ui
+        브라우저 콘솔: F12 → Console 탭
+        서버 로그: yarn dev 실행 시 터미널 출력
+      render: shell
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 추가 정보
+      description: 문제 해결에 도움이 될 수 있는 다른 정보가 있나요?
+      placeholder: 추가로 알려주고 싶은 정보를 자유롭게 작성해주세요.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✅ 확인사항
+      description: 다음 사항들을 확인해주세요.
+      options:
+        - label: 중복된 이슈가 없는지 확인했습니다
+          required: true
+        - label: 최신 버전을 사용하고 있습니다
+          required: true
+        - label: 문서(README)를 읽어봤습니다
+          required: true 

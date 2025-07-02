@@ -1,0 +1,64 @@
+version: 2
+updates:
+  # NPM 의존성 업데이트
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Seoul"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "gmkseta"
+    assignees:
+      - "gmkseta"
+    commit-message:
+      prefix: "⬆️"
+      include: "scope"
+    labels:
+      - "📦 dependencies"
+      - "🤖 dependabot"
+    rebase-strategy: "auto"
+    
+  # Docker 의존성 업데이트  
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "10:00"
+      timezone: "Asia/Seoul"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "gmkseta"
+    assignees:
+      - "gmkseta"
+    commit-message:
+      prefix: "🐳"
+      include: "scope"
+    labels:
+      - "🐳 docker"
+      - "📦 dependencies"
+      - "🤖 dependabot"
+    
+  # GitHub Actions 업데이트
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "11:00"
+      timezone: "Asia/Seoul"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "gmkseta"
+    assignees:
+      - "gmkseta"
+    commit-message:
+      prefix: "🤖"
+      include: "scope"
+    labels:
+      - "🤖 ci/cd"
+      - "📦 dependencies"
+      - "🤖 dependabot" 

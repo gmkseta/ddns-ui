@@ -1,0 +1,103 @@
+# PR 자동 라벨링 규칙
+
+# 🌍 다국어/국제화 관련
+'🌍 i18n':
+  - src/messages/**/*
+  - src/i18n/**/*
+  - '**/locale/**/*'
+  - middleware.ts
+
+# 🎨 UI/프론트엔드 변경
+'🎨 frontend':
+  - src/components/**/*
+  - src/app/**/*.tsx
+  - '**/*.css'
+  - 'tailwind.config.*'
+  - 'postcss.config.*'
+
+# ⚡ API/백엔드 변경  
+'⚡ backend':
+  - src/app/api/**/*
+  - src/lib/**/*
+  - '**/*.ts'
+  - '!src/components/**/*'
+  - '!src/app/**/page.tsx'
+  - '!src/app/**/layout.tsx'
+
+# 🐳 Docker/배포 관련
+'🐳 docker':
+  - Dockerfile
+  - docker-compose.yml
+  - '.dockerignore'
+
+# 🔧 설정 파일 변경
+'🔧 config':
+  - package.json
+  - yarn.lock
+  - tsconfig.json
+  - next.config.*
+  - eslint.config.*
+  - '.env*'
+
+# 📚 문서 변경
+'📚 documentation':
+  - '**/*.md'
+  - 'docs/**/*'
+
+# 🧪 테스트 관련
+'🧪 testing':
+  - '**/*.test.*'
+  - '**/*.spec.*'
+  - '__tests__/**/*'
+  - 'cypress/**/*'
+
+# 🤖 GitHub Actions/CI 변경
+'🤖 ci/cd':
+  - '.github/**/*'
+
+# 🔒 보안 관련
+'🔒 security':
+  - 'src/lib/auth.ts'
+  - 'src/app/api/auth/**/*'
+  - '**/*security*'
+  - '**/*auth*'
+
+# 📊 데이터베이스 관련
+'📊 database':
+  - 'src/lib/database.ts'
+  - '**/*db*'
+  - '**/*database*'
+  - '**/*.sql'
+
+# 🎯 기능 추가
+'🎯 feature':
+  - any: ['src/components/**/*', 'src/app/**/*']
+
+# 🐛 버그 수정 (PR 제목으로 감지)
+'🐛 bugfix':
+  - head-branch: ['^fix/', '^bugfix/', '^hotfix/']
+
+# 📦 의존성 변경  
+'📦 dependencies':
+  - package.json
+  - yarn.lock
+  - package-lock.json
+
+# 🔄 리팩터링
+'🔄 refactor':
+  - head-branch: ['^refactor/']
+
+# ✨ 개선사항
+'✨ enhancement':
+  - head-branch: ['^feat/', '^feature/', '^enhance/']
+
+# 🏷️ 타입 정의 변경
+'🏷️ types':
+  - '**/*.d.ts'
+  - 'types/**/*'
+
+# 🎨 스타일링 변경
+'🎨 styling':
+  - '**/*.css'
+  - '**/*.scss'
+  - '**/*.sass' 

@@ -1,0 +1,144 @@
+name: ✨ Feature Request
+description: 새로운 기능이나 개선사항을 제안해주세요
+title: "✨ [Feature]: "
+labels: ["✨ enhancement", "needs-discussion"]
+assignees:
+  - gmkseta
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # ✨ 기능 요청
+        
+        새로운 기능을 제안해주셔서 감사합니다! 여러분의 아이디어는 프로젝트를 더욱 발전시키는 데 큰 도움이 됩니다.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 🤔 해결하고 싶은 문제
+      description: 현재 어떤 불편함이나 한계가 있나요?
+      placeholder: |
+        예: "DNS 레코드를 대량으로 관리할 때 하나씩 추가해야 해서 번거롭습니다."
+        "현재 Cloudflare만 지원하는데 다른 DNS 프로바이더도 사용하고 싶습니다."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 💡 제안하는 해결책
+      description: 어떤 기능이나 개선사항을 원하시나요?
+      placeholder: |
+        예: "CSV 파일로 DNS 레코드를 일괄 가져오기/내보내기 기능"
+        "AWS Route 53, DigitalOcean DNS 등 다른 프로바이더 지원"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 📂 카테고리
+      description: 어떤 분야의 기능 요청인가요?
+      options:
+        - 🌍 다국어/번역 개선
+        - 🔧 DNS 관리 기능
+        - 🎨 UI/UX 개선
+        - 🔒 보안 강화
+        - 📊 모니터링/로깅
+        - 🚀 성능 최적화
+        - 🔌 API/통합
+        - 🐳 배포/운영
+        - 📱 모바일 지원
+        - 🌐 새로운 DNS 프로바이더
+        - 기타
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: ⭐ 우선순위
+      description: 이 기능이 얼마나 중요하다고 생각하시나요?
+      options:
+        - 🔥 매우 높음 (핵심 기능)
+        - 📈 높음 (많이 사용할 것 같음)
+        - 📊 보통 (있으면 좋음)
+        - 📋 낮음 (나중에 고려)
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 대안책
+      description: 현재 어떤 방법으로 이 문제를 해결하고 계신가요?
+      placeholder: |
+        예: "지금은 수동으로 하나씩 추가하고 있습니다."
+        "다른 도구를 함께 사용하고 있습니다."
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: 🎯 사용 예시
+      description: 이 기능이 구현되면 어떻게 사용될까요?
+      placeholder: |
+        예시 시나리오나 워크플로우를 작성해주세요:
+        1. 사용자가 "일괄 가져오기" 버튼 클릭
+        2. CSV 파일 선택
+        3. 미리보기 화면에서 확인
+        4. "가져오기" 실행으로 레코드 생성
+
+  - type: textarea
+    id: mockup
+    attributes:
+      label: 🎨 UI 아이디어/모키업
+      description: UI가 어떻게 생겼으면 좋겠는지 설명하거나 이미지를 첨부해주세요.
+      placeholder: |
+        - 버튼 위치, 메뉴 구조 등의 아이디어
+        - 참고하고 싶은 다른 서비스의 UI
+        - 손그림이나 모키업 이미지
+
+  - type: textarea
+    id: technical
+    attributes:
+      label: 🔧 기술적 고려사항
+      description: 개발자라면, 기술적인 구현 아이디어가 있나요?
+      placeholder: |
+        예: "react-dropzone을 사용해서 파일 드래그 앤 드롭"
+        "백엔드에서 CSV parsing 라이브러리 필요"
+        "API 키별로 다른 프로바이더 SDK 필요"
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 🤝 기여 의사
+      description: 이 기능 개발에 참여하고 싶으신가요?
+      options:
+        - label: 코드 작성에 참여하고 싶습니다
+        - label: 테스트에 참여하고 싶습니다
+        - label: 문서 작성에 참여하고 싶습니다
+        - label: 아이디어 제공만 하고 싶습니다
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 추가 정보
+      description: 기타 전달하고 싶은 내용이 있나요?
+      placeholder: |
+        - 관련 링크나 참고 자료
+        - 비슷한 기능을 제공하는 다른 도구
+        - 추가적인 설명이나 배경 정보
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✅ 확인사항
+      description: 다음 사항들을 확인해주세요.
+      options:
+        - label: 유사한 기능 요청이 없는지 확인했습니다
+          required: true
+        - label: 프로젝트의 목적과 방향에 맞는 기능이라고 생각합니다
+          required: true
+        - label: 충분히 구체적으로 설명했습니다
+          required: true 
