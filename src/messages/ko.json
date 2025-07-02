@@ -32,21 +32,21 @@
     "welcome": "환영합니다!"
   },
   "dashboard": {
-    "title": "Cloudflare DDNS 관리",
-    "subtitle": "동적 DNS를 쉽게 관리하세요",
-    "currentIP": "현재 공인 IP",
-    "checkIP": "IP 조회",
-    "apiKeyStatus": "API 키 상태",
-    "autoUpdateStatus": "자동 갱신 상태",
-    "dnsRecordsManagement": "DNS 레코드 관리",
-    "manageRecords": "레코드 관리",
-    "realtimeUpdates": "실시간 갱신 설정",
-    "backupRestore": "백업 및 복원",
-    "exportImport": "내보내기/가져오기",
-    "secureBackup": "안전한 백업 관리",
-    "ddnsInstantUpdate": "DDNS 즉시 갱신",
-    "updateNow": "지금 갱신",
-    "manualUpdate": "수동 갱신 실행"
+    "title": "대시보드",
+    "welcome": "{name}님",
+    "currentIP": "현재 IP",
+    "currentIPDesc": "공인 IP 주소 확인",
+    "check": "조회",
+    "checking": "조회중...",
+    "checkingIP": "IP 확인 중...",
+    "currentPublicIP": "현재 공인 IP",
+    "clickToCheck": "조회 버튼을 눌러주세요",
+    "apiKeys": "API 키",
+    "apiKeysCount": "{count}개 등록됨",
+    "autoUpdate": "자동 갱신",
+    "autoUpdateCount": "{count}개 활성",
+    "checkIP": "IP 확인",
+    "backupRestore": "백업/복원"
   },
   "apiKey": {
     "title": "API 키 관리",
@@ -78,6 +78,7 @@
   },
   "dns": {
     "title": "DNS 레코드",
+    "management": "DNS 레코드 관리",
     "addRecord": "레코드 추가",
     "name": "이름",
     "type": "타입",
@@ -92,8 +93,18 @@
     "ddnsInactive": "DDNS 비활성",
     "proxied": "프록시됨",
     "notProxied": "프록시 안됨",
-    "noRecords": "DNS 레코드가 없습니다.",
+    "noRecords": "등록된 DNS 레코드가 없습니다",
     "selectZoneFirst": "먼저 Zone을 선택하세요.",
+    "selectZonePrompt": "Zone을 선택하여 DNS 레코드를 확인하세요",
+    "loadingRecords": "레코드 로딩 중...",
+    "recordsCount": "DNS 레코드 ({count}개)",
+    "apiKeySelect": "API 키 선택",
+    "zoneSelect": "Zone 선택",
+    "selectApiKey": "API 키를 선택하세요",
+    "selectZone": "Zone을 선택하세요",
+    "loadingZones": "Zone 목록 로딩 중...",
+    "autoUpdateFeature": "🔄 DDNS 자동 갱신 기능",
+    "autoUpdateDescription": "• DDNS 토글을 켜면 해당 레코드가 자동으로 현재 공인 IP로 갱신됩니다<br />• CNAME 레코드는 자동으로 A 레코드로 변환되어 IP 주소로 설정됩니다<br />• Proxied CNAME은 변환 시 자동으로 Proxy가 비활성화됩니다 (Cloudflare 제약)<br />• 5분마다 IP 변경을 확인하며, 변경된 경우에만 업데이트를 수행합니다<br />• 수동으로 즉시 갱신하려면 아래의 \"DDNS 즉시 갱신\" 버튼을 사용하세요",
     "sortBy": "정렬 기준",
     "ascending": "오름차순",
     "descending": "내림차순",
@@ -157,7 +168,14 @@
     "tooLong": "너무 깁니다."
   },
   "navbar": {
-    "title": "DDNS UI",
-    "subtitle": "Dynamic DNS Management"
+    "title": "Cloudflare DDNS Manager"
+  },
+  "theme": {
+    "switchToDark": "다크모드로 전환",
+    "switchToLight": "라이트모드로 전환"
+  },
+  "metadata": {
+    "title": "DDNS UI - Cloudflare 동적 DNS 관리",
+    "description": "Cloudflare를 이용한 동적 DNS 서비스 관리 도구"
   }
 } 

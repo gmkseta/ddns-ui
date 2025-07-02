@@ -26,92 +26,96 @@ export const metadata: Metadata = {
 
 interface Props {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }
 
 export default async function RootLayout({
   children,
-  params: { locale }
+  params
 }: Props) {
+  // Next.js 15에서 params는 Promise입니다
+  const { locale } = await params;
+  
   // 지원하지 않는 로케일 체크
   if (!locales.includes(locale as any)) {
     notFound();
   }
 
   // 메시지 로드
-  const messages = await getMessages();
-      return (
-      <html lang={locale}>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          suppressHydrationWarning={true}
-        >
+  const messages = await getMessages({ locale });
+  
+  return (
+    <html lang={locale}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning={true}
+      >
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider>
             <QueryProvider>
               {children}
-            <Toaster 
-              position="top-center"
-              gutter={12}
-              containerStyle={{
-                top: '20px',
-              }}
-              toastOptions={{
-                duration: 4000,
-                className: '',
-                style: {
-                  background: 'rgba(255, 255, 255, 0.95)',
-                  color: '#1f2937',
-                  border: 'none',
-                  borderRadius: '16px',
-                  padding: '16px 20px',
-                  boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-                  backdropFilter: 'blur(10px)',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  maxWidth: '420px',
-                  minHeight: '60px',
-                  display: 'flex',
-                  alignItems: 'center',
-                },
-                success: {
+              <Toaster 
+                position="top-center"
+                gutter={12}
+                containerStyle={{
+                  top: '20px',
+                }}
+                toastOptions={{
+                  duration: 4000,
+                  className: '',
                   style: {
-                    background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%)',
-                    color: '#065f46',
-                    border: '1px solid rgba(16, 185, 129, 0.2)',
-                    boxShadow: '0 20px 25px -5px rgba(16, 185, 129, 0.1), 0 10px 10px -5px rgba(16, 185, 129, 0.04)',
+                    background: 'rgba(255, 255, 255, 0.95)',
+                    color: '#1f2937',
+                    border: 'none',
+                    borderRadius: '16px',
+                    padding: '16px 20px',
+                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                    backdropFilter: 'blur(10px)',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    maxWidth: '420px',
+                    minHeight: '60px',
+                    display: 'flex',
+                    alignItems: 'center',
                   },
-                  iconTheme: {
-                    primary: '#10b981',
-                    secondary: 'rgba(16, 185, 129, 0.1)',
+                  success: {
+                    style: {
+                      background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%)',
+                      color: '#065f46',
+                      border: '1px solid rgba(16, 185, 129, 0.2)',
+                      boxShadow: '0 20px 25px -5px rgba(16, 185, 129, 0.1), 0 10px 10px -5px rgba(16, 185, 129, 0.04)',
+                    },
+                    iconTheme: {
+                      primary: '#10b981',
+                      secondary: 'rgba(16, 185, 129, 0.1)',
+                    },
                   },
-                },
-                error: {
-                  style: {
-                    background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%)',
-                    color: '#7f1d1d',
-                    border: '1px solid rgba(239, 68, 68, 0.2)',
-                    boxShadow: '0 20px 25px -5px rgba(239, 68, 68, 0.1), 0 10px 10px -5px rgba(239, 68, 68, 0.04)',
+                  error: {
+                    style: {
+                      background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%)',
+                      color: '#7f1d1d',
+                      border: '1px solid rgba(239, 68, 68, 0.2)',
+                      boxShadow: '0 20px 25px -5px rgba(239, 68, 68, 0.1), 0 10px 10px -5px rgba(239, 68, 68, 0.04)',
+                    },
+                    iconTheme: {
+                      primary: '#ef4444',
+                      secondary: 'rgba(239, 68, 68, 0.1)',
+                    },
                   },
-                  iconTheme: {
-                    primary: '#ef4444',
-                    secondary: 'rgba(239, 68, 68, 0.1)',
+                  loading: {
+                    style: {
+                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%)',
+                      color: '#1e3a8a',
+                      border: '1px solid rgba(59, 130, 246, 0.2)',
+                      boxShadow: '0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 10px 10px -5px rgba(59, 130, 246, 0.04)',
+                    },
+                    iconTheme: {
+                      primary: '#3b82f6',
+                      secondary: 'rgba(59, 130, 246, 0.1)',
+                    },
                   },
-                },
-                loading: {
-                  style: {
-                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%)',
-                    color: '#1e3a8a',
-                    border: '1px solid rgba(59, 130, 246, 0.2)',
-                    boxShadow: '0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 10px 10px -5px rgba(59, 130, 246, 0.04)',
-                  },
-                  iconTheme: {
-                    primary: '#3b82f6',
-                    secondary: 'rgba(59, 130, 246, 0.1)',
-                  },
-                },
-              }}
-            />
+                }}
+              />
             </QueryProvider>
           </ThemeProvider>
         </NextIntlClientProvider>

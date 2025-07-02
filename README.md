@@ -84,6 +84,7 @@ A self-hosted **Dynamic DNS management web interface** built with Cloudflare DNS
 - 📊 **Monitoring**: Update logs and real-time status
 - 📤 **Backup/Restore**: JSON export/import for configurations
 - 🌍 **Multilingual Support**: Korean, English, Japanese interface
+- 🌙 **Dark Mode**: Light/dark theme toggle support
 - 🐳 **Docker Ready**: One-click deployment with Docker
 
 ## 🚀 Quick Start

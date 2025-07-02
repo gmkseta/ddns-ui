@@ -14,6 +14,7 @@
 - 💾 **브라우저 기록**: 이전 선택사항 자동 복원
 - ⚡️ **실시간 UI**: 즉시 갱신, 실시간 상태 표시
 - 🌍 **다국어 지원**: 한국어, 영어, 일본어 UI (자동 감지 + 수동 선택)
+- 🌙 **다크모드**: 라이트/다크 테마 토글 지원
 
 ## 🚀 주요 기능
 
@@ -26,6 +27,7 @@
 - **API 키 상태**: 등록된 키 개수 및 관리
 - **자동 갱신 상태**: 활성 DDNS 레코드 수 표시
 - **Zone 정보**: 선택된 Zone과 레코드 개수
+- **테마 토글**: 헤더에 라이트/다크모드 전환 버튼
 
 ### 3. DNS 레코드 관리
 - **자동 선택**: API 키와 Zone 첫 번째 항목 자동 선택
@@ -62,6 +64,38 @@
 - **Internationalization**: Next-intl (ko/en/ja)
 - **API**: Cloudflare DNS API v4
 - **Deployment**: Docker + Docker Compose
+
+## 🏗️ 아키텍처 개선사항
+
+### 최근 리팩토링 (2024.11)
+
+#### 🔧 Next.js 15 + next-intl 호환성 개선
+- **무한 리디렉션 문제 해결**: Next.js 15에서 `params`가 Promise로 변경됨에 따른 대응
+- **middleware.ts 업데이트**: 새로운 next-intl routing API 적용
+- **layout.tsx 최적화**: `params` 비동기 처리 및 locale 정확한 전달
+
+#### 🧩 컴포넌트 모듈화
+- **Header.tsx**: 상단 헤더, 언어 스위처, 다크모드 토글, 로그아웃 기능 분리
+- **StatusCards.tsx**: IP 확인, API 키 상태, 자동갱신 상태 카드들 분리
+- **기존 거대 컴포넌트 제거**: Navbar, DashboardLayout, IPChecker 등 불필요한 컴포넌트 정리
+
+#### 🛠️ 유틸리티 함수 분리
+- **`utils/constants.ts`**: API 엔드포인트, 스토리지 키 상수 관리
+- **`utils/storage.ts`**: 로컬스토리지 관련 함수들
+- **`utils/api.ts`**: API 호출 함수들 (checkAuth, login, logout, getCurrentIP 등)
+- **`utils/sort.ts`**: DNS 레코드 정렬 관련 함수들
+- **`utils/format.ts`**: 데이터 포맷팅 함수들 (TTL, 에러 메시지, 바이트 등)
+- **`utils/toast.ts`**: 토스트 메시지 관련 함수들
+
+#### 🌙 다크모드 시스템
+- **ThemeProvider 개선**: hydration mismatch 방지를 위한 마운트 상태 관리
+- **LanguageSwitcher 스타일**: 다크모드 대응 스타일 추가
+- **태양/달 아이콘**: 직관적인 테마 토글 버튼
+
+#### 🌍 다국어 시스템 안정화
+- **hydration mismatch 해결**: useLocale 훅 대신 URL 기반 locale 추출
+- **번역 파일 정리**: 하드코딩된 텍스트를 번역 키로 교체
+- **메타데이터 다국어화**: title, description 번역 지원
 
 ## 📋 API 엔드포인트
 
@@ -208,6 +242,25 @@ CREATE TABLE update_logs (
 
 ## 🔍 트러블슈팅
 
+### Next.js 15 + next-intl 무한 리디렉션
+- **증상**: `localhost:3000/ko`에서 계속 307 리디렉션 발생
+- **원인**: Next.js 15에서 `params`가 Promise로 변경됨, 구버전 next-intl 호환성 문제
+- **해결**: 
+  - next-intl을 최신 버전으로 업데이트
+  - `layout.tsx`에서 `const { locale } = await params;` 처리
+  - `src/app/layout.tsx` 파일 제거 (중복 리디렉션 방지)
+  - `src/i18n/routing.ts` 설정 파일 추가
+
+### 다크모드 토글 미반영
+- **증상**: 다크모드 버튼 클릭 시 테마가 바뀌지 않음
+- **원인**: SSR hydration mismatch로 인한 테마 상태 불일치
+- **해결**: ThemeProvider에 마운트 상태 관리 추가
+
+### 언어 스위처 표시 오류
+- **증상**: 언어가 바뀌어도 네비게이션 바에서 한국어로 고정 표시
+- **원인**: useLocale() 훅의 hydration mismatch
+- **해결**: URL에서 직접 로케일을 추출하여 현재 언어 표시
+
 ### CNAME Proxied 변환 실패
 - **증상**: Proxied CNAME 레코드 변환 시 실패
 - **원인**: Cloudflare는 Proxied 상태에서 A 레코드 변환 불가
@@ -225,11 +278,12 @@ CREATE TABLE update_logs (
 
 ## 📈 향후 계획
 
-- 🌍 **다국어 지원**: 영어/한국어 UI
-- 📱 **모바일 최적화**: PWA 지원
+- 📱 **모바일 최적화**: PWA 지원 및 반응형 개선
 - 🔔 **알림 시스템**: 갱신 실패 시 웹훅 또는 이메일 알림
 - 📊 **대시보드 확장**: 갱신 통계 및 차트
 - 🔐 **다중 사용자**: 사용자별 API 키 관리
+- 🌐 **다중 DNS 프로바이더**: AWS Route 53, DigitalOcean DNS 등 추가 지원
+- ⚡ **성능 최적화**: API 캐싱 및 백그라운드 작업 개선
 
 ---
 

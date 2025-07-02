@@ -32,21 +32,21 @@
     "welcome": "ようこそ！"
   },
   "dashboard": {
-    "title": "Cloudflare DDNS管理",
-    "subtitle": "動的DNSを簡単に管理",
-    "currentIP": "現在のパブリックIP",
+    "title": "ダッシュボード",
+    "welcome": "{name}さん",
+    "currentIP": "現在のIP",
+    "currentIPDesc": "パブリックIPアドレス確認",
+    "check": "確認",
+    "checking": "確認中...",
+    "checkingIP": "IP確認中...",
+    "currentPublicIP": "現在のパブリックIP",
+    "clickToCheck": "確認ボタンをクリックしてください",
+    "apiKeys": "APIキー",
+    "apiKeysCount": "{count}個登録済み",
+    "autoUpdate": "自動更新",
+    "autoUpdateCount": "{count}個有効",
     "checkIP": "IP確認",
-    "apiKeyStatus": "APIキーの状態",
-    "autoUpdateStatus": "自動更新の状態",
-    "dnsRecordsManagement": "DNSレコード管理",
-    "manageRecords": "レコード管理",
-    "realtimeUpdates": "リアルタイム更新設定",
-    "backupRestore": "バックアップと復元",
-    "exportImport": "エクスポート/インポート",
-    "secureBackup": "安全なバックアップ管理",
-    "ddnsInstantUpdate": "DDNS即座更新",
-    "updateNow": "今すぐ更新",
-    "manualUpdate": "手動更新の実行"
+    "backupRestore": "バックアップ/復元"
   },
   "apiKey": {
     "title": "APIキー管理",
@@ -78,6 +78,7 @@
   },
   "dns": {
     "title": "DNSレコード",
+    "management": "DNSレコード管理",
     "addRecord": "レコード追加",
     "name": "名前",
     "type": "タイプ",
@@ -92,8 +93,18 @@
     "ddnsInactive": "DDNS無効",
     "proxied": "プロキシ有効",
     "notProxied": "プロキシ無効",
-    "noRecords": "DNSレコードが見つかりません。",
+    "noRecords": "登録されたDNSレコードがありません",
     "selectZoneFirst": "最初にゾーンを選択してください。",
+    "selectZonePrompt": "ゾーンを選択してDNSレコードを確認してください",
+    "loadingRecords": "レコード読み込み中...",
+    "recordsCount": "DNSレコード（{count}個）",
+    "apiKeySelect": "APIキー選択",
+    "zoneSelect": "ゾーン選択",
+    "selectApiKey": "APIキーを選択してください",
+    "selectZone": "ゾーンを選択してください",
+    "loadingZones": "ゾーンリスト読み込み中...",
+    "autoUpdateFeature": "🔄 DDNS自動更新機能",
+    "autoUpdateDescription": "• DDNSトグルをオンにすると、該当レコードが自動的に現在のパブリックIPに更新されます<br />• CNAMEレコードは自動的にAレコードに変換されてIPアドレスが設定されます<br />• プロキシ化されたCNAMEは変換時に自動的にプロキシが無効化されます（Cloudflareの制約）<br />• 5分ごとにIP変更をチェックし、変更された場合のみ更新を実行します<br />• 手動で即座に更新するには、下の「DDNS即座更新」ボタンを使用してください",
     "sortBy": "並び替え基準",
     "ascending": "昇順",
     "descending": "降順",
@@ -157,7 +168,14 @@
     "tooLong": "長すぎます。"
   },
   "navbar": {
-    "title": "DDNS UI",
-    "subtitle": "Dynamic DNS Management"
+    "title": "Cloudflare DDNS Manager"
+  },
+  "theme": {
+    "switchToDark": "ダークモードに切り替え",
+    "switchToLight": "ライトモードに切り替え"
+  },
+  "metadata": {
+    "title": "DDNS UI - Cloudflare 動的DNS管理",
+    "description": "Cloudflareを利用した動的DNSサービス管理ツール"
   }
 } 

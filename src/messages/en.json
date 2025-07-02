@@ -32,21 +32,21 @@
     "welcome": "Welcome!"
   },
   "dashboard": {
-    "title": "Cloudflare DDNS Management",
-    "subtitle": "Manage your dynamic DNS easily",
-    "currentIP": "Current Public IP",
+    "title": "Dashboard",
+    "welcome": "Welcome, {name}",
+    "currentIP": "Current IP",
+    "currentIPDesc": "Check public IP address",
+    "check": "Check",
+    "checking": "Checking...",
+    "checkingIP": "Checking IP...",
+    "currentPublicIP": "Current Public IP",
+    "clickToCheck": "Click check button",
+    "apiKeys": "API Keys",
+    "apiKeysCount": "{count} registered",
+    "autoUpdate": "Auto Update",
+    "autoUpdateCount": "{count} active",
     "checkIP": "Check IP",
-    "apiKeyStatus": "API Key Status",
-    "autoUpdateStatus": "Auto Update Status",
-    "dnsRecordsManagement": "DNS Records Management",
-    "manageRecords": "Manage Records",
-    "realtimeUpdates": "Real-time Update Settings",
-    "backupRestore": "Backup & Restore",
-    "exportImport": "Export/Import",
-    "secureBackup": "Secure Backup Management",
-    "ddnsInstantUpdate": "DDNS Instant Update",
-    "updateNow": "Update Now",
-    "manualUpdate": "Execute Manual Update"
+    "backupRestore": "Backup/Restore"
   },
   "apiKey": {
     "title": "API Key Management",
@@ -78,6 +78,7 @@
   },
   "dns": {
     "title": "DNS Records",
+    "management": "DNS Record Management",
     "addRecord": "Add Record",
     "name": "Name",
     "type": "Type",
@@ -92,8 +93,18 @@
     "ddnsInactive": "DDNS Inactive",
     "proxied": "Proxied",
     "notProxied": "Not Proxied",
-    "noRecords": "No DNS records found.",
+    "noRecords": "No DNS records found",
     "selectZoneFirst": "Please select a zone first.",
+    "selectZonePrompt": "Select a zone to view DNS records",
+    "loadingRecords": "Loading records...",
+    "recordsCount": "DNS Records ({count} records)",
+    "apiKeySelect": "Select API Key",
+    "zoneSelect": "Select Zone",
+    "selectApiKey": "Please select an API key",
+    "selectZone": "Please select a zone",
+    "loadingZones": "Loading zone list...",
+    "autoUpdateFeature": "🔄 DDNS Auto Update Feature",
+    "autoUpdateDescription": "• Turn on the DDNS toggle to automatically update the record to your current public IP<br />• CNAME records are automatically converted to A records with IP addresses<br />• Proxied CNAME records will have their proxy automatically disabled during conversion (Cloudflare limitation)<br />• IP changes are checked every 5 minutes, updates only occur when changes are detected<br />• Use the \"Update DDNS Now\" button below for manual immediate updates",
     "sortBy": "Sort by",
     "ascending": "Ascending",
     "descending": "Descending",
@@ -122,8 +133,8 @@
       "exportButton": "Export Settings",
       "importButton": "Import Settings",
       "importSuccess": "Settings imported successfully.",
-      "importError": "Failed to import settings.",
-      "invalidFile": "Invalid file format."
+      "importError": "Failed to import settings",
+      "invalidFile": "Failed to read settings file"
     }
   },
   "ip": {
@@ -157,7 +168,14 @@
     "tooLong": "Too long."
   },
   "navbar": {
-    "title": "DDNS UI",
-    "subtitle": "Dynamic DNS Management"
+    "title": "Cloudflare DDNS Manager"
+  },
+  "theme": {
+    "switchToDark": "Switch to Dark Mode",
+    "switchToLight": "Switch to Light Mode"
+  },
+  "metadata": {
+    "title": "DDNS UI - Cloudflare Dynamic DNS Manager",
+    "description": "Dynamic DNS management tool using Cloudflare"
   }
 } 
