@@ -116,54 +116,84 @@ jobs:
     if: success()
     
     steps:
-    - name: 🎉 Create success issue comment
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const sha = context.sha.substring(0, 7);
-          const imageTag = context.ref === 'refs/heads/main' ? 'latest' : context.ref.replace('refs/tags/', '');
-          
-          // Create a new issue for deployment notification
-          const { data: issue } = await github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: `🚀 배포 완료: ${imageTag} (${sha})`,
-            body: `## 🎉 Docker Hub 배포가 성공적으로 완료되었습니다!
-            
-            ### 📦 배포 정보
-            - **이미지**: \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${imageTag}\`
-            - **커밋**: \`${sha}\`
-            - **브랜치**: \`${context.ref.replace('refs/heads/', '')}\`
-            - **배포 시간**: \`${new Date().toISOString()}\`
-            
-            ### 🐳 사용 방법
-            \`\`\`bash
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${imageTag}
-            \`\`\`
-            
-            ### 🌍 다국어 지원
-            - 🇰🇷 한국어 (기본): \`http://localhost:3000/ko\`
-            - 🇺🇸 영어: \`http://localhost:3000/en\`
-            - 🇯🇵 일본어: \`http://localhost:3000/ja\`
-            
-            ### 🔗 링크
-            - [Docker Hub](https://hub.docker.com/r/${{ env.IMAGE_NAME }})
-            - [커밋 상세](https://github.com/${{ github.repository }}/commit/${context.sha})
-            
-            ---
-            🤖 *자동 배포 시스템에 의해 생성됨*`,
-            labels: ['deployment', 'docker', 'success']
-          });
-          
-          // Auto-close the issue after 1 day (for cleanup)
-          setTimeout(async () => {
-            await github.rest.issues.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.number,
-              state: 'closed'
-            });
-          }, 24 * 60 * 60 * 1000);
+    - name: 🎉 Send Slack success notification
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      run: |
+        SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+        IMAGE_TAG=${{ github.ref == 'refs/heads/main' && 'latest' || github.ref_name }}
+        BRANCH_NAME=${{ github.ref_name }}
+        
+        curl -X POST "$SLACK_WEBHOOK_URL" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "text": "🚀 DDNS-UI 배포 성공!",
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "🚀 Docker Hub 배포 완료!"
+              }
+            },
+            {
+              "type": "section",
+              "fields": [
+                {
+                  "type": "mrkdwn",
+                  "text": "*이미지:*\n`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:'"${IMAGE_TAG}"'`"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*커밋:*\n<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|'"${SHA}"'>"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*브랜치:*\n'"${BRANCH_NAME}"'"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*배포 시간:*\n'"$(date -u +"%Y-%m-%d %H:%M:%S UTC")"'"
+                }
+              ]
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "*🐳 Docker 실행:*\n```docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:'"${IMAGE_TAG}"'```"
+              }
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "*🌍 다국어 지원:*\n• 🇰🇷 한국어: `http://localhost:3000/ko`\n• 🇺🇸 영어: `http://localhost:3000/en`\n• 🇯🇵 일본어: `http://localhost:3000/ja`"
+              }
+            },
+            {
+              "type": "actions",
+              "elements": [
+                {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Docker Hub"
+                  },
+                  "url": "https://hub.docker.com/r/${{ env.IMAGE_NAME }}"
+                },
+                {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "커밋 보기"
+                  },
+                  "url": "https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+                }
+              ]
+            }
+          ]
+        }'
 
   notify-failure:
     name: 📢 Notify Failure
@@ -172,36 +202,73 @@ jobs:
     if: failure()
     
     steps:
-    - name: ❌ Create failure issue
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const sha = context.sha.substring(0, 7);
-          
-          await github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: `❌ 배포 실패: ${context.ref.replace('refs/heads/', '')} (${sha})`,
-            body: `## ❌ Docker Hub 배포가 실패했습니다!
-            
-            ### 🔍 실패 정보
-            - **커밋**: \`${sha}\`
-            - **브랜치**: \`${context.ref.replace('refs/heads/', '')}\`
-            - **실패 시간**: \`${new Date().toISOString()}\`
-            - **워크플로우**: [확인하기](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            
-            ### 🛠️ 해결 방법
-            1. [GitHub Actions 로그](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) 확인
-            2. Docker Hub 자격 증명 확인
-            3. 빌드 에러 수정 후 다시 푸시
-            
-            ### 🔧 디버깅 팁
-            - ESLint 오류: \`yarn lint --fix\`
-            - 타입 에러: \`yarn type-check\`
-            - 빌드 에러: \`yarn build\`
-            - Docker 빌드: \`docker build -t test .\`
-            
-            ---
-            🤖 *자동 배포 시스템에 의해 생성됨*`,
-            labels: ['deployment', 'docker', 'failure', 'bug']
-          }); 
+    - name: ❌ Send Slack failure notification
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      run: |
+        SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+        BRANCH_NAME=${{ github.ref_name }}
+        
+        curl -X POST "$SLACK_WEBHOOK_URL" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "text": "❌ DDNS-UI 배포 실패!",
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "❌ Docker Hub 배포 실패!"
+              }
+            },
+            {
+              "type": "section",
+              "fields": [
+                {
+                  "type": "mrkdwn",
+                  "text": "*커밋:*\n<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|'"${SHA}"'>"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*브랜치:*\n'"${BRANCH_NAME}"'"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*실패 시간:*\n'"$(date -u +"%Y-%m-%d %H:%M:%S UTC")"'"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*워크플로우:*\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|로그 확인>"
+                }
+              ]
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "*🛠️ 해결 방법:*\n1. GitHub Actions 로그 확인\n2. Docker Hub 자격 증명 확인\n3. 빌드 에러 수정 후 다시 푸시"
+              }
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "*🔧 디버깅 팁:*\n• ESLint 오류: `yarn lint --fix`\n• 타입 에러: `yarn type-check`\n• 빌드 에러: `yarn build`\n• Docker 빌드: `docker build -t test .`"
+              }
+            },
+            {
+              "type": "actions",
+              "elements": [
+                {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "워크플로우 로그"
+                  },
+                  "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                  "style": "danger"
+                }
+              ]
+            }
+          ]
+        }' 

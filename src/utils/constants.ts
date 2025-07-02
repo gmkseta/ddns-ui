@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
   records: '/api/records',
   ddns: {
     update: '/api/ddns/update',
+    toggle: '/api/ddns/toggle',
   },
   export: '/api/export',
   import: '/api/import',

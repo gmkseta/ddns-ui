@@ -20,9 +20,8 @@ RUN npm rebuild sqlite3
 # 소스 코드 복사
 COPY . .
 
-# 빌드 (DB 초기화 없이)
+# 빌드
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV NEXT_PHASE=phase-production-build
 RUN yarn build
 
 # ===========================================
@@ -42,17 +41,20 @@ RUN apk add --no-cache \
     && addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 nextjs
 
-# 프로덕션 의존성만 설치
+# 패키지 파일 복사 및 프로덕션 의존성 설치
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --production && yarn cache clean
 
 # SQLite3 네이티브 모듈 재빌드 (Alpine Linux용)
 RUN npm rebuild sqlite3
 
-# 빌드 결과물 복사
+# 소스 코드 및 빌드 결과물 복사
+COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/src ./src
+COPY --from=builder /app/next.config.ts ./
+COPY --from=builder /app/tsconfig.json ./
+COPY --from=builder /app/middleware.ts ./
 
 # 권한 설정
 RUN chown -R nextjs:nodejs /app
@@ -76,5 +78,5 @@ ENV DATABASE_PATH=/app/data/db.sqlite3
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:3000/api/ip || exit 1
 
-# 애플리케이션 시작
-CMD ["node", "server.js"] 
+# 애플리케이션 시작 (standalone 대신 일반 start 사용)
+CMD ["yarn", "start"] 

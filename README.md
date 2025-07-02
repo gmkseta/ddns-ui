@@ -79,13 +79,16 @@ A self-hosted **Dynamic DNS management web interface** built with Cloudflare DNS
 - 🔐 **Secure Authentication**: JWT-based admin login
 - 🔑 **API Key Management**: Register and manage multiple DNS provider tokens
 - 🌐 **Zone Management**: Select and manage domain zones
-- 📝 **DNS Records**: Add/edit/delete A/CNAME records
+- 📝 **DNS Records**: Add/edit/delete A/CNAME records with inline editing
 - 🔄 **Smart Auto-Updates**: Automatic IP change detection and updates
 - 📊 **Monitoring**: Update logs and real-time status
 - 📤 **Backup/Restore**: JSON export/import for configurations
 - 🌍 **Multilingual Support**: Korean, English, Japanese interface
 - 🌙 **Dark Mode**: Light/dark theme toggle support
-- 🐳 **Docker Ready**: One-click deployment with Docker
+- 🎨 **Modern Toast System**: Clean notifications without emojis, with themed backgrounds
+- 🚨 **Enhanced Error Handling**: All API errors automatically shown in user-friendly toasts
+- 🔄 **CI/CD Integration**: Slack notifications for deployment status
+- 🐳 **Docker Ready**: Optimized Docker setup with scheduler support
 
 ## 🚀 Quick Start
 

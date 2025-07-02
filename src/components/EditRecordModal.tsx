@@ -1,23 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { showToast } from '@/components/Toast';
 
-interface AddRecordModalProps {
+interface DNSRecord {
+  id: string;
+  name: string;
+  type: string;
+  content: string;
+  ttl: number;
+  proxied: boolean;
+  autoUpdate?: boolean;
+}
+
+interface EditRecordModalProps {
   isOpen: boolean;
   onClose: () => void;
   selectedZone: string | null;
   selectedApiKey: string | null;
-  onRecordAdded: () => void;
+  record: DNSRecord | null;
+  onRecordUpdated: () => void;
 }
 
-export default function AddRecordModal({ 
+export default function EditRecordModal({ 
   isOpen, 
   onClose, 
   selectedZone, 
   selectedApiKey,
-  onRecordAdded 
-}: AddRecordModalProps) {
+  record,
+  onRecordUpdated 
+}: EditRecordModalProps) {
+  const t = useTranslations();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -30,10 +44,24 @@ export default function AddRecordModal({
 
   const recordTypes = ['A', 'AAAA', 'CNAME', 'MX', 'TXT', 'SRV', 'PTR'];
 
+  // 레코드 데이터가 변경되면 폼 데이터 업데이트
+  useEffect(() => {
+    if (record) {
+      setFormData({
+        name: record.name,
+        type: record.type,
+        content: record.content,
+        ttl: record.ttl,
+        proxied: record.proxied,
+        autoUpdate: record.autoUpdate || false,
+      });
+    }
+  }, [record]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!selectedZone || !selectedApiKey) {
+    if (!selectedZone || !selectedApiKey || !record) {
       showToast.error('Zone과 API 키를 선택해주세요.');
       return;
     }
@@ -47,11 +75,12 @@ export default function AddRecordModal({
 
     try {
       const response = await fetch('/api/records', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          recordId: record.id,
           zoneId: selectedZone,
           apiKeyId: selectedApiKey,
           ...formData,
@@ -61,23 +90,15 @@ export default function AddRecordModal({
       const data = await response.json();
 
       if (response.ok) {
-        showToast.success('DNS 레코드가 성공적으로 추가되었습니다!');
-        setFormData({
-          name: '',
-          type: 'A',
-          content: '',
-          ttl: 300,
-          proxied: false,
-          autoUpdate: false,
-        });
-        onRecordAdded();
+        showToast.success(t('modal.editRecord.updateSuccess'));
+        onRecordUpdated();
         onClose();
       } else {
-        showToast.error(data.error || 'DNS 레코드 추가에 실패했습니다.');
+        showToast.error(data.error || t('modal.editRecord.updateError'));
       }
     } catch (error) {
-      console.error('DNS 레코드 추가 오류:', error);
-      showToast.error('DNS 레코드 추가 중 오류가 발생했습니다.');
+      console.error('DNS 레코드 수정 오류:', error);
+      showToast.error(t('modal.editRecord.updateErrorGeneric'));
     } finally {
       setLoading(false);
     }
@@ -90,7 +111,7 @@ export default function AddRecordModal({
     }));
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !record) return null;
 
     return (
     <>
@@ -107,7 +128,7 @@ export default function AddRecordModal({
         {/* 헤더 */}
         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            DNS 레코드 추가
+            {t('modal.editRecord.title')}
           </h3>
           <button
             onClick={onClose}
@@ -124,25 +145,25 @@ export default function AddRecordModal({
           {/* 이름 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              이름 (Name) *
+              {t('modal.editRecord.nameLabel')} *
             </label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              placeholder="예: www, api, mail"
+              placeholder={t('modal.editRecord.namePlaceholder')}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               required
             />
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              @ 기호는 루트 도메인을 의미합니다
+              {t('modal.editRecord.nameHelper')}
             </p>
           </div>
 
           {/* 타입 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              타입 (Type)
+              {t('modal.editRecord.typeLabel')}
             </label>
             <select
               value={formData.type}
@@ -158,7 +179,7 @@ export default function AddRecordModal({
           {/* 내용 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              내용 (Content) *
+              {t('modal.editRecord.contentLabel')} *
             </label>
             <input
               type="text"
@@ -168,7 +189,7 @@ export default function AddRecordModal({
                 formData.type === 'A' ? '192.168.1.1' :
                 formData.type === 'CNAME' ? 'example.com' :
                 formData.type === 'MX' ? '10 mail.example.com' :
-                '내용을 입력하세요'
+                t('modal.editRecord.contentPlaceholder')
               }
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               required
@@ -178,19 +199,19 @@ export default function AddRecordModal({
           {/* TTL */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              TTL (초)
+              {t('modal.editRecord.ttlLabel')}
             </label>
             <select
               value={formData.ttl}
               onChange={(e) => handleInputChange('ttl', parseInt(e.target.value))}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
-              <option value={60}>1분 (60초)</option>
-              <option value={300}>5분 (300초)</option>
-              <option value={600}>10분 (600초)</option>
-              <option value={1800}>30분 (1800초)</option>
-              <option value={3600}>1시간 (3600초)</option>
-              <option value={86400}>1일 (86400초)</option>
+              <option value={60}>{t('modal.editRecord.ttl1min')}</option>
+              <option value={300}>{t('modal.editRecord.ttl5min')}</option>
+              <option value={600}>{t('modal.editRecord.ttl10min')}</option>
+              <option value={1800}>{t('modal.editRecord.ttl30min')}</option>
+              <option value={3600}>{t('modal.editRecord.ttl1hour')}</option>
+              <option value={86400}>{t('modal.editRecord.ttl1day')}</option>
             </select>
           </div>
 
@@ -204,7 +225,7 @@ export default function AddRecordModal({
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
             />
             <label htmlFor="proxied" className="text-sm text-gray-700 dark:text-gray-300">
-              Cloudflare Proxy 사용 (A, AAAA, CNAME 타입만)
+              {t('modal.editRecord.proxiedCheckbox')}
             </label>
           </div>
 
@@ -218,7 +239,7 @@ export default function AddRecordModal({
               className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2"
             />
             <label htmlFor="autoUpdate" className="text-sm text-gray-700 dark:text-gray-300">
-              DDNS 자동 갱신 활성화
+              {t('modal.editRecord.autoUpdateCheckbox')}
             </label>
           </div>
 
@@ -230,13 +251,12 @@ export default function AddRecordModal({
                 </svg>
                 <div>
                   <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
-                    DDNS 자동 갱신 안내
+                    {t('modal.editRecord.autoUpdateWarningTitle')}
                   </h4>
-                  <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
-                    • CNAME 레코드는 자동으로 A 레코드로 변환됩니다<br />
-                    • Proxied CNAME은 변환 시 Proxy가 비활성화됩니다<br />
-                    • 5분마다 IP 변경을 확인하여 자동 업데이트합니다
-                  </p>
+                  <p 
+                    className="text-sm text-yellow-700 dark:text-yellow-300 mt-1"
+                    dangerouslySetInnerHTML={{ __html: t('modal.editRecord.autoUpdateWarningContent') }}
+                  />
                 </div>
               </div>
             </div>
@@ -250,7 +270,7 @@ export default function AddRecordModal({
               disabled={loading}
               className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors disabled:opacity-50"
             >
-              취소
+              {t('common.cancel')}
             </button>
             <button
               type="submit"
@@ -261,10 +281,10 @@ export default function AddRecordModal({
                 {loading ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 )}
               </svg>
-              <span>{loading ? '추가 중...' : '레코드 추가'}</span>
+              <span>{loading ? t('modal.editRecord.updating') : t('modal.editRecord.update')}</span>
             </button>
           </div>
         </form>

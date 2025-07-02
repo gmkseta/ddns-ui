@@ -1,6 +1,6 @@
 import { DNSRecord } from './api';
 
-export type SortField = 'name' | 'type' | 'content' | 'ttl' | 'autoUpdate';
+export type SortField = 'name' | 'type' | 'content' | 'ttl' | 'autoUpdate' | 'synced';
 export type SortDirection = 'asc' | 'desc';
 
 /**
@@ -9,7 +9,8 @@ export type SortDirection = 'asc' | 'desc';
 export const sortRecords = (
   records: DNSRecord[],
   sortBy: SortField,
-  sortDirection: SortDirection
+  sortDirection: SortDirection,
+  currentIP?: string | null
 ): DNSRecord[] => {
   return [...records].sort((a, b) => {
     let aValue: any;
@@ -35,6 +36,11 @@ export const sortRecords = (
       case 'autoUpdate':
         aValue = a.autoUpdate ? 1 : 0;
         bValue = b.autoUpdate ? 1 : 0;
+        break;
+      case 'synced':
+        // 현재 IP와 레코드 IP가 같은지 확인 (A 레코드만)
+        aValue = (currentIP && a.type === 'A' && a.content === currentIP) ? 1 : 0;
+        bValue = (currentIP && b.type === 'A' && b.content === currentIP) ? 1 : 0;
         break;
       default:
         return 0;

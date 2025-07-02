@@ -130,8 +130,26 @@ export const getRecords = async (zoneId: string, apiKeyId: string): Promise<DNSR
 /**
  * DDNS 업데이트
  */
-export const updateDDNS = async (apiKeyId: string): Promise<{ updated: DNSRecord[]; errors: any[] }> => {
-  const data = await apiRequest<{ updated: DNSRecord[]; errors: any[] }>(
+export const updateDDNS = async (apiKeyId: string): Promise<{
+  updated: DNSRecord[];
+  errors: any[];
+  results?: any[];
+  currentIP?: string;
+  totalRecords?: number;
+  totalUpdated?: number;
+  totalErrors?: number;
+  message?: string;
+}> => {
+  const data = await apiRequest<{
+    updated: DNSRecord[];
+    errors: any[];
+    results?: any[];
+    currentIP?: string;
+    totalRecords?: number;
+    totalUpdated?: number;
+    totalErrors?: number;
+    message?: string;
+  }>(
     API_ENDPOINTS.ddns.update,
     {
       method: 'POST',
@@ -142,22 +160,27 @@ export const updateDDNS = async (apiKeyId: string): Promise<{ updated: DNSRecord
 };
 
 /**
- * 자동 업데이트 토글
+ * DDNS 자동 업데이트 토글 (간단 버전)
  */
-export const toggleAutoUpdate = async (
+export const toggleDDNSAutoUpdate = async (
   recordId: string,
   autoUpdate: boolean,
-  zoneId: string,
-  apiKeyId: string
-): Promise<DNSRecord> => {
-  const data = await apiRequest<{ record: DNSRecord }>(API_ENDPOINTS.records, {
-    method: 'PUT',
-    body: JSON.stringify({
-      recordId,
-      autoUpdate,
-      zoneId,
-      apiKeyId,
-    }),
-  });
-  return data.record;
-}; 
+  zoneId?: string,
+  apiKeyId?: string
+): Promise<{ success: boolean; recordId: string; autoUpdate: boolean; message: string }> => {
+  const data = await apiRequest<{ success: boolean; recordId: string; autoUpdate: boolean; message: string }>(
+    API_ENDPOINTS.ddns.toggle,
+    {
+      method: 'PUT',
+      body: JSON.stringify({
+        recordId,
+        autoUpdate,
+        zoneId,
+        apiKeyId,
+      }),
+    }
+  );
+  return data;
+};
+
+ 

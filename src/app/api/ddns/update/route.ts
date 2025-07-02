@@ -1,12 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth';
 import { CloudflareAPI, getCurrentIP } from '@/lib/cloudflare';
 import { dbRun, dbGet, dbAll } from '@/lib/database';
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
     // 인증 확인
     await requireAuth();
+
+    const { apiKeyId } = await request.json();
 
     const results = [];
     let totalUpdated = 0;
@@ -15,14 +17,22 @@ export async function POST() {
     // 현재 공인 IP 조회
     const currentIP = await getCurrentIP();
 
-    // 자동 업데이트가 활성화된 A/CNAME 레코드 조회 (CNAME은 A 레코드로 자동 변환)
-    const autoUpdateRecords = await dbAll(`
+    // 자동 업데이트가 활성화된 A/CNAME 레코드 조회 (특정 API 키만)
+    let query = `
       SELECT dr.*, z.name as zone_name, ak.token
       FROM dns_records dr
       JOIN zones z ON dr.zone_id = z.id
       JOIN api_keys ak ON z.api_key_id = ak.id
       WHERE dr.auto_update = 1 AND dr.type IN ('A', 'CNAME')
-    `);
+    `;
+    let params = [];
+
+    if (apiKeyId) {
+      query += ` AND ak.id = ?`;
+      params.push(apiKeyId);
+    }
+
+    const autoUpdateRecords = await dbAll(query, params);
 
     console.log(`Found ${autoUpdateRecords.length} auto-update records`);
 
@@ -123,13 +133,33 @@ export async function POST() {
       }
     }
 
+    // 프론트엔드가 기대하는 구조로 응답 변환
+    const updated = results.filter(r => r.status === 'updated').map(r => ({
+      id: r.recordId,
+      name: r.name,
+      content: r.newContent,
+      type: r.newType || 'A',
+      zoneName: r.zoneName,
+      message: r.message
+    }));
+
+    const errors = results.filter(r => r.status === 'error').map(r => ({
+      recordId: r.recordId,
+      name: r.name,
+      zoneName: r.zoneName,
+      message: r.message,
+      error: r.message
+    }));
+
     return NextResponse.json({
       success: true,
       currentIP,
       totalRecords: autoUpdateRecords.length,
       totalUpdated,
       totalErrors,
-      results,
+      updated,  // 프론트엔드가 기대하는 구조
+      errors,   // 프론트엔드가 기대하는 구조
+      results,  // 원본 결과도 포함 (디버깅용)
       message: `${totalUpdated}개 레코드 업데이트 완료, ${totalErrors}개 오류`,
     });
 
