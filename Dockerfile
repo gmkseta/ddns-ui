@@ -1,21 +1,27 @@
 # ===========================================
+# 의존성 설치 스테이지 (캐시 최적화)
+# ===========================================
+FROM node:24-alpine AS deps
+
+RUN apk add --no-cache libc6-compat python3 make g++ sqlite-dev
+
+WORKDIR /app
+
+# 패키지 파일만 먼저 복사 (의존성 캐시 최적화)
+COPY package.json yarn.lock ./
+
+# 의존성 설치
+RUN yarn install --frozen-lockfile
+
+# ===========================================
 # 빌드 스테이지
 # ===========================================
 FROM node:24-alpine AS builder
 
 WORKDIR /app
 
-# 패키지 파일 복사
-COPY package.json yarn.lock ./
-
-# 빌드 도구 설치
-RUN apk add --no-cache python3 make g++ sqlite-dev
-
-# 의존성 설치 (개발 의존성 포함)
-RUN yarn install --frozen-lockfile
-
-# SQLite3 네이티브 모듈 재빌드
-RUN npm rebuild sqlite3
+# 의존성 복사
+COPY --from=deps /app/node_modules ./node_modules
 
 # 소스 코드 복사
 COPY . .
@@ -25,41 +31,29 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN yarn build
 
 # ===========================================
-# 런타임 스테이지  
+# 런타임 스테이지
 # ===========================================
 FROM node:24-alpine AS runner
 
 WORKDIR /app
 
-# 시스템 의존성 설치
-RUN apk add --no-cache \
-    sqlite \
-    curl \
-    python3 \
-    make \
-    g++ \
-    && addgroup --system --gid 1001 nodejs \
-    && adduser --system --uid 1001 nextjs
+# 시스템 사용자 생성 및 SQLite 설치
+RUN addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 nextjs \
+    && apk add --no-cache sqlite curl
 
 # 패키지 파일 복사 및 프로덕션 의존성 설치
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --production && yarn cache clean
 
-# SQLite3 네이티브 모듈 재빌드 (Alpine Linux용)
-RUN npm rebuild sqlite3
+# 빌드 결과물 및 소스 복사
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/src ./src
+COPY --from=builder --chown=nextjs:nodejs /app/next.config.ts ./
+COPY --from=builder --chown=nextjs:nodejs /app/middleware.ts ./
 
-# 소스 코드 및 빌드 결과물 복사
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/src ./src
-COPY --from=builder /app/next.config.ts ./
-COPY --from=builder /app/tsconfig.json ./
-COPY --from=builder /app/middleware.ts ./
-
-# 권한 설정
-RUN chown -R nextjs:nodejs /app
-
-# 데이터 디렉토리 생성 및 권한 설정
+# 데이터 디렉토리 생성
 RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
 
 # nextjs 사용자로 전환
@@ -78,5 +72,5 @@ ENV DATABASE_PATH=/app/data/db.sqlite3
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:3000/api/ip || exit 1
 
-# 애플리케이션 시작 (standalone 대신 일반 start 사용)
+# 일반 모드로 실행 (스케줄러 동작 보장)
 CMD ["yarn", "start"] 
