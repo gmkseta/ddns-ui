@@ -95,7 +95,15 @@ jobs:
     needs: build-and-push
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    
     steps:
+    - name: ⬇️ Checkout code
+      uses: actions/checkout@v4
+      
     - name: 🔍 Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
