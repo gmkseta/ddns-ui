@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validateAdminCredentials, createToken } from '@/lib/auth';
 import { cookies } from 'next/headers';
+import { getSiteUrl } from '@/lib/utils';
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,14 +30,26 @@ export async function POST(request: NextRequest) {
     const isHttps = process.env.USE_HTTPS === 'true' || request.headers.get('x-forwarded-proto') === 'https';
     const host = request.headers.get('host');
     
-    cookieStore.set('auth-token', token, {
+    // 동적 사이트 URL 생성 (로깅용)
+    const siteUrl = getSiteUrl(request);
+    console.log('Login successful for:', siteUrl, 'Host:', host, 'HTTPS:', isHttps);
+    
+    // 쿠키 도메인 설정 - 프록시 환경에서는 도메인 설정하지 않는 것이 더 안전
+    const cookieOptions: any = {
       httpOnly: true,
       secure: isHttps,
       sameSite: 'lax',
       maxAge: 60 * 60 * 24, // 24시간
       path: '/',
-      domain: host ? `.${host.split('.').slice(-2).join('.')}` : undefined, // 상위 도메인으로 설정
-    });
+    };
+    
+    // 환경변수로 명시적으로 도메인이 설정된 경우에만 사용
+    if (process.env.COOKIE_DOMAIN) {
+      cookieOptions.domain = process.env.COOKIE_DOMAIN;
+    }
+    // 그렇지 않으면 도메인 설정 없이 현재 호스트에서만 작동
+    
+    cookieStore.set('auth-token', token, cookieOptions);
 
     return NextResponse.json({
       success: true,

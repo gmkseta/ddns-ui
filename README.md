@@ -202,6 +202,8 @@ The interface automatically detects your browser language and switches according
 | `DATABASE_PATH` | SQLite database file path | `./data/ddns.db` | No |
 | `UPDATE_INTERVAL` | Update interval (minutes) | `5` | No |
 | `USE_HTTPS` | Enable HTTPS for secure cookies | `true` | No |
+| `NEXT_PUBLIC_SITE_URL` | Public site URL for consistent URL generation | Auto-detected | No |
+| `NEXTAUTH_URL` | Base URL for authentication (same as NEXT_PUBLIC_SITE_URL) | Auto-detected | No |
 | `NODE_ENV` | Application environment | `development` | No |
 | `PORT` | Server port | `3000` | No |
 
@@ -255,6 +257,7 @@ The database includes:
    - Set `USE_HTTPS=true` in environment variables when using HTTPS
    - Ensure your proxy passes the correct headers (X-Forwarded-Proto, Host)
    - For nginx proxy, add: `proxy_set_header X-Forwarded-Proto $scheme;`
+   - Optionally set `NEXT_PUBLIC_SITE_URL=https://your-domain.com` for consistent URL generation
 
 4. **Container won't start**
    - Check if port 3000 is already in use
