@@ -8,6 +8,7 @@ import StatusCards from '@/components/StatusCards';
 import ExportImportModal from '@/components/ExportImportModal';
 import AddRecordModal from '@/components/AddRecordModal';
 import EditRecordModal from '@/components/EditRecordModal';
+import APIKeyManager from '@/components/APIKeyManager';
 import DNSTabNavigation from '@/components/DNSTabNavigation';
 import Footer from '@/components/Footer';
 
@@ -81,6 +82,9 @@ export default function Home() {
   // Edit Record 모달 상태
   const [editRecordModal, setEditRecordModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<DNSRecord | null>(null);
+  
+  // API Key Manager 모달 상태
+  const [apiKeyManagerModal, setApiKeyManagerModal] = useState(false);
   
   // 정렬 상태
   const [sortBy, setSortBy] = useState<SortField>(DEFAULT_SORT);
@@ -438,6 +442,17 @@ export default function Home() {
     setSelectedRecord(null);
   };
 
+  // API Key Manager 모달 관리
+  const openApiKeyManager = () => {
+    setApiKeyManagerModal(true);
+  };
+
+  const closeApiKeyManager = () => {
+    setApiKeyManagerModal(false);
+    // API 키 목록 새로고침 (새로 추가되었을 수 있음)
+    loadApiKeys();
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -496,6 +511,7 @@ export default function Home() {
             onEditRecord={openEditModal}
             onAutoUpdateToggle={handleAutoUpdateToggle}
             onDDNSUpdate={handleDDNSUpdate}
+            onAddApiKey={openApiKeyManager}
             getRecordSyncStatus={getRecordSyncStatus}
           />
         </div>
@@ -539,6 +555,11 @@ export default function Home() {
           }
         }}
       />
+
+      {/* API 키 관리 모달 */}
+      {apiKeyManagerModal && (
+        <APIKeyManager onClose={closeApiKeyManager} />
+      )}
     </>
   );
 }

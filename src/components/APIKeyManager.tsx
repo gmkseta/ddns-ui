@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 
 interface APIKey {
-  id: number;
+  id: string;
   token: string;
+  name?: string;
   createdAt: string;
 }
 
@@ -15,6 +16,7 @@ interface APIKeyManagerProps {
 export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
   const [apiKeys, setApiKeys] = useState<APIKey[]>([]);
   const [newToken, setNewToken] = useState('');
+  const [newName, setNewName] = useState('');
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
   const [error, setError] = useState('');
@@ -26,11 +28,13 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
 
   const fetchAPIKeys = async () => {
     try {
-      const response = await fetch('/api/config/apikey');
+      const response = await fetch('/api/config/apikey', {
+        credentials: 'same-origin',
+      });
       const data = await response.json();
 
       if (response.ok) {
-        setApiKeys(data.keys);
+        setApiKeys(data.apiKeys);
       } else {
         setError(data.error || 'API 키 목록 조회에 실패했습니다.');
       }
@@ -58,7 +62,8 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ token: newToken.trim() }),
+        credentials: 'same-origin',
+        body: JSON.stringify({ token: newToken.trim(), name: newName.trim() || null }),
       });
 
       const data = await response.json();
@@ -66,6 +71,7 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
       if (response.ok) {
         setSuccess(data.message);
         setNewToken('');
+        setNewName('');
         await fetchAPIKeys();
       } else {
         setError(data.error || 'API 키 등록에 실패했습니다.');
@@ -78,7 +84,7 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
     }
   };
 
-  const deleteAPIKey = async (keyId: number) => {
+  const deleteAPIKey = async (keyId: string) => {
     if (!confirm('이 API 키와 관련된 모든 데이터가 삭제됩니다. 계속하시겠습니까?')) {
       return;
     }
@@ -86,6 +92,7 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
     try {
       const response = await fetch(`/api/config/apikey?id=${keyId}`, {
         method: 'DELETE',
+        credentials: 'same-origin',
       });
 
       const data = await response.json();
@@ -162,6 +169,20 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
               
               <div className="space-y-6">
                 <div>
+                  <label htmlFor="apiName" className="block text-sm font-semibold text-gray-700 mb-3">
+                    API 키 이름 (선택사항)
+                  </label>
+                  <input
+                    id="apiName"
+                    type="text"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    disabled={loading}
+                    className="w-full px-4 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 disabled:opacity-50 transition-all"
+                    placeholder="예: 메인 도메인용, 개발용 등"
+                  />
+                </div>
+                <div>
                   <label htmlFor="apiToken" className="block text-sm font-semibold text-gray-700 mb-3">
                     API Token
                   </label>
@@ -228,7 +249,12 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
                       className="flex items-center justify-between p-6 bg-gray-50 rounded-2xl border border-gray-200"
                     >
                       <div className="flex-1 min-w-0">
-                        <div className="font-mono text-sm text-gray-900 break-all">
+                        {key.name && (
+                          <div className="text-sm font-medium text-gray-900 mb-1">
+                            {key.name}
+                          </div>
+                        )}
+                        <div className="font-mono text-sm text-gray-600 break-all">
                           {key.token.slice(0, 8)}{'*'.repeat(24)}{key.token.slice(-8)}
                         </div>
                         <div className="text-xs text-gray-500 mt-2">

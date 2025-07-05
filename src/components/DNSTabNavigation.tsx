@@ -30,6 +30,7 @@ interface DNSTabNavigationProps {
   onEditRecord: (record: DNSRecord) => void;
   onAutoUpdateToggle: (recordId: string, currentValue: boolean) => void;
   onDDNSUpdate: () => void;
+  onAddApiKey: () => void;
   getRecordSyncStatus: (record: DNSRecord) => 'synced' | 'notSynced' | 'notTarget' | 'noData';
 }
 
@@ -52,6 +53,7 @@ export default function DNSTabNavigation({
   onEditRecord,
   onAutoUpdateToggle,
   onDDNSUpdate,
+  onAddApiKey,
   getRecordSyncStatus,
 }: DNSTabNavigationProps) {
   const tDns = useTranslations('dns');
@@ -99,6 +101,7 @@ export default function DNSTabNavigation({
             onApiKeyChange={onApiKeyChange}
             onZoneChange={onZoneChange}
             onReload={onReload}
+            onAddApiKey={onAddApiKey}
           />
 
           {/* DDNS 기능 설명 */}

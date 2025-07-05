@@ -13,6 +13,7 @@ interface DNSConfigSectionProps {
   onApiKeyChange: (apiKeyId: string) => void;
   onZoneChange: (zoneId: string) => void;
   onReload: () => void;
+  onAddApiKey: () => void;
 }
 
 export default function DNSConfigSection({
@@ -25,6 +26,7 @@ export default function DNSConfigSection({
   onApiKeyChange,
   onZoneChange,
   onReload,
+  onAddApiKey,
 }: DNSConfigSectionProps) {
   const t = useTranslations();
   const tDns = useTranslations('dns');
@@ -71,15 +73,15 @@ export default function DNSConfigSection({
             </select>
             {apiKeys.length === 0 && (
               <div className="mt-2">
-                <a
-                  href="?tab=apikeys"
-                  className="inline-flex items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                <button
+                  onClick={onAddApiKey}
+                  className="inline-flex items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline transition-colors"
                 >
                   <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                   API 키 추가하기
-                </a>
+                </button>
               </div>
             )}
           </div>
