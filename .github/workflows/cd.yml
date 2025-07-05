@@ -60,11 +60,13 @@ jobs:
         cache-from: |
           type=gha
           type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
+          type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         cache-to: |
           type=gha,mode=max
           type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
         build-args: |
           BUILDKIT_INLINE_CACHE=1
+        provenance: false
         
     - name: 📝 Generate release notes
       if: github.event_name == 'release'

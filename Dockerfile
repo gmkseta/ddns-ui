@@ -10,8 +10,8 @@ WORKDIR /app
 # 패키지 파일만 먼저 복사 (의존성 캐시 최적화)
 COPY package.json yarn.lock ./
 
-# 의존성 설치
-RUN yarn install --frozen-lockfile
+# 의존성 설치 (네트워크 타임아웃 증가 및 재시도 설정)
+RUN yarn install --frozen-lockfile --network-timeout 300000 --network-concurrency 1
 
 # ===========================================
 # 빌드 스테이지
@@ -23,11 +23,19 @@ WORKDIR /app
 # 의존성 복사
 COPY --from=deps /app/node_modules ./node_modules
 
-# 소스 코드 복사
-COPY . .
+# 패키지 파일 복사
+COPY package.json yarn.lock ./
+
+# 필요한 소스 파일만 복사 (캐시 최적화)
+COPY next.config.ts tsconfig.json ./
+COPY src ./src
+COPY public ./public
+COPY messages ./messages
+COPY middleware.ts ./
 
 # 빌드
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
 RUN yarn build
 
 # ===========================================
