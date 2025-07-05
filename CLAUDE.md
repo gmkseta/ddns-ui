@@ -15,7 +15,7 @@ CI/CD 및 Slack 연동은 포함하지 않으며, Smart Commit과 PR 자동화�
 * Epic/Task는 Jira에서 관리되며, 작업 단위는 반드시 명확한 ID(Task Key)를 가져야 합니다.
 * Git 커밋 및 PR에는 Jira Task ID를 포함해야 하며, smart commit 규칙을 준수해야 합니다.
 * 테스트 코드는 Playwright 기반으로 작성하며, 필요 시 Claude에게 자동 생성을 요청합니다.
-* 모든 작업 파일에는 클래스/파일 작성 가이드를 따라야 하며, 300줄 이내로 유지해야 합니다.
+* 모든 작업 파일에는 클래스/파일 작성 가이드를 따라야 하며, 500줄 이내로 유지해야 합니다.
 
 ---
 
@@ -146,7 +146,7 @@ claude summary --sprint "2025-Q3-W2"
  * 📌 Notes: (선택)
  *   - 설계 상 주의할 점이나 제한사항이 있다면 작성합니다.
  *
- * ⚠️ 파일 크기는 최대 300줄 미만으로 유지하세요.
+ * ⚠️ 파일 크기는 최대 500줄 미만으로 유지하세요.
  *     책임이 많아지면 클래스를 분리하고, 단일 책임 원칙(SRP)을 지키세요.
  */
 ```
@@ -191,7 +191,7 @@ claude context resume "AUTH-12"
 
 * MCP Server를 사용하지 않으면 Claude는 정확한 문맥을 인식하지 못할 수 있습니다.
 * 커밋 메시지에 Jira Task ID가 빠지면 Smart Commit 자동 처리가 되지 않습니다.
-* 하나의 파일이 300줄을 초과하지 않도록 유지하세요.
+* 하나의 파일이 500줄을 초과하지 않도록 유지하세요.
 
 
 
@@ -230,7 +230,7 @@ docker buildx build --platform linux/amd64,linux/arm64 -t ddns-ui .
 
 The application follows Next.js App Router patterns with these key architectural decisions:
 
-1. **Component-Based Architecture**: Main page (`/[locale]/page.tsx`) uses modular components to keep files under 300 lines
+1. **Component-Based Architecture**: Main page (`/[locale]/page.tsx`) uses modular components to keep files under 500 lines
 2. **API Routes**: Backend logic is in `/api/*` endpoints, each handling specific functionality
 3. **Database**: SQLite file-based database (`lib/database.ts`) stores users, zones, records, and update logs
 4. **Authentication**: JWT tokens managed through `lib/auth.ts` with HTTP-only cookies
@@ -253,7 +253,7 @@ The application follows Next.js App Router patterns with these key architectural
 - Real-time UI updates after API calls
 
 ### Component Architecture
-Main page is componentized for maintainability (keeping each file under 300 lines):
+Main page is componentized for maintainability (keeping each file under 500 lines):
 - `DNSTabNavigation`: Tab switching between DNS records and scheduler logs
 - `DNSConfigSection`: API key and zone selection UI
 - `DNSRecordsTable`: DNS records table with sorting and DDNS management
