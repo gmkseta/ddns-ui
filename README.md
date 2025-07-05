@@ -29,21 +29,53 @@
 
 ## 🚀 Quick Start
 
+> ⚠️ **Security Note**: Default credentials are provided for initial setup only. You MUST change them in production!
+
+### 🎯 Fastest Start (Copy & Paste)
+
+```bash
+# One-liner setup with Docker Compose
+curl -O https://raw.githubusercontent.com/gmkseta/ddns-ui/main/docker-compose.yml && \
+echo -e "ADMIN_PASSWORD=$(openssl rand -base64 12)\nJWT_SECRET=$(openssl rand -base64 32)" > .env && \
+docker-compose up -d && \
+echo "✅ DDNS UI is running at http://localhost:3000" && \
+echo "👤 Username: admin" && \
+echo "🔑 Password: $(grep ADMIN_PASSWORD .env | cut -d'=' -f2)"
+```
+
 ### 🐳 Using Docker (Recommended)
 
 ```bash
-# Pull and run the latest image
+# Quick start with default settings (CHANGE PASSWORD AFTER!)
 docker run -d \
   --name ddns-ui \
   -p 3000:3000 \
   -v ddns-data:/app/data \
+  -e ADMIN_PASSWORD=your-secure-password \
+  -e JWT_SECRET=$(openssl rand -base64 32) \
   --restart unless-stopped \
   gmkseta/ddns-ui:latest
 ```
 
-### 🐳 Using Docker Compose
+### 🐳 Using Docker Compose (Easiest)
 
-1. Create a `docker-compose.yml` file:
+**Quick Start in 3 Steps:**
+
+```bash
+# 1. Download docker-compose.yml
+curl -O https://raw.githubusercontent.com/gmkseta/ddns-ui/main/docker-compose.yml
+
+# 2. Create .env file with secure passwords
+cat > .env << EOF
+ADMIN_PASSWORD=your-secure-password
+JWT_SECRET=$(openssl rand -base64 32)
+EOF
+
+# 3. Start the service
+docker-compose up -d
+```
+
+**Or manually create `docker-compose.yml`:**
 
 ```yaml
 version: '3.8'
@@ -53,19 +85,36 @@ services:
     container_name: ddns-ui
     ports:
       - "${HOST_PORT:-3000}:3000"
+    environment:
+      # Admin credentials (CHANGE THESE!)
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-changeme}
+      # JWT secret key (MUST CHANGE IN PRODUCTION!)
+      - JWT_SECRET=${JWT_SECRET:-your-random-jwt-secret-key}
+      # Update interval in minutes
+      - UPDATE_INTERVAL=${UPDATE_INTERVAL:-5}
+      - NODE_ENV=production
     volumes:
       - ddns-data:/app/data
     restart: unless-stopped
-    environment:
-      - NODE_ENV=production
 
 volumes:
   ddns-data:
 ```
 
-2. Optional: Create `.env` file for custom port:
+2. Create `.env` file for configuration:
 ```bash
-HOST_PORT=8080
+# Copy example and edit
+cp .env.example .env
+
+# Or create manually
+cat > .env << EOF
+HOST_PORT=3000
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=your-secure-password
+JWT_SECRET=$(openssl rand -base64 32)
+UPDATE_INTERVAL=5
+EOF
 ```
 
 3. Start the service:
@@ -95,9 +144,9 @@ Open your browser and navigate to `http://localhost:3000`
 
 1. Access the web interface at `http://localhost:3000`
 2. Login with default credentials:
-   - Username: `admin`
-   - Password: `password`
-3. **⚠️ Important**: Change the default password immediately after first login
+   - Username: `admin`  
+   - Password: `changeme`
+3. **⚠️ SECURITY WARNING**: Change the default password immediately after first login!
 4. Select your preferred language (Korean/English/Japanese)
 5. Add your Cloudflare API credentials:
    - Go to API Keys section
@@ -135,11 +184,15 @@ The interface automatically detects your browser language and switches according
 
 ## 🌐 Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NODE_ENV` | Application environment | `development` |
-| `PORT` | Server port | `3000` |
-| `DATABASE_PATH` | SQLite database file path | `./data/ddns.db` |
+| Variable | Description | Default | Required |
+|----------|-------------|---------|----------|
+| `ADMIN_USERNAME` | Admin login username | `admin` | ⚠️ Change |
+| `ADMIN_PASSWORD` | Admin login password | `changeme` | ⚠️ Change |
+| `JWT_SECRET` | JWT token secret key | - | ✅ Yes |
+| `DATABASE_PATH` | SQLite database file path | `./data/ddns.db` | No |
+| `UPDATE_INTERVAL` | Update interval (minutes) | `5` | No |
+| `NODE_ENV` | Application environment | `development` | No |
+| `PORT` | Server port | `3000` | No |
 
 ## 📡 API Endpoints
 

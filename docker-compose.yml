@@ -20,7 +20,8 @@ services:
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-changeme}
       
       # JWT 시크릿 키 (보안을 위해 변경 필수!)
-      - JWT_SECRET=${JWT_SECRET:-your-random-jwt-secret-key-change-this-in-production}
+      # 랜덤 키 생성: openssl rand -base64 32
+      - JWT_SECRET=${JWT_SECRET:-CHANGE-THIS-IN-PRODUCTION-MUST-BE-RANDOM}
       
       # 데이터베이스 경로
       - DATABASE_PATH=/app/data/db.sqlite3
