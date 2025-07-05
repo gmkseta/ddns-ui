@@ -151,11 +151,12 @@ class DDNSScheduler {
 export const ddnsScheduler = new DDNSScheduler();
 
 // Next.js 서버 시작 시 자동으로 스케줄러 시작
-if (typeof window === 'undefined' && process.env.NODE_ENV !== 'development') {
+if (typeof window === 'undefined') {
   const updateInterval = parseInt(process.env.UPDATE_INTERVAL || '5', 10);
   
-  // 서버 시작 후 30초 후에 스케줄러 시작 (DB 초기화 대기)
+  // 서버 시작 후 10초 후에 스케줄러 시작 (DB 초기화 대기)
   setTimeout(() => {
+    console.log(`[Scheduler] Starting DDNS scheduler in ${process.env.NODE_ENV} mode with ${updateInterval} minute interval`);
     ddnsScheduler.start(updateInterval);
-  }, 30000);
+  }, 10000);
 } 

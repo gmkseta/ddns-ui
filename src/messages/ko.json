@@ -19,7 +19,8 @@
     "import": "가져오기",
     "copy": "복사",
     "copied": "복사됨",
-    "updating": "갱신중..."
+    "updating": "갱신중...",
+    "reload": "새로고침"
   },
   "auth": {
     "login": "로그인",

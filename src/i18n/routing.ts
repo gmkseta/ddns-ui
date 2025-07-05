@@ -5,7 +5,7 @@ export const routing = defineRouting({
   // 지원하는 로케일 목록
   locales: ['ko', 'en', 'ja'],
   
-  // 기본 로케일을 영어로 변경 (브라우저 감지 실패시 사용)
+  // 기본 로케일을 영어로 설정
   defaultLocale: 'en',
   
   // 로케일 감지 활성화 (브라우저 언어 설정 우선)

@@ -2,16 +2,24 @@ version: '3.8'
 
 services:
   ddns-ui:
-    build: .
+    # 이미지 사용 (빌드 없이 바로 실행)
+    image: gmkseta/ddns-ui:latest
+    # 또는 로컬 빌드 사용 (주석 해제하여 사용)
+    # build: .
+    
     container_name: cloudflare-ddns-ui
+    
     ports:
-      - "3000:3000"
+      # 포트 변경: 왼쪽이 호스트 포트, 오른쪽이 컨테이너 포트
+      # 예: 8080:3000 으로 변경하면 localhost:8080으로 접속
+      - "${HOST_PORT:-3000}:3000"
+    
     environment:
       # 관리자 계정 설정
       - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-changeme}
       
-      # JWT 시크릿 키
+      # JWT 시크릿 키 (보안을 위해 변경 필수!)
       - JWT_SECRET=${JWT_SECRET:-your-random-jwt-secret-key-change-this-in-production}
       
       # 데이터베이스 경로

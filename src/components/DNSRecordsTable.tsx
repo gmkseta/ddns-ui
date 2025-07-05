@@ -70,12 +70,28 @@ export default function DNSRecordsTable({
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
           {tDns('recordsCount', { count: records.length })}
         </h3>
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2">
+          {/* 새로고침 버튼 */}
+          <button
+            onClick={() => window.location.reload()}
+            className="flex items-center space-x-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+          >
+            <svg 
+              className="w-4 h-4" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>{t('common.reload')}</span>
+          </button>
+          
           {/* DDNS 수동 갱신 버튼 */}
           <button
             onClick={onDDNSUpdate}
             disabled={ddnsLoading || !selectedApiKey || !selectedZone || records.filter(r => r.autoUpdate).length === 0}
-            className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="flex items-center space-x-2 px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
             title={records.filter(r => r.autoUpdate).length === 0 ? t('ddns.noAutoUpdateRecords') : ''}
           >
             <svg 
@@ -97,7 +113,7 @@ export default function DNSRecordsTable({
           {/* 레코드 추가 버튼 */}
           <button 
             onClick={onAddRecord}
-            className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="flex items-center space-x-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

@@ -19,7 +19,8 @@
     "import": "インポート",
     "copy": "コピー",
     "copied": "コピーしました",
-    "updating": "更新中..."
+    "updating": "更新中...",
+    "reload": "リロード"
   },
   "auth": {
     "login": "ログイン",

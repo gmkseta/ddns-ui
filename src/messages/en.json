@@ -19,7 +19,8 @@
     "import": "Import",
     "copy": "Copy",
     "copied": "Copied",
-    "updating": "Updating..."
+    "updating": "Updating...",
+    "reload": "Reload"
   },
   "auth": {
     "login": "Login",

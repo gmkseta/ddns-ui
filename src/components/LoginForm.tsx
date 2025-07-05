@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface LoginFormProps {
   onLogin: (username: string, password: string) => Promise<void>;
@@ -25,6 +26,11 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      {/* 언어 선택기 - 우측 상단 */}
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
+      
       <div className="w-full max-w-md">
         {/* 로고 및 타이틀 */}
         <div className="text-center mb-8">
