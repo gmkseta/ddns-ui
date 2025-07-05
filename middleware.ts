@@ -4,15 +4,11 @@ import {routing} from './src/i18n/routing';
 export default createMiddleware(routing);
 
 export const config = {
-  // API 경로, Next.js 내부 파일, 정적 파일 제외
+  // 루트 경로를 포함하여 모든 경로에 매치 (API와 정적 파일 제외)
   matcher: [
-    /*
-     * 다음으로 시작하는 경로를 제외한 모든 요청 경로와 매치:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     */
+    // 루트 경로 명시적으로 포함
+    '/',
+    // 다른 모든 경로 (API와 정적 파일 제외)
     '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
   ],
 }; 
