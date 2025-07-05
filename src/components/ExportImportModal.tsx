@@ -95,28 +95,26 @@ export default function ExportImportModal({ isOpen, onClose, mode }: ExportImpor
     URL.revokeObjectURL(url);
   };
 
-  // 모달 열릴 때 Export 모드면 자동으로 데이터 로드
-  const handleModalOpen = () => {
-    if (mode === 'export') {
-      handleExport();
-    } else {
-      setJsonData('');
-      setError('');
-      setSuccess('');
-    }
-  };
 
-  // 모달이 열릴 때마다 초기화
-  if (isOpen && !loading && !jsonData && mode === 'export') {
-    handleModalOpen();
-  }
-
-  // includeLogs 상태가 변경될 때 자동으로 다시 export
+  // 모달이 열릴 때 초기화
   useEffect(() => {
-    if (isOpen && mode === 'export' && jsonData) {
+    if (isOpen) {
+      if (mode === 'export') {
+        handleExport();
+      } else {
+        setJsonData('');
+        setError('');
+        setSuccess('');
+      }
+    }
+  }, [isOpen, mode]); // handleExport는 의도적으로 제외 (무한 루프 방지)
+
+  // includeLogs 상태가 변경될 때만 다시 export
+  useEffect(() => {
+    if (isOpen && mode === 'export') {
       handleExport();
     }
-  }, [includeLogs, isOpen, mode, jsonData, handleExport]);
+  }, [includeLogs]); // 의존성을 최소화하여 무한 루프 방지
 
   if (!isOpen) return null;
 
