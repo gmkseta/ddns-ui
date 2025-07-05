@@ -107,6 +107,7 @@ export default function ExportImportModal({ isOpen, onClose, mode }: ExportImpor
         setSuccess('');
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, mode]); // handleExport는 의도적으로 제외 (무한 루프 방지)
 
   // includeLogs 상태가 변경될 때만 다시 export
@@ -114,6 +115,7 @@ export default function ExportImportModal({ isOpen, onClose, mode }: ExportImpor
     if (isOpen && mode === 'export') {
       handleExport();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [includeLogs]); // 의존성을 최소화하여 무한 루프 방지
 
   if (!isOpen) return null;
