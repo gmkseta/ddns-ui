@@ -26,12 +26,16 @@ export async function POST(request: NextRequest) {
 
     // 쿠키에 토큰 저장
     const cookieStore = await cookies();
+    const isHttps = process.env.USE_HTTPS === 'true' || request.headers.get('x-forwarded-proto') === 'https';
+    const host = request.headers.get('host');
+    
     cookieStore.set('auth-token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isHttps,
       sameSite: 'lax',
       maxAge: 60 * 60 * 24, // 24시간
       path: '/',
+      domain: host ? `.${host.split('.').slice(-2).join('.')}` : undefined, // 상위 도메인으로 설정
     });
 
     return NextResponse.json({

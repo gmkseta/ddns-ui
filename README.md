@@ -201,6 +201,7 @@ The interface automatically detects your browser language and switches according
 | `JWT_SECRET` | JWT token secret key | - | ✅ Yes |
 | `DATABASE_PATH` | SQLite database file path | `./data/ddns.db` | No |
 | `UPDATE_INTERVAL` | Update interval (minutes) | `5` | No |
+| `USE_HTTPS` | Enable HTTPS for secure cookies | `true` | No |
 | `NODE_ENV` | Application environment | `development` | No |
 | `PORT` | Server port | `3000` | No |
 
@@ -250,12 +251,17 @@ The database includes:
    - Check your network connectivity
    - Verify no firewall is blocking outbound requests
 
-3. **Container won't start**
+3. **Authentication issues with proxy/HTTPS setup**
+   - Set `USE_HTTPS=true` in environment variables when using HTTPS
+   - Ensure your proxy passes the correct headers (X-Forwarded-Proto, Host)
+   - For nginx proxy, add: `proxy_set_header X-Forwarded-Proto $scheme;`
+
+4. **Container won't start**
    - Check if port 3000 is already in use
    - Verify Docker has sufficient permissions
    - Check container logs: `docker logs ddns-ui`
 
-4. **Root path returns 404**
+5. **Root path returns 404**
    - This is normal in development mode with Turbopack
    - Access via `/en`, `/ko`, or `/ja` directly
    - In production, root path redirects correctly
