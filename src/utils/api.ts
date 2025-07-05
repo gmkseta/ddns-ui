@@ -37,6 +37,7 @@ export const apiRequest = async <T = unknown>(
       'Content-Type': 'application/json',
       ...options.headers,
     },
+    credentials: 'same-origin',
     ...options,
   });
 

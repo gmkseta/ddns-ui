@@ -22,7 +22,9 @@ export default function ExportImportModal({ isOpen, onClose, mode }: ExportImpor
 
     try {
       const url = `/api/export?includeLogs=${includeLogs}`;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        credentials: 'same-origin'
+      });
       if (response.ok) {
         const data = await response.json();
         setJsonData(JSON.stringify(data, null, 2));
@@ -56,6 +58,7 @@ export default function ExportImportModal({ isOpen, onClose, mode }: ExportImpor
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'same-origin',
         body: JSON.stringify(parsedData),
       });
 
