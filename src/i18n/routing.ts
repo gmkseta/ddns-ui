@@ -11,8 +11,8 @@ export const routing = defineRouting({
   // 로케일 감지 활성화 (브라우저 언어 설정 우선)
   localeDetection: true,
   
-  // 로케일 prefix를 always로 설정하여 URL에 항상 로케일 포함
-  localePrefix: 'always'
+  // 로케일 prefix를 as-needed로 변경하여 기본 로케일(en)일 때는 prefix 없음
+  localePrefix: 'as-needed'
 });
 
 // 타입 안전한 네비게이션 유틸리티

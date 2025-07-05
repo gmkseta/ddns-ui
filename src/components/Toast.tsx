@@ -83,7 +83,7 @@ const CustomToast = ({ message, type }: CustomToastProps) => {
           {config.icon}
         </div>
         <div className="flex-1 min-w-0">
-          <p className={`text-base font-medium ${config.textColor} leading-relaxed break-words`}>
+          <p className={`text-base font-medium ${config.textColor} leading-relaxed break-words whitespace-pre-line`}>
             {message}
           </p>
         </div>
@@ -145,7 +145,7 @@ export const showToast = {
             </svg>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-base font-medium text-blue-800 dark:text-blue-300 leading-relaxed break-words">
+            <p className="text-base font-medium text-blue-800 dark:text-blue-300 leading-relaxed break-words whitespace-pre-line">
               {message}
             </p>
           </div>

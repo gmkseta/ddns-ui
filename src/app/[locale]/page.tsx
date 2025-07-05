@@ -9,6 +9,7 @@ import ExportImportModal from '@/components/ExportImportModal';
 import AddRecordModal from '@/components/AddRecordModal';
 import EditRecordModal from '@/components/EditRecordModal';
 import DNSTabNavigation from '@/components/DNSTabNavigation';
+import Footer from '@/components/Footer';
 
 // 유틸 함수들 import
 import { 
@@ -479,6 +480,9 @@ export default function Home() {
             getRecordSyncStatus={getRecordSyncStatus}
           />
         </div>
+        
+        {/* Footer */}
+        <Footer />
       </div>
 
       {/* Export/Import 모달 */}
