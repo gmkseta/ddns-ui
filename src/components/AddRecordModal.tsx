@@ -84,10 +84,19 @@ export default function AddRecordModal({
   };
 
   const handleInputChange = (field: string, value: string | number | boolean) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value,
-    }));
+    setFormData(prev => {
+      const newData = {
+        ...prev,
+        [field]: value,
+      };
+      
+      // 타입이 변경되었고 proxied를 지원하지 않는 타입이면 proxied를 false로 설정
+      if (field === 'type' && !['A', 'AAAA', 'CNAME'].includes(value as string)) {
+        newData.proxied = false;
+      }
+      
+      return newData;
+    });
   };
 
   if (!isOpen) return null;
@@ -194,19 +203,29 @@ export default function AddRecordModal({
             </select>
           </div>
 
-          {/* Proxied */}
-          <div className="flex items-center space-x-3">
-            <input
-              type="checkbox"
-              id="proxied"
-              checked={formData.proxied}
-              onChange={(e) => handleInputChange('proxied', e.target.checked)}
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-            />
-            <label htmlFor="proxied" className="text-sm text-gray-700 dark:text-gray-300">
-              Cloudflare Proxy 사용 (A, AAAA, CNAME 타입만)
-            </label>
-          </div>
+          {/* Proxied - A, AAAA, CNAME 타입에서만 가능 */}
+          {['A', 'AAAA', 'CNAME'].includes(formData.type) && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                프록시 설정 (Proxy)
+              </label>
+              <div className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  id="proxied"
+                  checked={formData.proxied}
+                  onChange={(e) => handleInputChange('proxied', e.target.checked)}
+                  className="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500 focus:ring-2"
+                />
+                <label htmlFor="proxied" className="text-sm text-gray-700 dark:text-gray-300">
+                  Cloudflare Proxy 사용 (A, AAAA, CNAME 타입만)
+                </label>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                Cloudflare를 통한 프록시 (CDN 및 보안 기능)
+              </p>
+            </div>
+          )}
 
           {/* Auto Update */}
           <div className="flex items-center space-x-3">
