@@ -44,6 +44,13 @@ export const apiRequest = async <T = unknown>(
   const data = await response.json();
 
   if (!response.ok) {
+    // 401 인증 에러 시 자동 로그아웃 처리
+    if (response.status === 401) {
+      // 로그인 페이지로 리다이렉트
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      }
+    }
     throw new Error(data.error || `HTTP ${response.status}`);
   }
 

@@ -177,6 +177,10 @@ export default function Home() {
         
         // API 키 선택과 Zone 로드를 순차적으로 실행
         await selectApiKeyAndLoadZones(keyToSelect);
+      } else {
+        // API 키가 없는 경우 localStorage 정리
+        setSelectedApiKey('');
+        setSelectedZone('');
       }
     } catch (error) {
       handleApiError(error, 'API 키 로드 오류');
