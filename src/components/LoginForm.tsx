@@ -25,7 +25,7 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
       {/* 언어 선택기 - 우측 상단 */}
       <div className="absolute top-4 right-4">
         <LanguageSwitcher />
@@ -37,18 +37,18 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
           <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
             <span className="text-white font-bold text-2xl">D</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
             {t('navbar.title')}
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             {t('auth.welcome')}
           </p>
         </div>
 
         {/* 로그인 카드 */}
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 p-8">
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-sm">
+            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 rounded-2xl text-sm">
               {error}
             </div>
           )}
@@ -56,7 +56,7 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* 사용자명 입력 */}
             <div>
-              <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-3">
+              <label htmlFor="username" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                 {t('auth.username')}
               </label>
               <input
@@ -68,14 +68,14 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={loading}
-                className="w-full px-4 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 disabled:opacity-50 transition-all text-base"
+                className="w-full px-4 py-4 border border-gray-200 dark:border-gray-600 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 transition-all text-base"
                 placeholder={t('auth.username')}
               />
             </div>
 
             {/* 비밀번호 입력 */}
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-3">
+              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                 {t('auth.password')}
               </label>
               <div className="relative">
@@ -88,7 +88,7 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
-                  className="w-full px-4 py-4 pr-12 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 disabled:opacity-50 transition-all text-base"
+                  className="w-full px-4 py-4 pr-12 border border-gray-200 dark:border-gray-600 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 transition-all text-base"
                   placeholder={t('auth.password')}
                 />
                 <button
@@ -123,16 +123,16 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
           </form>
 
           {/* 추가 정보 */}
-          <div className="mt-8 p-4 bg-blue-50 rounded-2xl border border-blue-200">
+          <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800">
             <div className="flex items-start space-x-3">
-              <div className="w-5 h-5 bg-blue-100 rounded-lg flex items-center justify-center mt-0.5">
-                <svg className="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-5 h-5 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center mt-0.5">
+                <svg className="w-3 h-3 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div>
-                <p className="text-blue-800 text-sm font-medium">관리자 계정</p>
-                <p className="text-blue-700 text-xs mt-1">
+                <p className="text-blue-800 dark:text-blue-200 text-sm font-medium">관리자 계정</p>
+                <p className="text-blue-700 dark:text-blue-300 text-xs mt-1">
                   Docker 환경변수로 설정된 ADMIN_USERNAME과 ADMIN_PASSWORD를 사용하세요
                 </p>
               </div>
@@ -142,7 +142,7 @@ export default function LoginForm({ onLogin, loading, error }: LoginFormProps) {
 
         {/* 푸터 */}
         <div className="text-center mt-8">
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
             Cloudflare DDNS 관리 시스템
           </p>
         </div>
