@@ -30,7 +30,6 @@ COPY package.json yarn.lock ./
 COPY next.config.ts tsconfig.json ./
 COPY src ./src
 COPY public ./public
-COPY messages ./messages
 COPY middleware.ts ./
 
 # 빌드
