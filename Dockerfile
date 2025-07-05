@@ -31,6 +31,7 @@ COPY next.config.ts tsconfig.json ./
 COPY src ./src
 COPY public ./public
 COPY middleware.ts ./
+COPY postcss.config.mjs ./
 
 # 빌드
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -59,6 +60,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/src ./src
 COPY --from=builder --chown=nextjs:nodejs /app/next.config.ts ./
 COPY --from=builder --chown=nextjs:nodejs /app/middleware.ts ./
+COPY --from=builder --chown=nextjs:nodejs /app/postcss.config.mjs ./
 
 # 데이터 디렉토리 생성
 RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
