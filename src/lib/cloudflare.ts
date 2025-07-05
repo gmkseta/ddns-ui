@@ -167,28 +167,33 @@ export class CloudflareAPI {
 
 // 현재 공인 IP 조회
 export async function getCurrentIP(): Promise<string> {
-  try {
-    const response = await axios.get('https://ipv4.icanhazip.com', {
-      timeout: 5000,
-    });
-    return response.data.trim();
-  } catch {
-    // 백업 서비스들
-    const backupServices = [
-      'https://api.ipify.org',
-      'https://icanhazip.com',
-      'https://checkip.amazonaws.com',
-    ];
+  const services = [
+    'https://api.ipify.org',
+    'https://ipv4.icanhazip.com',
+    'https://icanhazip.com',
+    'https://checkip.amazonaws.com',
+  ];
 
-    for (const service of backupServices) {
-      try {
-        const response = await axios.get(service, { timeout: 5000 });
-        return response.data.trim();
-      } catch {
-        continue;
-      }
+  let lastError: Error | null = null;
+
+  for (const service of services) {
+    try {
+      console.log(`Trying IP service: ${service}`);
+      const response = await axios.get(service, { 
+        timeout: 10000,
+        headers: {
+          'User-Agent': 'DDNS-UI/1.0'
+        }
+      });
+      const ip = response.data.trim();
+      console.log(`Got IP from ${service}: ${ip}`);
+      return ip;
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(`Failed to get IP from ${service}`);
+      console.error(`Failed to get IP from ${service}:`, lastError.message);
+      continue;
     }
-
-    throw new Error('Failed to get current IP from all services');
   }
+
+  throw new Error(`Failed to get current IP from all services. Last error: ${lastError?.message}`);
 } 

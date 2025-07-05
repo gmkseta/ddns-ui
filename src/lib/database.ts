@@ -105,15 +105,19 @@ export const initDatabase = () => {
           new_ip TEXT,
           status TEXT NOT NULL,
           message TEXT,
+          trigger_type TEXT DEFAULT 'auto',
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (record_id) REFERENCES dns_records (id)
         )
-      `, (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
+      `);
+
+      // trigger_type 컬럼 추가 (기존 테이블용)
+      db.run(`ALTER TABLE update_logs ADD COLUMN trigger_type TEXT DEFAULT 'auto'`, (err) => {
+        // 이미 컬럼이 있으면 에러 무시
+        if (err && !err.message.includes('duplicate column name')) {
+          console.error('Error adding trigger_type column:', err);
         }
+        resolve();
       });
     });
   });

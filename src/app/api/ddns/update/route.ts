@@ -86,10 +86,10 @@ export async function POST(request: NextRequest) {
           statusMessage += ' (Proxy 비활성화됨)';
         }
 
-        // 업데이트 로그 저장
+        // 업데이트 로그 저장 (수동 업데이트로 기록)
         await dbRun(`
-          INSERT INTO update_logs (record_id, old_ip, new_ip, status, message)
-          VALUES (?, ?, ?, 'success', ?)
+          INSERT INTO update_logs (record_id, old_ip, new_ip, status, message, trigger_type)
+          VALUES (?, ?, ?, 'success', ?, 'manual')
         `, [record.id, record.content, currentIP, statusMessage]);
 
         results.push({
