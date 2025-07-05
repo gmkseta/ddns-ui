@@ -141,7 +141,7 @@ export default function SchedulerLogs() {
             <button
               onClick={() => handleSchedulerAction('run')}
               disabled={status?.isUpdating}
-              className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 disabled:opacity-50"
             >
               <ArrowPathIcon className="h-4 w-4" />
               수동 실행
@@ -149,7 +149,7 @@ export default function SchedulerLogs() {
             {status?.isRunning ? (
               <button
                 onClick={() => handleSchedulerAction('stop')}
-                className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100"
+                className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30"
               >
                 <StopIcon className="h-4 w-4" />
                 중지
@@ -157,7 +157,7 @@ export default function SchedulerLogs() {
             ) : (
               <button
                 onClick={() => handleSchedulerAction('start')}
-                className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-green-600 bg-green-50 rounded-lg hover:bg-green-100"
+                className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30"
               >
                 <PlayIcon className="h-4 w-4" />
                 시작
@@ -169,28 +169,28 @@ export default function SchedulerLogs() {
         {status && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
                 {status.isRunning ? '실행 중' : '중지됨'}
               </div>
-              <div className="text-sm text-gray-500">스케줄러 상태</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">스케줄러 상태</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
                 {status.isUpdating ? '진행 중' : '대기 중'}
               </div>
-              <div className="text-sm text-gray-500">업데이트 상태</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">업데이트 상태</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
                 {status.updateInterval}분
               </div>
-              <div className="text-sm text-gray-500">업데이트 주기</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">업데이트 주기</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
                 {status.environment}
               </div>
-              <div className="text-sm text-gray-500">환경</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">환경</div>
             </div>
           </div>
         )}
@@ -205,7 +205,7 @@ export default function SchedulerLogs() {
         </div>
 
         {logs.length === 0 ? (
-          <div className="p-6 text-center text-gray-500">
+          <div className="p-6 text-center text-gray-500 dark:text-gray-400">
             아직 스케줄러 로그가 없습니다.
           </div>
         ) : (
