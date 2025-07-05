@@ -122,6 +122,16 @@ EOF
 docker-compose up -d
 ```
 
+**최신 버전으로 업데이트하기:**
+```bash
+# 최신 이미지 pull 후 재시작
+docker-compose pull && docker-compose up -d
+
+# 또는 구버전 docker-compose 사용 시
+docker pull gmkseta/ddns-ui:latest
+docker-compose down && docker-compose up -d
+```
+
 ### 🖥️ 로컬 개발 설정
 
 ```bash

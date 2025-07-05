@@ -122,6 +122,16 @@ EOF
 docker-compose up -d
 ```
 
+**To update to the latest version:**
+```bash
+# Pull the latest image and restart
+docker-compose pull && docker-compose up -d
+
+# Or if you have an older docker-compose version
+docker pull gmkseta/ddns-ui:latest
+docker-compose down && docker-compose up -d
+```
+
 ### 🖥️ Local Development Setup
 
 ```bash

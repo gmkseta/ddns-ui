@@ -122,6 +122,16 @@ EOF
 docker-compose up -d
 ```
 
+**最新バージョンへの更新:**
+```bash
+# 最新イメージをpullして再起動
+docker-compose pull && docker-compose up -d
+
+# または古いバージョンのdocker-composeを使用している場合
+docker pull gmkseta/ddns-ui:latest
+docker-compose down && docker-compose up -d
+```
+
 ### 🖥️ ローカル開発セットアップ
 
 ```bash

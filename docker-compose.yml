@@ -9,6 +9,9 @@ services:
     
     container_name: cloudflare-ddns-ui
     
+    # 항상 최신 이미지 pull (docker-compose up 시마다 확인)
+    pull_policy: always
+    
     ports:
       # 포트 변경: 왼쪽이 호스트 포트, 오른쪽이 컨테이너 포트
       # 예: 8080:3000 으로 변경하면 localhost:8080으로 접속
