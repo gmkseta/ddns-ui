@@ -115,7 +115,11 @@ export default function Home() {
       const recordList = await getRecords(zoneId, keyToUse);
       setRecords(recordList);
     } catch (error) {
-      handleApiError(error, '레코드 로드 오류');
+      console.error('레코드 로드 중 오류:', error);
+      // 401/403 에러는 인증 문제이므로 별도 처리
+      if (error instanceof Error && !error.message.includes('401') && !error.message.includes('403')) {
+        handleApiError(error, '레코드 로드 오류');
+      }
     } finally {
       setRecordsLoading(false);
     }
@@ -154,7 +158,11 @@ export default function Home() {
         await selectZoneAndLoadRecords(zoneToSelect, apiKeyId);
       }
     } catch (error) {
-      handleApiError(error, 'Zone 로드 오류');
+      console.error('Zone 로드 중 오류:', error);
+      // 401/403 에러는 인증 문제이므로 별도 처리
+      if (error instanceof Error && !error.message.includes('401') && !error.message.includes('403')) {
+        handleApiError(error, 'Zone 로드 오류');
+      }
     } finally {
       setZonesLoading(false);
     }
@@ -178,12 +186,19 @@ export default function Home() {
         // API 키 선택과 Zone 로드를 순차적으로 실행
         await selectApiKeyAndLoadZones(keyToSelect);
       } else {
-        // API 키가 없는 경우 localStorage 정리
+        // API 키가 없는 경우 localStorage 정리 (이것은 정상적인 상태)
         setSelectedApiKey('');
         setSelectedZone('');
+        // API 키가 없는 것은 에러가 아니므로 토스트 메시지를 표시하지 않음
       }
     } catch (error) {
-      handleApiError(error, 'API 키 로드 오류');
+      // 네트워크 에러나 서버 에러 등 실제 에러만 처리
+      console.error('API 키 로드 중 오류:', error);
+      // 401 에러는 인증 문제이므로 별도 처리 (페이지 리로드됨)
+      // 빈 배열이 반환되는 것은 정상이므로 에러로 처리하지 않음
+      if (error instanceof Error && !error.message.includes('401') && !error.message.includes('403')) {
+        handleApiError(error, 'API 키 로드 오류');
+      }
     }
   }, [selectApiKeyAndLoadZones]);
 

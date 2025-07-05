@@ -1,6 +1,9 @@
 const config = {
   plugins: {
-    "@tailwindcss/postcss": {},
+    "@tailwindcss/postcss": {
+      // PostCSS 최적화 옵션
+      optimize: true,
+    },
   },
 };
 

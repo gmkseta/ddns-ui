@@ -11,7 +11,12 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # 의존성 설치 (네트워크 타임아웃 증가 및 재시도 설정)
-RUN yarn install --frozen-lockfile --network-timeout 300000 --network-concurrency 1
+# ARM64 빌드 시 병렬 처리 제한으로 메모리 사용량 최적화
+RUN if [ "$(uname -m)" = "aarch64" ]; then \
+      yarn install --frozen-lockfile --network-timeout 300000 --network-concurrency 1; \
+    else \
+      yarn install --frozen-lockfile --network-timeout 300000; \
+    fi
 
 # ===========================================
 # 빌드 스테이지
@@ -26,17 +31,30 @@ COPY --from=deps /app/node_modules ./node_modules
 # 패키지 파일 복사
 COPY package.json yarn.lock ./
 
-# 필요한 소스 파일만 복사 (캐시 최적화)
+# 설정 파일 먼저 복사 (캐시 최적화)
 COPY next.config.ts tsconfig.json ./
-COPY src ./src
-COPY public ./public
-COPY middleware.ts ./
 COPY postcss.config.mjs ./
+
+# 정적 파일 복사
+COPY public ./public
+
+# 소스 코드 복사 (가장 자주 변경됨)
+COPY middleware.ts ./
+COPY src ./src
 
 # 빌드
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-RUN yarn build
+# 빌드 시 스케줄러가 시작되지 않도록 설정
+ENV SKIP_SCHEDULER=1
+# PostCSS 캐싱 활성화
+ENV POSTCSS_CACHE=1
+# ARM64에서 빌드 시 메모리 제한 설정
+RUN if [ "$(uname -m)" = "aarch64" ]; then \
+      NODE_OPTIONS="--max-old-space-size=2048" NEXT_TELEMETRY_DISABLED=1 yarn build; \
+    else \
+      NEXT_TELEMETRY_DISABLED=1 yarn build; \
+    fi
 
 # ===========================================
 # 런타임 스테이지

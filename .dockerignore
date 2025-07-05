@@ -74,3 +74,32 @@ logs
 
 # OS files
 Thumbs.db
+
+# Test files
+__tests__
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Storybook
+.storybook
+storybook-static
+
+# ESLint and Prettier
+.eslintrc*
+.prettierrc*
+.eslintcache
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Cypress
+cypress
+cypress.json
+
+# License and changelog
+LICENSE
+CHANGELOG*
