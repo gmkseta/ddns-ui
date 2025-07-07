@@ -15,11 +15,11 @@
 
 ## 📸 スクリーンショット
 
-### ログインページ
-![Login Page](docs/images/login-page.png)
+### DNS設定
+![DNS Configuration](docs/images/login-page.png)
 
-### メインダッシュボード
-![Main Dashboard](docs/images/main-dashboard.png)
+### スケジューラーログ
+![Scheduler Logs](docs/images/main-dashboard.png)
 
 ## ✨ 機能
 

@@ -97,6 +97,7 @@
     "notProxied": "Not Proxied",
     "noRecords": "No DNS records found",
     "selectZoneFirst": "Please select a zone first.",
+    "dnsRecords": "DNS Records Management",
     "selectZonePrompt": "Select a zone to view DNS records",
     "loadingRecords": "Loading records...",
     "recordsCount": "DNS Records ({count} records)",
@@ -221,5 +222,52 @@
   "metadata": {
     "title": "DDNS UI - Cloudflare Dynamic DNS Manager",
     "description": "Dynamic DNS management tool using Cloudflare"
+  },
+  "scheduler": {
+    "title": "Scheduler Status",
+    "logs": "Scheduler Logs",
+    "logsCount": "Scheduler Logs ({count})",
+    "status": {
+      "running": "Running",
+      "stopped": "Stopped",
+      "updating": "Updating",
+      "waiting": "Waiting",
+      "schedulerStatus": "Scheduler Status",
+      "updateStatus": "Update Status",
+      "updateInterval": "Update Interval",
+      "environment": "Environment",
+      "minuteFormat": "{minutes} min"
+    },
+    "actions": {
+      "manualRun": "Manual Run",
+      "start": "Start",
+      "stop": "Stop",
+      "refresh": "Refresh"
+    },
+    "log": {
+      "status": "Status",
+      "type": "Type",
+      "record": "Record",
+      "ipChange": "IP Change",
+      "time": "Time",
+      "success": "Success",
+      "failed": "Failed",
+      "manual": "Manual",
+      "auto": "Auto",
+      "recordType": "{type} Record",
+      "previousIP": "Previous:",
+      "newIP": "New:",
+      "noLogs": "No scheduler logs yet.",
+      "pagination": "{start}-{end} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "messages": {
+      "startSuccess": "Scheduler started successfully.",
+      "stopSuccess": "Scheduler stopped successfully.",
+      "runSuccess": "Manual run started.",
+      "error": "An error occurred.",
+      "networkError": "Network error occurred."
+    }
   }
 } 

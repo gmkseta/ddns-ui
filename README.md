@@ -15,11 +15,11 @@
 
 ## 📸 Screenshots
 
-### Login Page
-![Login Page](docs/images/login-page.png)
+### DNS Configuration
+![DNS Configuration](docs/images/login-page.png)
 
-### Main Dashboard
-![Main Dashboard](docs/images/main-dashboard.png)
+### Scheduler Logs
+![Scheduler Logs](docs/images/main-dashboard.png)
 
 ## ✨ Features
 

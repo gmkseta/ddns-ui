@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ClockIcon, PlayIcon, StopIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { toast } from 'react-hot-toast';
+import { useTranslations } from 'next-intl';
 
 interface SchedulerLog {
   id: number;
@@ -28,6 +29,7 @@ interface SchedulerStatus {
 }
 
 export default function SchedulerLogs() {
+  const t = useTranslations('scheduler');
   const [page, setPage] = useState(0);
   const limit = 20;
 
@@ -68,17 +70,20 @@ export default function SchedulerLogs() {
       const result = await response.json();
       
       if (result.success) {
-        toast.success(result.message);
+        const messageKey = action === 'start' ? 'messages.startSuccess' : 
+                          action === 'stop' ? 'messages.stopSuccess' : 
+                          'messages.runSuccess';
+        toast.success(t(messageKey));
         refetchStatus();
         if (action === 'run') {
           // 수동 실행 후 5초 후에 로그 새로고침
           setTimeout(() => refetchLogs(), 5000);
         }
       } else {
-        toast.error(result.error || '오류가 발생했습니다.');
+        toast.error(result.error || t('messages.error'));
       }
     } catch {
-      toast.error('네트워크 오류가 발생했습니다.');
+      toast.error(t('messages.networkError'));
     }
   };
 
@@ -114,11 +119,11 @@ export default function SchedulerLogs() {
   const getTriggerTypeDisplay = (triggerType: 'auto' | 'manual') => {
     return triggerType === 'manual' ? (
       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500 text-white dark:bg-blue-600">
-        수동
+        {t('log.manual')}
       </span>
     ) : (
       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-700 dark:bg-gray-600 dark:text-gray-200">
-        자동
+        {t('log.auto')}
       </span>
     );
   };
@@ -135,7 +140,7 @@ export default function SchedulerLogs() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
             <ClockIcon className="h-5 w-5" />
-            스케줄러 상태
+            {t('title')}
           </h2>
           <div className="flex gap-2">
             <button
@@ -144,7 +149,7 @@ export default function SchedulerLogs() {
               className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 disabled:opacity-50"
             >
               <ArrowPathIcon className="h-4 w-4" />
-              수동 실행
+              {t('actions.manualRun')}
             </button>
             {status?.isRunning ? (
               <button
@@ -152,7 +157,7 @@ export default function SchedulerLogs() {
                 className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30"
               >
                 <StopIcon className="h-4 w-4" />
-                중지
+                {t('actions.stop')}
               </button>
             ) : (
               <button
@@ -160,7 +165,7 @@ export default function SchedulerLogs() {
                 className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30"
               >
                 <PlayIcon className="h-4 w-4" />
-                시작
+                {t('actions.start')}
               </button>
             )}
           </div>
@@ -170,27 +175,27 @@ export default function SchedulerLogs() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                {status.isRunning ? '실행 중' : '중지됨'}
+                {status.isRunning ? t('status.running') : t('status.stopped')}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">스케줄러 상태</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">{t('status.schedulerStatus')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                {status.isUpdating ? '진행 중' : '대기 중'}
+                {status.isUpdating ? t('status.updating') : t('status.waiting')}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">업데이트 상태</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">{t('status.updateStatus')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                {status.updateInterval}분
+                {t('status.minuteFormat', { minutes: status.updateInterval })}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">업데이트 주기</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">{t('status.updateInterval')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-900 dark:text-white">
                 {status.environment}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">환경</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">{t('status.environment')}</div>
             </div>
           </div>
         )}
@@ -200,13 +205,13 @@ export default function SchedulerLogs() {
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            스케줄러 로그 ({total}개)
+            {t('logsCount', { count: total })}
           </h2>
         </div>
 
         {logs.length === 0 ? (
           <div className="p-6 text-center text-gray-500 dark:text-gray-400">
-            아직 스케줄러 로그가 없습니다.
+            {t('log.noLogs')}
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -214,19 +219,19 @@ export default function SchedulerLogs() {
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                    상태
+                    {t('log.status')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                    유형
+                    {t('log.type')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                    레코드
+                    {t('log.record')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                    IP 변경
+                    {t('log.ipChange')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                    시간
+                    {t('log.time')}
                   </th>
                 </tr>
               </thead>
@@ -237,7 +242,7 @@ export default function SchedulerLogs() {
                       <div className="flex items-center gap-2">
                         {getStatusIcon(log.status)}
                         <span className={`text-sm font-medium ${getStatusColor(log.status)}`}>
-                          {log.status === 'success' ? '성공' : '실패'}
+                          {log.status === 'success' ? t('log.success') : t('log.failed')}
                         </span>
                       </div>
                     </td>
@@ -249,19 +254,19 @@ export default function SchedulerLogs() {
                         {log.record_name}.{log.zone_name}
                       </div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">
-                        {log.record_type} 레코드
+                        {t('log.recordType', { type: log.record_type })}
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-gray-500 dark:text-gray-400 w-10">이전:</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400 w-10">{t('log.previousIP')}</span>
                           <span className="text-sm text-gray-900 dark:text-gray-100 font-mono bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded">
                             {log.old_ip}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-gray-500 dark:text-gray-400 w-10">이후:</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400 w-10">{t('log.newIP')}</span>
                           <span className="text-sm text-gray-900 dark:text-gray-100 font-mono bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-0.5 rounded">
                             {log.new_ip}
                           </span>
@@ -282,7 +287,11 @@ export default function SchedulerLogs() {
         {totalPages > 1 && (
           <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 dark:border-gray-700">
             <div className="text-sm text-gray-700 dark:text-gray-300">
-              {page * limit + 1}-{Math.min((page + 1) * limit, total)} / {total}개
+              {t('log.pagination', { 
+                start: page * limit + 1, 
+                end: Math.min((page + 1) * limit, total), 
+                total 
+              })}
             </div>
             <div className="flex gap-2">
               <button
@@ -290,14 +299,14 @@ export default function SchedulerLogs() {
                 disabled={page === 0}
                 className="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-md disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-600"
               >
-                이전
+                {t('log.previous')}
               </button>
               <button
                 onClick={() => setPage(page + 1)}
                 disabled={page >= totalPages - 1}
                 className="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-md disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-600"
               >
-                다음
+                {t('log.next')}
               </button>
             </div>
           </div>

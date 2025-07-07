@@ -57,6 +57,7 @@ export default function DNSTabNavigation({
   getRecordSyncStatus,
 }: DNSTabNavigationProps) {
   const tDns = useTranslations('dns');
+  const tScheduler = useTranslations('scheduler');
   const [activeTab, setActiveTab] = useState<'records' | 'scheduler'>('records');
 
   return (
@@ -72,7 +73,7 @@ export default function DNSTabNavigation({
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
             }`}
           >
-            DNS 레코드 관리
+            {tDns('dnsRecords')}
           </button>
           <button
             onClick={() => setActiveTab('scheduler')}
@@ -82,7 +83,7 @@ export default function DNSTabNavigation({
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
             }`}
           >
-            스케줄러 로그
+            {tScheduler('logs')}
           </button>
         </nav>
       </div>

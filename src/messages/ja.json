@@ -97,6 +97,7 @@
     "notProxied": "プロキシ無効",
     "noRecords": "登録されたDNSレコードがありません",
     "selectZoneFirst": "最初にゾーンを選択してください。",
+    "dnsRecords": "DNSレコード管理",
     "selectZonePrompt": "ゾーンを選択してDNSレコードを確認してください",
     "loadingRecords": "レコード読み込み中...",
     "recordsCount": "DNSレコード（{count}個）",
@@ -221,5 +222,52 @@
   "metadata": {
     "title": "DDNS UI - Cloudflare 動的DNS管理",
     "description": "Cloudflareを利用した動的DNSサービス管理ツール"
+  },
+  "scheduler": {
+    "title": "スケジューラーステータス",
+    "logs": "スケジューラーログ",
+    "logsCount": "スケジューラーログ ({count}件)",
+    "status": {
+      "running": "実行中",
+      "stopped": "停止中",
+      "updating": "更新中",
+      "waiting": "待機中",
+      "schedulerStatus": "スケジューラーステータス",
+      "updateStatus": "更新ステータス",
+      "updateInterval": "更新間隔",
+      "environment": "環境",
+      "minuteFormat": "{minutes}分"
+    },
+    "actions": {
+      "manualRun": "手動実行",
+      "start": "開始",
+      "stop": "停止",
+      "refresh": "更新"
+    },
+    "log": {
+      "status": "ステータス",
+      "type": "タイプ",
+      "record": "レコード",
+      "ipChange": "IP変更",
+      "time": "時間",
+      "success": "成功",
+      "failed": "失敗",
+      "manual": "手動",
+      "auto": "自動",
+      "recordType": "{type}レコード",
+      "previousIP": "変更前:",
+      "newIP": "変更後:",
+      "noLogs": "スケジューラーログがまだありません。",
+      "pagination": "{start}-{end} / {total}件",
+      "previous": "前へ",
+      "next": "次へ"
+    },
+    "messages": {
+      "startSuccess": "スケジューラーが開始されました。",
+      "stopSuccess": "スケジューラーが停止されました。",
+      "runSuccess": "手動実行が開始されました。",
+      "error": "エラーが発生しました。",
+      "networkError": "ネットワークエラーが発生しました。"
+    }
   }
 } 

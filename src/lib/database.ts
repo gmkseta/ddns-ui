@@ -153,5 +153,13 @@ export const dbRun = (sql: string, params: any[] = []): Promise<{ lastID?: numbe
 
 // 데이터베이스 초기화 실행 (빌드 시에는 건너뛰기)
 if (typeof window === 'undefined' && process.env.NEXT_PHASE !== 'phase-production-build') {
-  initDatabase().catch(console.error);
+  initDatabase()
+    .then(async () => {
+      // 개발 환경에서 시드 데이터 삽입
+      if (process.env.NODE_ENV === 'development') {
+        const { seedDevelopmentData } = await import('./seed-data');
+        await seedDevelopmentData();
+      }
+    })
+    .catch(console.error);
 } 
