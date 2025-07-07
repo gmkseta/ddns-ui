@@ -13,6 +13,14 @@
 ![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)
 ![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
 
+## 📸 Screenshots
+
+### Login Page
+![Login Page](docs/images/login-page.png)
+
+### Main Dashboard
+![Main Dashboard](docs/images/main-dashboard.png)
+
 ## ✨ Features
 
 - **🌍 Multilingual Support**: Korean (한국어), English, Japanese (日本語)
