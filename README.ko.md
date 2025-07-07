@@ -15,11 +15,17 @@
 
 ## 📸 스크린샷
 
-### DNS 설정
-![DNS Configuration](docs/images/login-page.png)
+### 로그인
+![Login](docs/images/login.png)
+
+### 대시보드 - DNS 레코드
+![Dashboard 1](docs/images/dashboard-1.png)
+
+### 대시보드 - Zone 선택
+![Dashboard 2](docs/images/dashboard-2.png)
 
 ### 스케줄러 로그
-![Scheduler Logs](docs/images/main-dashboard.png)
+![Scheduler Logs](docs/images/log.png)
 
 ## ✨ 기능
 

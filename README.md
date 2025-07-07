@@ -15,11 +15,17 @@
 
 ## 📸 Screenshots
 
-### DNS Configuration
-![DNS Configuration](docs/images/login-page.png)
+### Login
+![Login](docs/images/login.png)
+
+### Dashboard - DNS Records
+![Dashboard 1](docs/images/dashboard-1.png)
+
+### Dashboard - Zone Selection
+![Dashboard 2](docs/images/dashboard-2.png)
 
 ### Scheduler Logs
-![Scheduler Logs](docs/images/main-dashboard.png)
+![Scheduler Logs](docs/images/log.png)
 
 ## ✨ Features
 

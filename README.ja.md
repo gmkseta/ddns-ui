@@ -15,11 +15,17 @@
 
 ## 📸 スクリーンショット
 
-### DNS設定
-![DNS Configuration](docs/images/login-page.png)
+### ログイン
+![Login](docs/images/login.png)
+
+### ダッシュボード - DNSレコード
+![Dashboard 1](docs/images/dashboard-1.png)
+
+### ダッシュボード - ゾーン選択
+![Dashboard 2](docs/images/dashboard-2.png)
 
 ### スケジューラーログ
-![Scheduler Logs](docs/images/main-dashboard.png)
+![Scheduler Logs](docs/images/log.png)
 
 ## ✨ 機能
 
