@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getMockCloudflareData } from './seed-data';
 
 const CLOUDFLARE_API_BASE = 'https://api.cloudflare.com/client/v4';
 
@@ -38,12 +37,6 @@ export class CloudflareAPI {
 
   // Zone 목록 조회
   async getZones(): Promise<CloudflareZone[]> {
-    // 개발 환경에서 모킹 데이터 반환
-    if (process.env.NODE_ENV === 'development' && this.apiToken === 'dev_cloudflare_api_token_123456') {
-      const mockData = getMockCloudflareData();
-      return mockData?.zones || [];
-    }
-
     try {
       const response = await axios.get(`${CLOUDFLARE_API_BASE}/zones`, {
         headers: this.getHeaders(),
@@ -64,12 +57,6 @@ export class CloudflareAPI {
 
   // 특정 Zone의 DNS 레코드 조회
   async getDNSRecords(zoneId: string): Promise<CloudflareDNSRecord[]> {
-    // 개발 환경에서 모킹 데이터 반환
-    if (process.env.NODE_ENV === 'development' && this.apiToken === 'dev_cloudflare_api_token_123456') {
-      const mockData = getMockCloudflareData();
-      return mockData?.records || [];
-    }
-
     try {
       const response = await axios.get(`${CLOUDFLARE_API_BASE}/zones/${zoneId}/dns_records`, {
         headers: this.getHeaders(),
@@ -130,22 +117,6 @@ export class CloudflareAPI {
     ttl?: number;
     proxied?: boolean;
   }): Promise<CloudflareDNSRecord> {
-    // 개발 환경에서 모킹 데이터 반환
-    if (process.env.NODE_ENV === 'development' && this.apiToken === 'dev_cloudflare_api_token_123456') {
-      const mockData = getMockCloudflareData();
-      const mockRecord = mockData?.records.find(r => r.id === recordId);
-      if (mockRecord) {
-        return {
-          ...mockRecord,
-          ...record,
-          ttl: record.ttl || 120,
-          proxied: record.proxied || false,
-          proxiable: mockRecord.proxiable || false,
-          locked: mockRecord.locked || false
-        } as CloudflareDNSRecord;
-      }
-    }
-
     try {
       const response = await axios.put(
         `${CLOUDFLARE_API_BASE}/zones/${zoneId}/dns_records/${recordId}`,
@@ -196,11 +167,6 @@ export class CloudflareAPI {
 
 // 현재 공인 IP 조회
 export async function getCurrentIP(): Promise<string> {
-  // 개발 환경에서 테스트 IP 반환
-  if (process.env.NODE_ENV === 'development') {
-    return '192.168.1.100';
-  }
-
   const services = [
     'https://api.ipify.org',
     'https://ipv4.icanhazip.com',
