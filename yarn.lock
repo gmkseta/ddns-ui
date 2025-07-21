@@ -631,7 +631,7 @@
   resolved "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
-"@types/node@*", "@types/node@^24":
+"@types/node@^24":
   version "24.0.10"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-24.0.10.tgz#f65a169779bf0d70203183a1890be7bee8ca2ddb"
   integrity sha512-ENHwaH+JIRTDIEEbDK6QSQntAYGtbvdDXnMXnZaZ6k13Du1dPMmprkEHIL7ok2Wl2aZevetwTAb5S+7yIF+enA==
@@ -650,12 +650,12 @@
   dependencies:
     csstype "^3.0.2"
 
-"@types/sqlite3@^3.1.8":
-  version "3.1.11"
-  resolved "https://registry.npmjs.org/@types/sqlite3/-/sqlite3-3.1.11.tgz#845044b81585f1fcc143ee8d963ca5da63d0e768"
-  integrity sha512-KYF+QgxAnnAh7DWPdNDroxkDI3/MspH1NMx6m/N/6fT1G6+jvsw4/ZePt8R8cr7ta58aboeTfYFBDxTJ5yv15w==
+"@types/sqlite3@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@types/sqlite3/-/sqlite3-5.1.0.tgz#fa5c532eed78eeed11b23a59d9e6efaee4ec6e69"
+  integrity sha512-w25Gd6OzcN0Sb6g/BO7cyee0ugkiLgonhgGYfG+H0W9Ub6PUsC2/4R+KXy2tc80faPIWO3Qytbvr8gP1fU4siA==
   dependencies:
-    "@types/node" "*"
+    sqlite3 "*"
 
 "@typescript-eslint/eslint-plugin@^5.4.2 || ^6.0.0 || ^7.0.0 || ^8.0.0":
   version "8.35.1"
@@ -3519,7 +3519,7 @@ sprintf-js@^1.1.3:
   resolved "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.1.3.tgz#4914b903a2f8b685d17fdf78a70e917e872e444a"
   integrity sha512-Oo+0REFV59/rz3gfJNKQiBlwfHaSESl1pcGyABQsnnIfWOFt6JNj5gCog2U6MLZ//IGYD+nA8nI+mTShREReaA==
 
-sqlite3@^5.1.6:
+sqlite3@*, sqlite3@^5.1.6:
   version "5.1.7"
   resolved "https://registry.npmjs.org/sqlite3/-/sqlite3-5.1.7.tgz#59ca1053c1ab38647396586edad019b1551041b7"
   integrity sha512-GGIyOiFaG+TUra3JIfkI/zGP8yZYLPQ0pl1bH+ODjiX57sPhrLU5sQJn1y9bDKZUFYkX1crlrPfSYt0BKKdkog==
