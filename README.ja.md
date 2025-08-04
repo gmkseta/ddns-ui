@@ -1,6 +1,9 @@
 # Cloudflare DDNS Manager
 
-🌐 自動IP監視と更新機能を備えた、モダンで多言語対応のWebベースダイナミックDNS（DDNS）管理ツール
+🏠 **自宅サーバーを運用されていますか？動的IPアドレスの変更でお困りではありませんか？**
+
+このプロジェクトは、NoIPやDynDNSのような有料DDNSサービスを代替する無料ソリューションです。
+Cloudflareを使用して、動的IP環境でも独自ドメインで安定したホームサーバーアクセスを実現します。NAS、ゲームサーバー、開発環境など、あらゆるセルフホストサービスに最適です。
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/gmkseta/ddns-ui)](https://hub.docker.com/r/gmkseta/ddns-ui)
 [![GitHub release](https://img.shields.io/github/release/gmkseta/ddns-ui.svg)](https://github.com/gmkseta/ddns-ui/releases)
@@ -12,6 +15,19 @@
 ![Node.js](https://img.shields.io/badge/node.js-18+-green.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)
 ![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
+
+## 🤔 DDNSとは？なぜ必要なのでしょうか？
+
+**問題点：** 日本の多くの家庭用インターネット接続（NTT、SoftBank、auなど）は、定期的に変更される動的IPアドレスを使用しています。これにより、固定アドレスでの自宅サーバーへのアクセスが困難になります。
+
+**解決策：** ダイナミックDNS（DDNS）は、IPアドレスが変更されるたびにドメインのDNSレコードを自動更新し、`home.yourdomain.com`が常に現在のIPアドレスを指すようにします。
+
+**一般的な使用例：**
+- 🏠 **ホームサーバーアクセス**: NAS、Plexサーバー、ホームオートメーションへのリモートアクセス
+- 🎮 **ゲームサーバー**: Minecraft、Valheimなどのゲームサーバーを友人と共有
+- 💻 **開発環境**: どこからでも開発環境にアクセス
+- 📹 **セキュリティカメラ**: 高額なクラウドサービスなしで自宅の監視カメラを表示
+- 🌐 **セルフホスティング**: 自宅からWebサイト、ブログ、サービスを運営
 
 ## 📸 スクリーンショット
 
@@ -26,6 +42,22 @@
 
 ### スケジューラーログ
 ![Scheduler Logs](docs/images/log.png)
+
+## 💰 なぜ有料DDNSサービスより優れているのでしょうか？
+
+| サービス | コスト | 独自ドメイン | 制限事項 |
+|---------|------|-------------|-------------|
+| **NoIP** | 無料（30日更新） / 年$25 | ❌ 提供ドメインのみ | 手動更新が必要 |
+| **DynDNS** | 年$55（約7,000円） | ❌ 限定されたドメイン | 基本ニーズには高額 |
+| **Duck DNS** | 無料 | ❌ サブドメインのみ | カスタムドメイン不可 |
+| **このプロジェクト** | **永久無料** | ✅ **あなたのドメインを使用** | **制限なし** |
+
+**その他の利点：**
+- 🌍 CloudflareのグローバルCDNネットワークを活用
+- 🔒 CloudflareのDDoS保護機能を内蔵
+- ⚡ 従来のDDNSより高速なDNS解決
+- 🎯 DNSレコードの完全な制御
+- 📊 すべてを管理できる美しいWeb UI
 
 ## ✨ 機能
 
@@ -42,6 +74,12 @@
 - **🔒 セキュア**: 設定可能な資格情報によるJWTベース認証
 
 ## 🚀 クイックスタート
+
+### 前提条件
+- ドメイン名（どこで購入したものでも可）
+- CloudflareでのDNS管理（無料）
+- Cloudflare APIトークン
+- Dockerのインストール
 
 > ⚠️ **セキュリティ注意**: デフォルトの認証情報は初期設定用のみです。本番環境では必ず変更してください！
 

@@ -1,6 +1,9 @@
 # Cloudflare DDNS Manager
 
-🌐 자동 IP 모니터링 및 업데이트 기능을 갖춘 현대적이고 다국어를 지원하는 웹 기반 다이나믹 DNS(DDNS) 관리 도구
+🏠 **집에서 서버 운영하시나요? KT/SK/LG U+의 유동 IP 때문에 고민이신가요?**
+
+이 프로젝트는 NoIP, DynDNS 같은 유료 DDNS 서비스를 대체하는 무료 솔루션입니다. 
+Cloudflare를 사용해 유동 IP 환경에서도 자신의 도메인으로 안정적으로 홈서버에 접속할 수 있게 해줍니다. NAS, 게임 서버, 개발 환경, CCTV 등 모든 홈서버에 최적입니다.
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/gmkseta/ddns-ui)](https://hub.docker.com/r/gmkseta/ddns-ui)
 [![GitHub release](https://img.shields.io/github/release/gmkseta/ddns-ui.svg)](https://github.com/gmkseta/ddns-ui/releases)
@@ -12,6 +15,19 @@
 ![Node.js](https://img.shields.io/badge/node.js-18+-green.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)
 ![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
+
+## 🤔 DDNS가 뭐고 왜 필요한가요?
+
+**문제점:** 한국의 대부분 가정용 인터넷(KT, SK브로드밴드, LG U+)은 유동 IP를 사용합니다. IP가 바뀔 때마다 접속 주소가 변경되어 외부에서 홈서버 접속이 어렵습니다.
+
+**해결책:** DDNS(동적 DNS)는 IP가 변경될 때마다 자동으로 도메인의 DNS 레코드를 업데이트해서 `home.mydomain.com` 같은 고정 주소로 항상 접속할 수 있게 해줍니다.
+
+**활용 사례:**
+- 🏠 **홈서버 접속**: Synology/QNAP NAS, 라즈베리파이 서버 원격 접속
+- 🎮 **게임 서버**: 마인크래프트, 발하임, 팰월드 등 친구들과 함께하는 게임 서버
+- 💻 **개발 환경**: 집에 있는 개발 서버에 어디서나 접속
+- 📹 **홈 CCTV**: 별도 클라우드 비용 없이 집 CCTV 원격 모니터링
+- 🌐 **셀프 호스팅**: 개인 블로그, 포트폴리오, 미디어 서버 운영
 
 ## 📸 스크린샷
 
@@ -26,6 +42,22 @@
 
 ### 스케줄러 로그
 ![Scheduler Logs](docs/images/log.png)
+
+## 💰 왜 이걸 선택해야 하나요?
+
+| 서비스 | 비용 | 내 도메인 사용 | 제한사항 |
+|--------|------|---------------|----------|
+| **NoIP** | 무료 (30일마다 갱신) / 연 $25 | ❌ 제공 도메인만 사용 | 수동 갱신 필요 |
+| **DynDNS** | 연 $55 (약 7만원) | ❌ 제한된 도메인 | 비싼 구독료 |
+| **Duck DNS** | 무료 | ❌ 서브도메인만 | 커스텀 도메인 불가 |
+| **이 프로젝트** | **평생 무료** | ✅ **내 도메인 사용** | **제한 없음** |
+
+**추가 장점:**
+- 🌍 Cloudflare의 글로벌 CDN 네트워크 활용
+- 🔒 Cloudflare의 DDoS 방어 기능 내장
+- ⚡ 기존 DDNS보다 빠른 DNS 응답 속도
+- 🎯 내 DNS 레코드 완전 제어
+- 📊 모든 것을 관리할 수 있는 깔끔한 웹 UI
 
 ## ✨ 기능
 
@@ -42,6 +74,12 @@
 - **🔒 보안**: 설정 가능한 자격 증명을 사용한 JWT 기반 인증
 
 ## 🚀 빠른 시작
+
+### 사전 준비사항
+- 도메인 (어디서든 구매 가능) 
+- Cloudflare에서 도메인 DNS 관리 (무료)
+- Cloudflare API 토큰
+- Docker 설치
 
 > ⚠️ **보안 참고사항**: 기본 자격 증명은 초기 설정용으로만 제공됩니다. 프로덕션에서는 반드시 변경해야 합니다!
 

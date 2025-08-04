@@ -1,6 +1,8 @@
 # Cloudflare DDNS Manager
 
-🌐 A modern, multilingual web-based Dynamic DNS (DDNS) management tool for Cloudflare DNS records with automatic IP monitoring and updates.
+🏠 **Running a home server? Tired of your dynamic IP changing?**
+
+This is a free, self-hosted alternative to paid DDNS services like NoIP or DynDNS. It automatically updates your Cloudflare DNS records when your IP changes, keeping your domains pointing to your home server - perfect for NAS, game servers, development environments, or any self-hosted services.
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/gmkseta/ddns-ui)](https://hub.docker.com/r/gmkseta/ddns-ui)
 [![GitHub release](https://img.shields.io/github/release/gmkseta/ddns-ui.svg)](https://github.com/gmkseta/ddns-ui/releases)
@@ -12,6 +14,19 @@
 ![Node.js](https://img.shields.io/badge/node.js-18+-green.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)
 ![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
+
+## 🤔 What is DDNS and Why Do You Need It?
+
+**The Problem:** Most home internet connections have dynamic IP addresses that change periodically. This makes it impossible to reliably connect to your home server using a fixed address.
+
+**The Solution:** Dynamic DNS (DDNS) automatically updates your domain's DNS records whenever your IP changes, ensuring `home.yourdomain.com` always points to your current IP address.
+
+**Common Use Cases:**
+- 🏠 **Home Server Access**: Access your NAS, Plex server, or home automation remotely
+- 🎮 **Game Servers**: Host Minecraft, Valheim, or other game servers for friends
+- 💻 **Development**: Access development environments from anywhere
+- 📹 **Security Cameras**: View home security cameras without expensive cloud services
+- 🌐 **Self-Hosting**: Run your own websites, blogs, or services from home
 
 ## 📸 Screenshots
 
@@ -26,6 +41,22 @@
 
 ### Scheduler Logs
 ![Scheduler Logs](docs/images/log.png)
+
+## 💰 Why Choose This Over Paid DDNS Services?
+
+| Service | Cost | Your Domain | Limitations |
+|---------|------|-------------|-------------|
+| **NoIP** | Free (30-day renewal) / $25/year | ❌ Must use their domains | Manual renewal required |
+| **DynDNS** | $55/year | ❌ Limited domain options | Expensive for basic needs |
+| **Duck DNS** | Free | ❌ Only subdomains | No custom domains |
+| **This Project** | **FREE Forever** | ✅ **Use YOUR domain** | **No limitations** |
+
+**Additional Benefits:**
+- 🌍 Leverage Cloudflare's global CDN network
+- 🔒 Built-in DDoS protection from Cloudflare
+- ⚡ Faster DNS resolution than traditional DDNS
+- 🎯 Complete control over your DNS records
+- 📊 Beautiful web UI to manage everything
 
 ## ✨ Features
 
@@ -42,6 +73,12 @@
 - **🔒 Secure**: JWT-based authentication with configurable credentials
 
 ## 🚀 Quick Start
+
+### Prerequisites
+- A domain name (registered anywhere)
+- Domain's DNS managed by Cloudflare (free)
+- A Cloudflare API token
+- Docker installed on your system
 
 > ⚠️ **Security Note**: Default credentials are provided for initial setup only. You MUST change them in production!
 
@@ -329,22 +366,6 @@ When merged to `main`:
 - 📦 **Versioning**: Semantic version tagging  
 - 🔒 **Security**: Container vulnerability scanning
 
-## 💰 Cost Comparison
-
-### Why Choose This Over Traditional DDNS Services?
-
-| Service | Price | Domain | Renewal | Limitations |
-|---------|-------|--------|---------|-------------|
-| **NoIP** | Free/Paid | Limited domains | Manual every 30 days | Feature restrictions |
-| **DynDNS** | $55/year | Limited domains | Automatic | Monthly subscription |
-| **Duck DNS** | Free | Subdomains only | Automatic | No custom domains |
-| **🌟 This Project** | **FREE** | **Your own domain** | **Automatic** | **No limitations** |
-
-### Benefits of Self-Hosting
-- **Complete Control**: Your data stays yours
-- **Cost Savings**: $0 vs $25-55/year for traditional services
-- **Superior Performance**: Cloudflare's global CDN with 99.9% uptime
-- **Professional Features**: Multi-domain support, web interface, backup/restore
 
 ## 🌟 Built with AI
 
