@@ -16,7 +16,7 @@
     "bcryptjs": "^2.4.3",
     "jose": "^6.0.12",
     "next": "15.3.4",
-    "next-intl": "^4.3.4",
+    "next-intl": "^4.3.5",
     "react": "^19.1.1",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.6.0",
