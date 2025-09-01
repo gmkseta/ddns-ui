@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "monday"
       time: "09:00"
       timezone: "Asia/Seoul"
@@ -20,12 +20,28 @@ updates:
       - "📦 dependencies"
       - "🤖 dependabot"
     rebase-strategy: "auto"
+    # 의존성 그룹화
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "eslint*"
+          - "@types/*"
+          - "@typescript-eslint/*"
+      eslint:
+        patterns:
+          - "eslint*"
+          - "@typescript-eslint/*"
+      types:
+        patterns:
+          - "@types/*"
     
   # Docker 의존성 업데이트  
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "monday"
       time: "10:00"
       timezone: "Asia/Seoul"
@@ -46,7 +62,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "monday"
       time: "11:00"
       timezone: "Asia/Seoul"
@@ -61,4 +77,4 @@ updates:
     labels:
       - "🤖 ci/cd"
       - "📦 dependencies"
-      - "🤖 dependabot" 
+      - "🤖 dependabot"
