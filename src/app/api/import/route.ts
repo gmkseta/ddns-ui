@@ -23,12 +23,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '잘못된 데이터 형식입니다.' }, { status: 400 });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { apiKeys, zones, records, settings } = data as {
-      apiKeys?: any[];
-      zones?: any[];
-      records?: any[];
-      settings?: any[];
+      apiKeys?: Record<string, string>[];
+      zones?: Record<string, string>[];
+      records?: Record<string, string>[];
+      settings?: Record<string, string>[];
     };
 
     // 트랜잭션으로 데이터 가져오기

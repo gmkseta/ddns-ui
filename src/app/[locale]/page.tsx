@@ -60,12 +60,13 @@ export default function Home() {
   }, []);
 
   // 로그인 후 데이터 로드
+  const { loadApiKeys, fetchCurrentIP } = ddns;
   useEffect(() => {
     if (user) {
-      ddns.loadApiKeys();
-      ddns.fetchCurrentIP();
+      loadApiKeys();
+      fetchCurrentIP();
     }
-  }, [user, ddns.loadApiKeys, ddns.fetchCurrentIP]);
+  }, [user, loadApiKeys, fetchCurrentIP]);
 
   // 로그인 처리
   const handleLogin = async (username: string, password: string) => {

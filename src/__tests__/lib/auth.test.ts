@@ -63,7 +63,7 @@ describe('auth', () => {
       mockedJwtVerify.mockResolvedValue({
         payload: { username: 'admin' },
         protectedHeader: { alg: 'HS256' },
-      } as any);
+      } as unknown as Awaited<ReturnType<typeof jwtVerify>>);
 
       const user = await verifyToken('valid-token');
       expect(user).toEqual({ username: 'admin' });
@@ -80,7 +80,7 @@ describe('auth', () => {
       mockedJwtVerify.mockResolvedValue({
         payload: { sub: '123' },
         protectedHeader: { alg: 'HS256' },
-      } as any);
+      } as unknown as Awaited<ReturnType<typeof jwtVerify>>);
 
       const user = await verifyToken('token-no-username');
       expect(user).toBeNull();

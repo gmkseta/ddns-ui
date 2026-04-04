@@ -41,8 +41,7 @@ describe('CloudflareAPI', () => {
     });
 
     it('throws on network error', async () => {
-      const axiosError = new Error('Network Error');
-      (axiosError as any).isAxiosError = true;
+      const axiosError = Object.assign(new Error('Network Error'), { isAxiosError: true });
       mockedAxios.get.mockRejectedValue(axiosError);
       mockedAxios.isAxiosError.mockReturnValue(true);
 
