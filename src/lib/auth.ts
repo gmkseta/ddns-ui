@@ -2,6 +2,14 @@ import bcrypt from 'bcryptjs';
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
+if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
+  console.warn(
+    '\x1b[33m[SECURITY WARNING]\x1b[0m JWT_SECRET is not set. ' +
+    'Using a fallback key is insecure in production. ' +
+    'Set the JWT_SECRET environment variable.'
+  );
+}
+
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'fallback-secret-key-change-in-production'
 );
@@ -58,12 +66,32 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
   return verifyToken(token);
 }
 
-// 어드민 계정 검증 (환경변수 기반)
+// 타이밍 공격 방지를 위한 상수 시간 비교
+function timingSafeEqual(a: string, b: string): boolean {
+  const encoder = new TextEncoder();
+  const bufA = encoder.encode(a);
+  const bufB = encoder.encode(b);
+
+  // 길이가 다르더라도 일정한 시간이 소요되도록 처리
+  const maxLen = Math.max(bufA.length, bufB.length);
+  const paddedA = new Uint8Array(maxLen);
+  const paddedB = new Uint8Array(maxLen);
+  paddedA.set(bufA);
+  paddedB.set(bufB);
+
+  let result = bufA.length ^ bufB.length;
+  for (let i = 0; i < maxLen; i++) {
+    result |= paddedA[i] ^ paddedB[i];
+  }
+  return result === 0;
+}
+
+// 어드민 계정 검증 (환경변수 기반, 타이밍 공격 방지)
 export function validateAdminCredentials(username: string, password: string): boolean {
   const adminUsername = process.env.ADMIN_USERNAME || 'admin';
   const adminPassword = process.env.ADMIN_PASSWORD || 'password';
-  
-  return username === adminUsername && password === adminPassword;
+
+  return timingSafeEqual(username, adminUsername) && timingSafeEqual(password, adminPassword);
 }
 
 // 인증 미들웨어 (API 라우트용)

@@ -29,19 +29,27 @@ export async function GET(request: Request) {
       logs = await dbAll('SELECT * FROM update_logs ORDER BY created_at DESC LIMIT 100');
     }
 
+    // API 토큰을 마스킹하여 export (보안)
+    const maskedApiKeys = (apiKeys as Array<{ id: number; token: string; name?: string; created_at: string }>).map(key => ({
+      ...key,
+      token: key.token.length > 4
+        ? '****' + key.token.slice(-4)
+        : '****',
+    }));
+
     const exportData = {
       version: '1.0',
       exportDate: new Date().toISOString(),
-      warning: '이 파일에는 민감한 API 토큰이 포함되어 있습니다. 안전하게 보관하세요.',
+      warning: 'API 토큰은 보안상 마스킹되어 있습니다. 가져오기 시 마스킹된 토큰은 건너뜁니다.',
       options: {
         includeLogs
       },
       data: {
-        apiKeys,  // 전체 토큰 포함 (가져오기가 가능하도록)
+        apiKeys: maskedApiKeys,
         zones,
         records,
         settings,
-        ...(includeLogs && { logs })  // logs가 있을 때만 포함
+        ...(includeLogs && { logs })
       }
     };
 
