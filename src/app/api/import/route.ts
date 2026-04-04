@@ -7,13 +7,29 @@ export async function POST(request: Request) {
     // 인증 확인
     await requireAuth();
 
-    const body = await request.json();
-    
-    if (!body.data) {
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'JSON 파싱에 실패했습니다.' }, { status: 400 });
+    }
+
+    if (!body || typeof body !== 'object' || !('data' in body)) {
       return NextResponse.json({ error: '잘못된 설정 파일 형식입니다.' }, { status: 400 });
     }
 
-    const { apiKeys, zones, records, settings } = body.data;
+    const data = (body as { data: unknown }).data;
+    if (!data || typeof data !== 'object') {
+      return NextResponse.json({ error: '잘못된 데이터 형식입니다.' }, { status: 400 });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { apiKeys, zones, records, settings } = data as {
+      apiKeys?: any[];
+      zones?: any[];
+      records?: any[];
+      settings?: any[];
+    };
 
     // 트랜잭션으로 데이터 가져오기
     try {
@@ -25,14 +41,16 @@ export async function POST(request: Request) {
       // await dbRun('DELETE FROM settings');
 
       // API 키 가져오기
+      let apiKeysWritten = 0;
       if (apiKeys && Array.isArray(apiKeys)) {
         for (const key of apiKeys) {
-          // 마스킹된 토큰은 건너뛰기
-          if (key.token && !key.token.includes('*')) {
+          // 마스킹된 토큰은 건너뛰기 (export 시 '****' 접두사로 마스킹됨)
+          if (key.token && !/^\*{4}/.test(key.token)) {
             await dbRun(
               'INSERT OR REPLACE INTO api_keys (id, token, created_at) VALUES (?, ?, ?)',
               [key.id, key.token, key.created_at]
             );
+            apiKeysWritten++;
           }
         }
       }
@@ -70,7 +88,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ 
         message: '설정을 성공적으로 가져왔습니다.',
         imported: {
-          apiKeys: apiKeys?.length || 0,
+          apiKeys: apiKeysWritten,
           zones: zones?.length || 0,
           records: records?.length || 0,
           settings: settings?.length || 0
