@@ -97,7 +97,7 @@ ENV DATABASE_PATH=/app/data/db.sqlite3
 
 # 헬스체크
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/api/ip || exit 1
+  CMD curl -f http://localhost:3000/api/health || exit 1
 
 # 일반 모드로 실행 (스케줄러 동작 보장)
 CMD ["yarn", "start"] 

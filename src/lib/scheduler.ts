@@ -150,13 +150,5 @@ class DDNSScheduler {
 // 싱글톤 인스턴스
 export const ddnsScheduler = new DDNSScheduler();
 
-// Next.js 서버 시작 시 자동으로 스케줄러 시작
-if (typeof window === 'undefined' && process.env.SKIP_SCHEDULER !== '1') {
-  const updateInterval = parseInt(process.env.UPDATE_INTERVAL || '5', 10);
-  
-  // 서버 시작 후 10초 후에 스케줄러 시작 (DB 초기화 대기)
-  setTimeout(() => {
-    console.log(`[Scheduler] Starting DDNS scheduler in ${process.env.NODE_ENV} mode with ${updateInterval} minute interval`);
-    ddnsScheduler.start(updateInterval);
-  }, 10000);
-} 
+// 스케줄러 자동 시작은 src/instrumentation.ts에서 관리됩니다.
+// Next.js instrumentation 훅이 서버 시작 시 확실하게 실행을 보장합니다. 
