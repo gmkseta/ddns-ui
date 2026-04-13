@@ -70,7 +70,15 @@ RUN addgroup --system --gid 1001 nodejs \
 
 # 패키지 파일 복사 및 프로덕션 의존성 설치
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production && yarn cache clean
+# ARM64 QEMU 에뮬레이션에서 간헐적 크래시 방지: 병렬 처리 제한 + 재시도
+RUN if [ "$(uname -m)" = "aarch64" ]; then \
+      for i in 1 2 3; do \
+        yarn install --frozen-lockfile --production --network-timeout 300000 --network-concurrency 1 && break || \
+        echo "Retry $i failed, waiting..." && sleep 5; \
+      done; \
+    else \
+      yarn install --frozen-lockfile --production; \
+    fi && yarn cache clean
 
 # 빌드 결과물 및 소스 복사
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
