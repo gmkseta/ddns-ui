@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { NextRequest } from 'next/server';
 
 // Mock auth
 vi.mock('@/lib/auth', () => ({
@@ -32,8 +33,8 @@ describe('Scheduler Logs API', () => {
     mockedDbGet.mockResolvedValueOnce({ total: 1 });
 
     const { GET } = await import('@/app/api/scheduler/logs/route');
-    const request = new Request('http://localhost/api/scheduler/logs');
-    const response = await GET(request as any);
+    const request = new NextRequest('http://localhost/api/scheduler/logs');
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -48,8 +49,8 @@ describe('Scheduler Logs API', () => {
     mockedDbGet.mockResolvedValueOnce({ total: 0 });
 
     const { GET } = await import('@/app/api/scheduler/logs/route');
-    const request = new Request('http://localhost/api/scheduler/logs?limit=10&offset=5');
-    const response = await GET(request as any);
+    const request = new NextRequest('http://localhost/api/scheduler/logs?limit=10&offset=5');
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -62,8 +63,8 @@ describe('Scheduler Logs API', () => {
     mockedDbGet.mockResolvedValueOnce({ total: 0 });
 
     const { GET } = await import('@/app/api/scheduler/logs/route');
-    const request = new Request('http://localhost/api/scheduler/logs?limit=500');
-    const response = await GET(request as any);
+    const request = new NextRequest('http://localhost/api/scheduler/logs?limit=500');
+    const response = await GET(request);
 
     expect(response.status).toBe(200);
     expect(mockedDbAll).toHaveBeenCalledWith(expect.any(String), [100, 0]);
@@ -73,8 +74,8 @@ describe('Scheduler Logs API', () => {
     mockedRequireAuth.mockRejectedValue(new Error('Authentication required'));
 
     const { GET } = await import('@/app/api/scheduler/logs/route');
-    const request = new Request('http://localhost/api/scheduler/logs');
-    const response = await GET(request as any);
+    const request = new NextRequest('http://localhost/api/scheduler/logs');
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(401);
@@ -86,8 +87,8 @@ describe('Scheduler Logs API', () => {
     mockedDbGet.mockResolvedValueOnce(null);
 
     const { GET } = await import('@/app/api/scheduler/logs/route');
-    const request = new Request('http://localhost/api/scheduler/logs');
-    const response = await GET(request as any);
+    const request = new NextRequest('http://localhost/api/scheduler/logs');
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -98,8 +99,8 @@ describe('Scheduler Logs API', () => {
     mockedDbAll.mockRejectedValue(new Error('Database connection failed'));
 
     const { GET } = await import('@/app/api/scheduler/logs/route');
-    const request = new Request('http://localhost/api/scheduler/logs');
-    const response = await GET(request as any);
+    const request = new NextRequest('http://localhost/api/scheduler/logs');
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(500);
