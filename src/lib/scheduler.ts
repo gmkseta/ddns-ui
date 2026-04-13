@@ -107,8 +107,8 @@ class DDNSScheduler {
 
           // 업데이트 로그 저장
           await dbRun(`
-            INSERT INTO update_logs (record_id, old_ip, new_ip, status, message)
-            VALUES (?, ?, ?, 'success', ?)
+            INSERT INTO update_logs (record_id, old_ip, new_ip, status, message, trigger_type)
+            VALUES (?, ?, ?, 'success', ?, 'auto')
           `, [record.id, record.content, currentIP, statusMessage]);
 
           totalUpdated++;
@@ -119,8 +119,8 @@ class DDNSScheduler {
 
           // 에러 로그 저장
           await dbRun(`
-            INSERT INTO update_logs (record_id, old_ip, new_ip, status, message)
-            VALUES (?, ?, ?, 'error', ?)
+            INSERT INTO update_logs (record_id, old_ip, new_ip, status, message, trigger_type)
+            VALUES (?, ?, ?, 'error', ?, 'auto')
           `, [record.id, record.content, currentIP, error instanceof Error ? error.message : 'Unknown error']);
 
           totalErrors++;

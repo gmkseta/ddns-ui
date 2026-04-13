@@ -112,8 +112,8 @@ export async function POST(request: NextRequest) {
 
         // 에러 로그 저장
         await dbRun(`
-          INSERT INTO update_logs (record_id, old_ip, new_ip, status, message)
-          VALUES (?, ?, ?, 'error', ?)
+          INSERT INTO update_logs (record_id, old_ip, new_ip, status, message, trigger_type)
+          VALUES (?, ?, ?, 'error', ?, 'manual')
         `, [record.id, record.content, currentIP, error instanceof Error ? error.message : 'Unknown error']);
 
         results.push({

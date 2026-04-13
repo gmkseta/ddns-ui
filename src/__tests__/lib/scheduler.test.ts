@@ -73,7 +73,7 @@ class TestScheduler {
         );
 
         await dbRun(
-          `INSERT INTO update_logs (record_id, old_ip, new_ip, status, message) VALUES (?, ?, ?, 'success', ?)`,
+          `INSERT INTO update_logs (record_id, old_ip, new_ip, status, message, trigger_type) VALUES (?, ?, ?, 'success', ?, 'auto')`,
           [record.id, record.content, currentIP, 'IP 업데이트 성공']
         );
       }
@@ -191,6 +191,22 @@ describe('DDNSScheduler', () => {
       mockedGetCurrentIP.mockRejectedValue(new Error('All services down'));
 
       await expect(scheduler.runUpdate()).resolves.toBeUndefined();
+    });
+
+    it('logs trigger_type as auto', async () => {
+      mockedGetCurrentIP.mockResolvedValue('9.9.9.9');
+      mockedDbAll.mockResolvedValue([
+        { id: 'r1', zone_id: 'z1', name: 'test', type: 'A', content: '1.2.3.4', ttl: 120, proxied: false, zone_name: 'example.com', token: 'tok' },
+      ]);
+
+      await scheduler.runUpdate();
+
+      const insertCall = mockedDbRun.mock.calls.find(
+        (call) => typeof call[0] === 'string' && call[0].includes('INSERT INTO update_logs')
+      );
+      expect(insertCall).toBeDefined();
+      expect(insertCall![0]).toContain('trigger_type');
+      expect(insertCall![0]).toContain("'auto'");
     });
   });
 });
