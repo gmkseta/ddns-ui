@@ -1,48 +1,20 @@
-version: '3.8'
-
 services:
   ddns-ui:
-    # 이미지 사용 (빌드 없이 바로 실행)
     image: gmkseta/ddns-ui:latest
-    # 또는 로컬 빌드 사용 (주석 해제하여 사용)
-    # build: .
-    
     container_name: cloudflare-ddns-ui
-    
-    # 항상 최신 이미지 pull (docker-compose up 시마다 확인)
     pull_policy: always
-    
     ports:
-      # 포트 변경: 왼쪽이 호스트 포트, 오른쪽이 컨테이너 포트
-      # 예: 8080:3000 으로 변경하면 localhost:8080으로 접속
-      - "${HOST_PORT:-3000}:3000"
-    
+      - "${HOST_PORT:-3001}:3000"
     environment:
-      # 관리자 계정 설정
       - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-changeme}
-      
-      # JWT 시크릿 키 (보안을 위해 변경 필수!)
-      # 랜덤 키 생성: openssl rand -base64 32
       - JWT_SECRET=${JWT_SECRET:-CHANGE-THIS-IN-PRODUCTION-MUST-BE-RANDOM}
-      
-      # 데이터베이스 경로
       - DATABASE_PATH=/app/data/db.sqlite3
-      
-      # DDNS 업데이트 주기 (분 단위)
       - UPDATE_INTERVAL=${UPDATE_INTERVAL:-5}
-      
-      # 환경 설정
       - NODE_ENV=production
-      
     volumes:
-      # SQLite 데이터베이스 영구 저장
       - ddns-data:/app/data
-      # 또는 로컬 디렉토리 마운트 (선택사항)
-      # - ./data:/app/data
-      
     restart: unless-stopped
-    
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 30s
@@ -52,4 +24,4 @@ services:
 
 volumes:
   ddns-data:
-    driver: local 
+    driver: local
