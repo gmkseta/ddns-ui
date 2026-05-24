@@ -1,7 +1,7 @@
 # ===========================================
 # 의존성 설치 스테이지 (캐시 최적화)
 # ===========================================
-FROM node:24-alpine AS deps
+FROM node:25-alpine AS deps
 
 RUN apk add --no-cache libc6-compat python3 make g++ sqlite-dev
 
@@ -21,7 +21,7 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then \
 # ===========================================
 # 빌드 스테이지
 # ===========================================
-FROM node:24-alpine AS builder
+FROM node:25-alpine AS builder
 
 WORKDIR /app
 
@@ -59,7 +59,7 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then \
 # ===========================================
 # 런타임 스테이지
 # ===========================================
-FROM node:24-alpine AS runner
+FROM node:25-alpine AS runner
 
 WORKDIR /app
 
