@@ -35,6 +35,7 @@ jobs:
           type=semver,pattern={{version}}
           type=semver,pattern={{major}}.{{minor}}
           type=semver,pattern={{major}}
+          type=sha,format=short
           type=raw,value=latest,enable={{is_default_branch}}
         flavor: |
           latest=auto
