@@ -1,3 +1,5 @@
+> **CI 러너 규칙 (2026-10-30 상시)** — 새 워크플로·job은 `runs-on`에 GitHub 호스티드 러너 금지, 우리 self-hosted 라벨(`k3s`)만. macOS 호스티드 금지. 무거운 job은 main·PR·수동만, concurrency로 이전 실행 취소.
+
 # CLAUDE.md
 
 
